@@ -4,6 +4,7 @@ import trucu.database.querybuilder.statement.AlterTableStatement;
 import trucu.database.querybuilder.statement.CreateTableStatement;
 import trucu.database.querybuilder.statement.InsertStatement;
 import trucu.database.querybuilder.statement.SelectStatement;
+import trucu.database.querybuilder.statement.UpdateStatement;
 
 /**
  *
@@ -14,9 +15,7 @@ public class QueryBuilder {
     // OPERATIONS
     private final static String DROP_TABLE = "DROP TABLE %s";
     private final static String TRUNCATE_TABLE = "TRUNCATE TABLE %s";
-
     private final static String DELETE_FROM = "DELETE FROM %s";
-    private final static String UPDATE = "UPDATE %s SET %s";
 
     protected QueryBuilder() {
 
@@ -40,5 +39,9 @@ public class QueryBuilder {
 
     public static AlterTableStatement alterTable(String table) {
         return new AlterTableStatement(table);
+    }
+    
+    public static UpdateStatement update(String table){
+        return new UpdateStatement(table);
     }
 }

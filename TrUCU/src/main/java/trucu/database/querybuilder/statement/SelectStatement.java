@@ -53,8 +53,7 @@ public class SelectStatement implements Statement {
     }
 
     public SelectStatement joinOn(String otherTable, Filter on) {
-        joinOn(otherTable, on.toString());
-        return this;
+        return joinOn(otherTable, on.toString());
     }
 
     public SelectStatement joinOn(String otherTable, String on) {

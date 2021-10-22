@@ -6,8 +6,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import trucu.database.DBController;
 import trucu.database.SQLType;
+import trucu.database.querybuilder.Filter;
 import trucu.database.querybuilder.QueryBuilder;
 import trucu.database.querybuilder.statement.AlterTableStatement;
+import trucu.database.querybuilder.statement.Statement;
+import trucu.database.querybuilder.statement.UpdateStatement;
 import trucu.util.log.ConsoleLog;
 import trucu.util.log.FileLog;
 import trucu.util.log.LoggerFactory;
@@ -34,6 +37,7 @@ public class AppMain {
         LoggerFactory.setProgramLogs(ConsoleLog::new, FileLog::new);
 
         test();
+
         // Conexion con BD
         try {
             DBController.initConnection(USER_BD, PASSWORD_BD, URL_BD);
@@ -42,13 +46,14 @@ public class AppMain {
     }
 
     private static void test() {
-        AlterTableStatement alter = QueryBuilder.alterTable("table1")
-                .addColumn("col1", SQLType.INT)
-                .addColumn("col2", SQLType.VARCHAR, 12)
-                .alterColumn("col3", SQLType.INT, 12, true)
-                .alterColumn("col4", SQLType.INT, 12, true)
-                .dropColumns("col1", "col2", "col3", "col5");
+        Statement update = QueryBuilder.update("table1")
+                .from("table2")
+                .joinOn("table2", Filter.build(f -> f.eq("table1.id", "table2.table1Id")))
+                .set("col1", 7)
+                .set("col2", "juanito")
+                .set("col1", 14)
+                .where(Filter.build(f -> f.goet("col2", 50)));
 
-        System.out.println(alter.build());
+        System.out.println(update.build());
     }
 }
