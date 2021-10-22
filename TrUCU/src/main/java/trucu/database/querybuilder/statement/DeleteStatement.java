@@ -1,0 +1,39 @@
+package trucu.database.querybuilder.statement;
+
+import trucu.database.querybuilder.Filter;
+import trucu.util.StringUtils;
+
+/**
+ *
+ * @author NicoPuig
+ */
+public class DeleteStatement implements Statement {
+
+    private static final String DELETE_FROM = "DELETE FROM %s";
+    private static final String WHERE = "WHERE %s";
+
+    private final String table;
+    private String filter;
+
+    public DeleteStatement(String table) {
+        this.table = table;
+    }
+
+    public DeleteStatement where(String filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public DeleteStatement where(Filter filter) {
+        return where(filter.toString());
+    }
+
+    @Override
+    public String build() {
+        String statement = String.format(DELETE_FROM, table);
+        if (filter != null) {
+            statement += StringUtils.LN_TABBED + String.format(WHERE, filter);
+        }
+        return statement;
+    }
+}

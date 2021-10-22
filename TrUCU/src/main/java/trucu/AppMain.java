@@ -46,13 +46,13 @@ public class AppMain {
     }
 
     private static void test() {
-        Statement update = QueryBuilder.update("table1")
-                .from("table2")
-                .joinOn("table2", Filter.build(f -> f.eq("table1.id", "table2.table1Id")))
-                .set("col1", 7)
-                .set("col2", "juanito")
-                .set("col1", 14)
-                .where(Filter.build(f -> f.goet("col2", 50)));
+        Statement update = QueryBuilder.deleteFrom("table1")
+                .where(Filter.build(f -> f.and(
+                f.in("col1", 1, 2, 3, 4, 5),
+                f.exists(QueryBuilder.selectFrom("table2")
+                        .where(Filter.build(f2 -> f2.isNotNull("col5")))),
+                f.like("name", "miguel")
+        )));
 
         System.out.println(update.build());
     }

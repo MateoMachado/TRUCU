@@ -2,6 +2,7 @@ package trucu.database.querybuilder;
 
 import java.util.Collection;
 import java.util.function.Function;
+import trucu.database.querybuilder.statement.SelectStatement;
 import trucu.util.StringUtils;
 
 /**
@@ -59,6 +60,10 @@ public class Filter {
 
     public String isNotNull(String key) {
         return key + " IS NOT NULL";
+    }
+
+    public String exists(SelectStatement select) {
+        return String.format("EXISTS (%s)", select.build());
     }
 
     public String and(String condition1, String condition2, String... otherConditions) {

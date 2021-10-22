@@ -2,8 +2,11 @@ package trucu.database.querybuilder;
 
 import trucu.database.querybuilder.statement.AlterTableStatement;
 import trucu.database.querybuilder.statement.CreateTableStatement;
+import trucu.database.querybuilder.statement.DeleteStatement;
+import trucu.database.querybuilder.statement.DropStatement;
 import trucu.database.querybuilder.statement.InsertStatement;
 import trucu.database.querybuilder.statement.SelectStatement;
+import trucu.database.querybuilder.statement.TruncateStatement;
 import trucu.database.querybuilder.statement.UpdateStatement;
 
 /**
@@ -40,8 +43,20 @@ public class QueryBuilder {
     public static AlterTableStatement alterTable(String table) {
         return new AlterTableStatement(table);
     }
-    
-    public static UpdateStatement update(String table){
+
+    public static UpdateStatement update(String table) {
         return new UpdateStatement(table);
+    }
+
+    public static DeleteStatement deleteFrom(String table) {
+        return new DeleteStatement(table);
+    }
+
+    public static DropStatement dropTable(String table) {
+        return new DropStatement(table);
+    }
+
+    public static TruncateStatement truncateTable(String table) {
+        return new TruncateStatement(table);
     }
 }
