@@ -100,18 +100,18 @@ public class CreateTableStatement implements Statement {
 
     @Override
     public String build() {
-        String tableConfig = StringUtils.join(StringUtils.COMA, columns, TableColumn::toCreateTableFormat);
+        String tableConfig = StringUtils.join(StringUtils.COMA, columns, TableColumn::toTableDefinitionFormat);
         if (check != null) {
-            tableConfig += StringUtils.COMA_NEW_LINE + String.format(CHECK_CONSTRAIN, check);
+            tableConfig += StringUtils.COMA_LN + String.format(CHECK_CONSTRAIN, check);
         }
         if (pkColumns != null) {
-            tableConfig += StringUtils.COMA_NEW_LINE + StringUtils.join(StringUtils.COMA, pkColumns, key -> String.format(CONSTRAINT_PK, key.replace(StringUtils.COMA, "_"), key));
+            tableConfig += StringUtils.COMA_LN + StringUtils.join(StringUtils.COMA, pkColumns, key -> String.format(CONSTRAINT_PK, key.replace(StringUtils.COMA, "_"), key));
         }
         if (!uniqueKeys.isEmpty()) {
-            tableConfig += StringUtils.COMA_NEW_LINE + StringUtils.join(StringUtils.COMA, uniqueKeys, key -> String.format(CONSTRAINT_UQ, key.replace(StringUtils.COMA, "_"), key));
+            tableConfig += StringUtils.COMA_LN + StringUtils.join(StringUtils.COMA, uniqueKeys, key -> String.format(CONSTRAINT_UQ, key.replace(StringUtils.COMA, "_"), key));
         }
         if (!foreignKeys.isEmpty()) {
-            tableConfig += StringUtils.COMA_NEW_LINE + StringUtils.join(StringUtils.COMA_NEW_LINE, foreignKeys, ForeignTableKey::toCreateTableConstraintFormat);
+            tableConfig += StringUtils.COMA_LN + StringUtils.join(StringUtils.COMA_LN, foreignKeys, ForeignTableKey::toCreateTableConstraintFormat);
         }
 
         return String.format(CREATE_TABLE, tableName, tableConfig);

@@ -11,10 +11,10 @@ import java.util.function.Function;
 public class StringUtils {
 
     public static final String COMA = ", ";
-    public static final String COMA_NEW_LINE = ",\n";
+    public static final String COMA_LN = ",\n";
     public static final String SPACE = " ";
-    public static final String NEW_LINE = "\n";
-    public static final String NEW_LINE_TABBED = "\n\t";
+    public static final String LN = "\n";
+    public static final String LN_TABBED = "\n\t";
     public static final String UNDERSCORE = "_";
 
     public static <T> String join(String separator, T[] array) {

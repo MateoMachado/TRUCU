@@ -58,10 +58,10 @@ public class TableColumn {
         this.defaultValue = defaultValue;
     }
 
-    public String toCreateTableFormat() {
+    public String toTableDefinitionFormat() {
         return name + " " + type
                 + StringUtils.getIf(presition != null, String.format("(%s)", presition))
-                + StringUtils.getIf(notNull, " NOT NULL")
+                + (notNull ? " NOT NULL" : " NULL")
                 + StringUtils.getIf(defaultValue != null, " DEFAULT " + defaultValue);
     }
 }

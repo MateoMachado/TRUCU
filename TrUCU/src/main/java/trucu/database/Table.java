@@ -15,23 +15,17 @@ public class Table {
     private final ArrayList<ArrayList<Object>> data;
     private final ArrayList<String> columnNames;
     private final ArrayList<SQLType> columnTypes;
-    private int columnCount;
-    private int rowCount;
 
     public Table() {
         this.data = new ArrayList<>();
         this.columnNames = new ArrayList<>();
         this.columnTypes = new ArrayList<>();
-        this.columnCount = 0;
-        this.rowCount = 0;
     }
 
     public Table(ArrayList<ArrayList<Object>> data, ArrayList<String> columnNames, ArrayList<SQLType> columnTypes) {
         this.data = data;
         this.columnNames = columnNames;
         this.columnTypes = columnTypes;
-        this.columnCount = columnNames.size();
-        this.rowCount = data.size();
     }
 
     public ArrayList<Object> getRow(int rowIndex) {
@@ -41,7 +35,7 @@ public class Table {
     public <T> ArrayList<T> getColumn(int index) {
         Class<T> columnType = getColumnType(index);
         ArrayList<T> column = new ArrayList<>();
-        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+        for (int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) {
             column.add(columnType.cast(getValueAt(rowIndex, index)));
         }
         return column;
@@ -84,11 +78,11 @@ public class Table {
     }
 
     public int getColumnCount() {
-        return columnCount;
+        return columnNames.size();
     }
 
     public int getRowCount() {
-        return rowCount;
+        return data.size();
     }
 
     public String getColumnName(int index) {
@@ -97,7 +91,6 @@ public class Table {
 
     public void addRow(ArrayList<Object> row) {
         data.add(row);
-        rowCount++;
     }
 
     public int getColumnIndex(String name) {
@@ -115,15 +108,22 @@ public class Table {
         }
         columnNames.add(name);
         columnTypes.add(SQLType.toSQLType(type));
-        columnCount++;
     }
 
+    /**
+     * Convierte un ResultSet a un objeto Tabla mas facil de utilizar
+     *
+     * @param resultSet
+     * @return
+     * @throws SQLException
+     */
     public static Table toTable(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
         ArrayList<String> columnNames = new ArrayList<>(columnCount);
         ArrayList<SQLType> columnTypes = new ArrayList<>(columnCount);
         ArrayList<ArrayList<Object>> rows = new ArrayList<>();
+
         boolean isFirstRow = true;
         while (resultSet.next()) {
             ArrayList<Object> row = new ArrayList<>(columnCount);
