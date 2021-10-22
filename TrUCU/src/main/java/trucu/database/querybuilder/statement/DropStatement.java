@@ -6,6 +6,8 @@ package trucu.database.querybuilder.statement;
  */
 public class DropStatement implements Statement {
 
+    private static final String DROP_TABLE = "DROP TABLE %s";
+
     private final String table;
 
     public DropStatement(String table) {
@@ -14,6 +16,6 @@ public class DropStatement implements Statement {
 
     @Override
     public String build() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format(DROP_TABLE, table);
     }
 }

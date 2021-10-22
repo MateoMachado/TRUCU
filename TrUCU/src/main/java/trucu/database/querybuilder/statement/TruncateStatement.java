@@ -6,6 +6,8 @@ package trucu.database.querybuilder.statement;
  */
 public class TruncateStatement implements Statement {
 
+    private static final String TRUNCATE_TABLE = "TRUNCATE TABLE %s";
+
     private final String table;
 
     public TruncateStatement(String table) {
@@ -14,6 +16,6 @@ public class TruncateStatement implements Statement {
 
     @Override
     public String build() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format(TRUNCATE_TABLE, table);
     }
 }
