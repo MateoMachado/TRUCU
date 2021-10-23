@@ -5,7 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import trucu.database.DBController;
+import trucu.database.SQLType;
 import trucu.database.querybuilder.Filter;
+import trucu.database.querybuilder.ForeignTableKey;
+import trucu.database.querybuilder.ForeignTableKey.ON_DELETE_ACTION;
 import trucu.database.querybuilder.QueryBuilder;
 import trucu.database.querybuilder.statement.Statement;
 import trucu.util.log.ConsoleLog;
@@ -43,14 +46,19 @@ public class AppMain {
     }
 
     private static void test() {
-        Statement update = QueryBuilder.deleteFrom("table1")
-                .where(Filter.build(f -> f.and(
-                f.in("col1", 1, 2, 3, 4, 5),
-                f.exists(QueryBuilder.selectFrom("table2")
-                        .where(Filter.build(f2 -> f2.isNotNull("col5")))),
-                f.like("name", "miguel")
-        )));
+        String build = QueryBuilder.createTable("table")
+                .addColumn("id", SQLType.BIGINT, 20)
+                .addColumn("col1", SQLType.INT)
+                .addColumn("col2", SQLType.DOUBLE, 24)
+                .addColumn("table2Id", SQLType.INT, 20)
+                .setCheck(f -> f.goet("col1", 50))
+                .setDefaultValue("col2", 100.00)
+                .setPrimaryKey("id")
+                .setForeignKey("table2Id", "id", "table2", ON_DELETE_ACTION.CASCADE)
+                .setNotNull("col2", true)
+                .setUniqueKey("col1", "col2")
+                .build();
 
-        System.out.println(update.build());
+        System.out.println(build);
     }
 }

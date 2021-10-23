@@ -1,5 +1,6 @@
 package trucu.database.querybuilder.statement;
 
+import java.util.function.Function;
 import trucu.database.querybuilder.Filter;
 import trucu.util.StringUtils;
 
@@ -26,6 +27,10 @@ public class DeleteStatement implements Statement {
 
     public DeleteStatement where(Filter filter) {
         return where(filter.toString());
+    }
+    
+    public DeleteStatement where(Function<Filter, String> filterBuilder) {
+        return where(new Filter(filterBuilder).toString());
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import trucu.database.querybuilder.statement.SelectStatement;
 import trucu.database.querybuilder.statement.Statement;
+import trucu.database.querybuilder.statement.UpdateStatement;
 import trucu.util.log.Logger;
 import trucu.util.log.LoggerFactory;
 
@@ -56,15 +57,24 @@ public class DBController {
         }
     }
 
-    public boolean updateValues(Statement statement) {
-        LOGGER.info("Actualizando valores en tabla...");
+    public boolean executeStatement(Statement statement) {
         try {
-            this.queryExecutor.update(statement);
+            this.queryExecutor.execute(statement);
+            return true;
+        } catch (SQLException ex) {
+            LOGGER.error("Imposible ejecutar query");
+            return false;
+        }
+    }
+
+    public boolean updateValues(UpdateStatement statement) {
+        try {
+            LOGGER.info("Actualizando valores en tabla [%s]...", statement.getTable());
+            this.queryExecutor.execute(statement);
             LOGGER.info("Valores actualizados!");
             return true;
         } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores en tabla \'%s\'");
-            LOGGER.popUp(ex);
+            LOGGER.error("Imposible actualizar valores en tabla [%s]", statement.getTable());
             return false;
         }
     }

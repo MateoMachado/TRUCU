@@ -2,6 +2,7 @@ package trucu.database.querybuilder.statement;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import trucu.database.querybuilder.Filter;
 import trucu.util.StringUtils;
 
@@ -38,8 +39,11 @@ public class UpdateStatement implements Statement {
     }
 
     public UpdateStatement where(Filter filter) {
-        this.filter = filter.toString();
-        return this;
+        return where(filter.toString());
+    }
+
+    public UpdateStatement where(Function<Filter, String> filterBuilder) {
+        return where(new Filter(filterBuilder).toString());
     }
 
     public UpdateStatement from(String table) {
@@ -54,6 +58,10 @@ public class UpdateStatement implements Statement {
 
     public UpdateStatement joinOn(String table, Filter on) {
         return joinOn(table, on.toString());
+    }
+
+    public String getTable() {
+        return table;
     }
 
     @Override

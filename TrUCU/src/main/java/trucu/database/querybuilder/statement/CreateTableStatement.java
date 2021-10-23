@@ -6,6 +6,7 @@ import trucu.database.querybuilder.Filter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import trucu.database.SQLType;
 import trucu.database.querybuilder.ForeignTableKey.ON_DELETE_ACTION;
 import trucu.util.StringUtils;
@@ -16,7 +17,7 @@ import trucu.util.StringUtils;
  */
 public class CreateTableStatement implements Statement {
 
-    private final static String CREATE_TABLE = "CREATE TABLE %s (%s)";
+    private final static String CREATE_TABLE = "CREATE TABLE %s \n(%s)";
     private final static String CONSTRAINT_PK = "CONSTRAINT PK_%s PRIMARY KEY (%s)";
     private final static String CONSTRAINT_UQ = "CONSTRAINT UQ_%s UNIQUE (%s)";
     private final static String CHECK_CONSTRAIN = "CHECK (%s)";
@@ -62,14 +63,17 @@ public class CreateTableStatement implements Statement {
         return this;
     }
 
-    public CreateTableStatement setCheck(Filter filter) {
-        this.check = filter.toString();
-        return this;
-    }
-
     public CreateTableStatement setCheck(String filter) {
         this.check = filter;
         return this;
+    }
+
+    public CreateTableStatement setCheck(Filter filter) {
+        return setCheck(filter.toString());
+    }
+
+    public CreateTableStatement setCheck(Function<Filter, String> filter) {
+        return setCheck(new Filter(filter).toString());
     }
 
     public CreateTableStatement setPrimaryKey(String... pkColumns) {
