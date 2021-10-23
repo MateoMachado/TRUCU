@@ -67,15 +67,29 @@ public class QueryBuilder {
             CONSTRAINT PK_id PRIMARY KEY (id),
             CONSTRAINT UQ_col1_col2 UNIQUE (col1, col2),
             CONSTRAINT FK_table2Id FOREIGN KEY (table2Id) REFERENCES table2 (id) ON DELETE CASCADE)
-    */
+     */
     public static CreateTableStatement createTable(String tableName) {
         return new CreateTableStatement(tableName);
     }
 
+    /*
+    >>>
+        QueryBuilder.insertInto("table1")
+            .keys("col1", "col2", "col3")
+            .values(1, 2, 3)
+            .values(4, 5, 6)
+    <<< 
+        INSERT INTO table1 (col1, col2, col3) VALUES 
+        (1, 2, 3),
+        (4, 5, 6)
+     */
     public static InsertStatement insertInto(String table) {
         return new InsertStatement(table);
     }
 
+    /*
+    
+    */
     public static AlterTableStatement alterTable(String table) {
         return new AlterTableStatement(table);
     }

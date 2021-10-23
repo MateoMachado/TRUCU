@@ -20,8 +20,8 @@ public class AlterTableStatement implements Statement {
 
     private final String tableName;
     private final List<TableColumn> newColumns = new LinkedList<>();
-    private TableColumn alteredColumn;
     private final List<String> droppedColumns = new LinkedList<>();
+    private TableColumn alteredColumn;
 
     public AlterTableStatement(String tableName) {
         this.tableName = tableName;
