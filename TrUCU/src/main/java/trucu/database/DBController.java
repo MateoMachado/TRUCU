@@ -4,6 +4,7 @@ import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import trucu.database.querybuilder.statement.SelectStatement;
 import trucu.database.querybuilder.statement.Statement;
 import trucu.database.querybuilder.statement.UpdateStatement;
@@ -52,6 +53,15 @@ public class DBController {
         try {
             return this.queryExecutor.query(query);
         } catch (SQLException ex) {
+            LOGGER.error("Imposible ejecutar query");
+            return null;
+        }
+    }
+
+    public <T> List<T> executeQuery(SelectStatement query, Class<T> entityClass) {
+        try {
+            return this.queryExecutor.query(query, entityClass);
+        } catch (SQLException | EntityConversionException ex) {
             LOGGER.error("Imposible ejecutar query");
             return null;
         }

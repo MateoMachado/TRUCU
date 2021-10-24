@@ -3,7 +3,7 @@ package trucu.database.querybuilder.statement;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import trucu.database.SQLType;
+import trucu.database.querybuilder.SQLType;
 import trucu.database.querybuilder.TableColumn;
 import trucu.util.StringUtils;
 

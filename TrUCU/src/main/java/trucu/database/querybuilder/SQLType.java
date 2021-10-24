@@ -1,4 +1,4 @@
-package trucu.database;
+package trucu.database.querybuilder;
 
 import java.util.Date;
 import java.util.function.Predicate;
@@ -14,6 +14,7 @@ public enum SQLType {
     BIGINT(Long.class),
     BOOLEAN(Boolean.class),
     DOUBLE(Double.class),
+    DATE(Date.class),
     DATETIME(Date.class),
     FLOAT(Float.class);
 

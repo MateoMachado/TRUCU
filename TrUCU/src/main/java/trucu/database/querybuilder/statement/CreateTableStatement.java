@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import trucu.database.SQLType;
+import trucu.database.querybuilder.SQLType;
 import trucu.database.querybuilder.ForeignTableKey.ON_DELETE_ACTION;
 import trucu.util.StringUtils;
 

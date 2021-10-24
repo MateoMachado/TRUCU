@@ -1,1 +1,3 @@
-ERROR [trucu.database.DBController] Imposible conectar a BD -> No se pudo realizar la conexión TCP/IP al host 198.168.0.3, puerto 5432. Error: "connect timed out. Verifique las propiedades de conexión, compruebe que hay una instancia de SQL Server ejecutándose en el host y aceptando las conexiones TCP/IP en el puerto y compruebe que no hay ningún firewall bloqueando las conexiones TCP en el puerto.".
+INFO [trucu.database.DBController] Base de datos conectada con exito
+QUERY [trucu.database.QueryExecutor] >>> SELECT * FROM Account;
+INFO [trucu.database.QueryExecutor] <<< 2 entidades [class trucu.model.dto.Account] halladas en tabla Account

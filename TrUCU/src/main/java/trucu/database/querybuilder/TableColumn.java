@@ -1,6 +1,5 @@
 package trucu.database.querybuilder;
 
-import trucu.database.SQLType;
 import trucu.util.StringUtils;
 
 /**
@@ -59,9 +58,14 @@ public class TableColumn {
     }
 
     public String toTableDefinitionFormat() {
-        return name + " " + type
-                + StringUtils.getIf(presition != null, String.format("(%s)", presition))
-                + (notNull ? " NOT NULL" : " NULL")
-                + StringUtils.getIf(defaultValue != null, " DEFAULT " + defaultValue);
+        String format = name + " " + type;
+        if (presition != null) {
+            format += String.format("(%s)", presition);
+        }
+        format += notNull ? " NOT NULL" : " NULL";
+        if (defaultValue != null) {
+            format += " DEFAULT " + defaultValue;
+        }
+        return format;
     }
 }

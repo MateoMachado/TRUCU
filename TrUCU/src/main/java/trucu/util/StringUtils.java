@@ -17,6 +17,10 @@ public class StringUtils {
     public static final String LN_TABBED = "\n\t";
     public static final String UNDERSCORE = "_";
 
+    public static String capitalize(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
     public static <T> String join(String separator, T[] array) {
         return join(separator, array, String::valueOf);
     }
@@ -40,9 +44,5 @@ public class StringUtils {
             text += separator + formatter.apply(iterator.next());
         }
         return text;
-    }
-
-    public static String getIf(boolean condition, String text) {
-        return condition ? text : "";
     }
 }

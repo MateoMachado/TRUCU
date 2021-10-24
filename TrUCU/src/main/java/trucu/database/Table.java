@@ -1,15 +1,23 @@
 package trucu.database;
 
+import trucu.database.querybuilder.SQLType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
+import trucu.util.StringUtils;
 
 /**
  *
  * @author NicoPuig
  */
+@Deprecated
 public class Table {
 
     private final ArrayList<ArrayList<Object>> data;
@@ -108,6 +116,35 @@ public class Table {
         }
         columnNames.add(name);
         columnTypes.add(SQLType.toSQLType(type));
+    }
+
+    /**
+     * Convierte la tabla en una lista de entidades
+     *
+     * @param <T>
+     * @param entityClass
+     * @return
+     * @throws trucu.database.EntityConversionException
+     * @throws IllegalArgumentException
+     */
+    public <T> List<T> toEntityList(Class<T> entityClass) throws EntityConversionException {
+        List<T> entities = new LinkedList<>();
+        try {
+            Constructor<T> constructor = entityClass.getDeclaredConstructor();
+            for (int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) {
+                T newEntity = constructor.newInstance();
+                for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
+                    Class columnJavaType = columnTypes.get(columnIndex).getJavaType();
+                    String setterName = "set" + StringUtils.capitalize(getColumnName(columnIndex));
+                    Method setter = entityClass.getMethod(setterName, columnJavaType);
+                    setter.invoke(newEntity, getValueAt(rowIndex, columnIndex, columnJavaType));
+                }
+                entities.add(newEntity);
+            }
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
+            throw new EntityConversionException(ex.getMessage(), ex);
+        }
+        return entities;
     }
 
     /**

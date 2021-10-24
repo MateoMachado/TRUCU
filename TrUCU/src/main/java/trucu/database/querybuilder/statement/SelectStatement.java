@@ -33,6 +33,10 @@ public class SelectStatement implements Statement {
         this.columns = columns;
     }
 
+    public String getTable() {
+        return table;
+    }
+
     public SelectStatement where(String filter) {
         this.filter = filter;
         return this;
