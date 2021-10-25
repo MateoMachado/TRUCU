@@ -1,3 +1,3 @@
-INFO [trucu.database.DBController] Base de datos conectada con exito
-QUERY [trucu.database.QueryExecutor] >>> SELECT * FROM Account;
-INFO [trucu.database.QueryExecutor] <<< 2 entidades [class trucu.model.dto.Account] halladas en tabla Account
+INFO [ucu.trucu.database.DBController] Base de datos conectada con exito
+QUERY [ucu.trucu.database.QueryExecutor] >>> SELECT * FROM Account;
+INFO [ucu.trucu.database.QueryExecutor] <<< 2 entidades [class ucu.trucu.model.dto.Account] halladas en tabla Account
