@@ -17,7 +17,6 @@ import trucu.util.StringUtils;
  *
  * @author NicoPuig
  */
-@Deprecated
 public class Table {
 
     private final ArrayList<ArrayList<Object>> data;
