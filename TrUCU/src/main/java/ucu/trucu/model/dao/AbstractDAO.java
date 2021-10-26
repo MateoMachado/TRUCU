@@ -3,6 +3,7 @@ package ucu.trucu.model.dao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import ucu.trucu.database.DBController;
+import ucu.trucu.database.querybuilder.statement.DeleteStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.database.querybuilder.statement.UpdateStatement;
 
@@ -25,6 +26,10 @@ public abstract class AbstractDAO<T> {
     }
 
     public void updateValues(UpdateStatement statement) {
-        dbController.executeUpdate(statement);
+        dbController.executeStatement(statement);
+    }
+
+    public void delete(DeleteStatement statement) {
+        dbController.executeStatement(statement);
     }
 }

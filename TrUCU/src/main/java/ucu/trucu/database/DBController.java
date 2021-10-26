@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
@@ -23,8 +24,8 @@ public class DBController {
 
     private static final Logger LOGGER = LoggerFactory.create(DBController.class);
 
-    private static Connection connection;
-    private static QueryExecutor queryExecutor;
+    private Connection connection;
+    private QueryExecutor queryExecutor;
 
     @Value("${trucu.db.url}")
     private String dbURL;
@@ -38,20 +39,23 @@ public class DBController {
     @PostConstruct
     public void initConnection() throws SQLException {
         try {
+            LOGGER.info("Iniciando conexion con base de datos [%s]", dbURL);
             connection = DriverManager.getConnection(dbURL, dbUser, dbPassword);
             connection.setAutoCommit(false);
             queryExecutor = new QueryExecutor(connection);
             LOGGER.info("Base de datos conectada con exito");
         } catch (HeadlessException | SQLException e) {
-            LOGGER.error("Imposible conectar a BD -> %s", e.getMessage());
-            LOGGER.popUp("Imposible conectar a BD \n-> %s", e.getMessage());
+            LOGGER.error("Conexion a base de datos fallida -> %s", e.getMessage());
+            LOGGER.popUp("Imposible conectar a BD: \n%s", e.getMessage());
             throw e;
         }
     }
 
+    @PreDestroy
     public void closeConnection() {
         try {
             connection.close();
+            LOGGER.info("Conexion a base de datos cerrada con exito");
         } catch (SQLException ex) {
             LOGGER.error("Imposible cerrar conexion con BD -> %s", ex);
         }
@@ -81,18 +85,6 @@ public class DBController {
             return true;
         } catch (SQLException ex) {
             LOGGER.error("Imposible ejecutar query");
-            return false;
-        }
-    }
-
-    public boolean executeUpdate(UpdateStatement statement) {
-        try {
-            LOGGER.info("Actualizando valores en tabla [%s]...", statement.getTable());
-            queryExecutor.execute(statement);
-            LOGGER.info("Valores actualizados!");
-            return true;
-        } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores en tabla [%s]", statement.getTable());
             return false;
         }
     }

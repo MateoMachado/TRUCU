@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import ucu.trucu.database.EntityConversionException;
+import ucu.trucu.util.log.Logger;
+import ucu.trucu.util.log.LoggerFactory;
 
 /**
  *
@@ -18,10 +20,26 @@ import ucu.trucu.database.EntityConversionException;
  */
 public class DBUtils {
 
+    private static final Logger LOGGER = LoggerFactory.create(DBUtils.class);
+
+    /**
+     * Convierte un java.sql.ResultSet en una lista de los respectivos objetos,
+     * y mapeando sus valores. En caso de no machear una columna con una
+     * propiedad del objeto, se setea por defecto en null. Para que machen, el
+     * objeto debe tener un metodo publico setter con el formato:
+     *
+     * object.setColumnName(ColumnType value)
+     *
+     * @param <T>
+     * @param resultSet
+     * @param entityClass
+     * @return
+     * @throws EntityConversionException
+     */
     public static <T> List<T> toEntityList(ResultSet resultSet, Class<T> entityClass) throws EntityConversionException {
         try {
             ColumnsMetaData metaData = getColumnsMetaData(entityClass, resultSet.getMetaData());
-            Constructor<T> constructor = entityClass.getDeclaredConstructor();
+            Constructor<T> constructor = entityClass.getConstructor();
             List<T> entities = new LinkedList<>();
 
             while (resultSet.next()) {
@@ -38,15 +56,20 @@ public class DBUtils {
         }
     }
 
-    private static ColumnsMetaData getColumnsMetaData(Class entityClass, ResultSetMetaData metaData) throws SQLException, ClassNotFoundException, NoSuchMethodException {
+    private static ColumnsMetaData getColumnsMetaData(Class entityClass, ResultSetMetaData metaData) throws SQLException, ClassNotFoundException {
         ColumnsMetaData entityMetadata = new ColumnsMetaData();
         for (int columnIndex = 1; columnIndex <= metaData.getColumnCount(); columnIndex++) {
-            Class<?> columnClass = Class.forName(metaData.getColumnClassName(columnIndex));
             String columnName = metaData.getColumnName(columnIndex);
+            Class<?> columnClass = Class.forName(metaData.getColumnClassName(columnIndex));
             String setterName = "set" + StringUtils.capitalize(columnName);
-            Method setter = entityClass.getMethod(setterName, columnClass);
-            entityMetadata.addColumnSetter(columnName, setter);
-            entityMetadata.addColumnType(columnName, columnClass);
+            try {
+                Method setter = entityClass.getMethod(setterName, columnClass);
+                entityMetadata.addColumnSetter(columnName, setter);
+                entityMetadata.addColumnType(columnName, columnClass);
+            } catch (NoSuchMethodException ex) {
+                LOGGER.warn("Property '%s' or method .%s(%s) not found in %s, setting default value null",
+                        columnName, setterName, columnClass.getName(), entityClass);
+            }
         }
         return entityMetadata;
     }
