@@ -123,7 +123,7 @@ public class Table {
      * @param <T>
      * @param entityClass
      * @return
-     * @throws trucu.database.EntityConversionException
+     * @throws ucu.trucu.database.EntityConversionException
      * @throws IllegalArgumentException
      */
     public <T> List<T> toEntityList(Class<T> entityClass) throws EntityConversionException {

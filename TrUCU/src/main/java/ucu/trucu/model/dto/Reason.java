@@ -13,7 +13,7 @@ public class Reason {
         return idReason;
     }
 
-    public void setIdReason(int idReason) {
+    public void setIdReason(Integer idReason) {
         this.idReason = idReason;
     }
 

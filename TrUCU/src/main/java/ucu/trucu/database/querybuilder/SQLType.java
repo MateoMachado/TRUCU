@@ -1,6 +1,6 @@
 package ucu.trucu.database.querybuilder;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.function.Predicate;
 
 /**

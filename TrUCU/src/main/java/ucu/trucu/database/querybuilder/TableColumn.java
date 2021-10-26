@@ -1,7 +1,5 @@
 package ucu.trucu.database.querybuilder;
 
-import ucu.trucu.util.StringUtils;
-
 /**
  *
  * @author NicoPuig

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.database.querybuilder.statement.Statement;
-import ucu.trucu.database.querybuilder.statement.UpdateStatement;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 

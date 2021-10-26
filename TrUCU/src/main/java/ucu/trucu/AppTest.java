@@ -8,12 +8,18 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.QueryBuilder;
-import ucu.trucu.model.dao.AccountDAO;
 import ucu.trucu.model.dao.ReasonDAO;
-import ucu.trucu.model.dto.Account;
-import ucu.trucu.model.dto.Reason;
 
 /**
+ *
+ * CORRER CUALQUIER CODIGO DE PRUEBA ACA
+ *
+ * Esta clase no es parte de la app, solo para probar cosas en la aplicacion ya
+ * corriendo (dependencias inyectadas, bd conectada, etc). La anotacion
+ * EventListener(ApplicationReadyEvent.class) especifica que el metodo tiene que
+ * correr despues de levantar la app.
+ *
+ * Despues probablemente se pueda probar desde una API REST
  *
  * @author NicoPuig
  */

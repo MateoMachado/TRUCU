@@ -24,9 +24,9 @@ public class DBUtils {
 
     /**
      * Convierte un java.sql.ResultSet en una lista de los respectivos objetos,
-     * y mapeando sus valores. En caso de no machear una columna con una
-     * propiedad del objeto, se setea por defecto en null. Para que machen, el
-     * objeto debe tener un metodo publico setter con el formato:
+     * con valores mapeados. En caso de no machear una columna con una propiedad
+     * del objeto, se setea por defecto en null. Para que machen, el objeto debe
+     * tener un metodo publico setter con el formato:
      *
      * object.setColumnName(ColumnType value)
      *
@@ -38,6 +38,7 @@ public class DBUtils {
      */
     public static <T> List<T> toEntityList(ResultSet resultSet, Class<T> entityClass) throws EntityConversionException {
         try {
+            // Obtener setters disponibles en la entidad
             ColumnsMetaData metaData = getColumnsMetaData(entityClass, resultSet.getMetaData());
             Constructor<T> constructor = entityClass.getConstructor();
             List<T> entities = new LinkedList<>();
@@ -45,6 +46,7 @@ public class DBUtils {
             while (resultSet.next()) {
                 T newEntity = constructor.newInstance();
                 entities.add(newEntity);
+                // Ejecutar cada setter encontrado en la clase de la entidad
                 for (Map.Entry<String, Method> entry : metaData.columnSetters.entrySet()) {
                     String column = entry.getKey();
                     entry.getValue().invoke(newEntity, resultSet.getObject(column, metaData.columnTypes.get(column)));
@@ -56,6 +58,16 @@ public class DBUtils {
         }
     }
 
+    /**
+     * Obtiene informacion de las columnas de la tabla: Clase de la columna, y
+     * metodo set asociado a cada una
+     *
+     * @param entityClass
+     * @param metaData
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     private static ColumnsMetaData getColumnsMetaData(Class entityClass, ResultSetMetaData metaData) throws SQLException, ClassNotFoundException {
         ColumnsMetaData entityMetadata = new ColumnsMetaData();
         for (int columnIndex = 1; columnIndex <= metaData.getColumnCount(); columnIndex++) {
@@ -67,13 +79,16 @@ public class DBUtils {
                 entityMetadata.addColumnSetter(columnName, setter);
                 entityMetadata.addColumnType(columnName, columnClass);
             } catch (NoSuchMethodException ex) {
-                LOGGER.warn("Property '%s' or method .%s(%s) not found in %s, setting default value null",
+                LOGGER.warn("Property '%s' or method .%s(%s) not found in %s -> Setting default value null",
                         columnName, setterName, columnClass.getName(), entityClass);
             }
         }
         return entityMetadata;
     }
 
+    /**
+     * Clase auxiliar para guardar nombre y tipo de las columnas
+     */
     private static class ColumnsMetaData {
 
         private final Map<String, Class<?>> columnTypes = new HashMap<>();
