@@ -89,7 +89,7 @@ public class Filter {
         if (key == null) {
             throw new IllegalArgumentException("Column key cant be null");
         }
-        return String.format("%s %s %s", key, operand, value);
+        return String.format("%s %s '%s'", key, operand, value);
     }
 
     public static Filter build(Function<Filter, String> builder) {
