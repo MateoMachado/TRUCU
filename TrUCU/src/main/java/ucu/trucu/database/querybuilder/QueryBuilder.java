@@ -68,8 +68,8 @@ public class QueryBuilder {
      * .values(1, 2, 3) .values(4, 5, 6)
      *
      * @param table
-     * @return < INSERT INTO table1 (col1, col2,
-     * col3) VALUES (1, 2, 3), (4, 5, 6) >
+     * @return < INSERT INTO table1 (col1, col2, col3)
+     * VALUES (1, 2, 3), (4, 5, 6) >
      */
     public static InsertStatement insertInto(String table) {
         return new InsertStatement(table);

@@ -2,13 +2,21 @@ package ucu.trucu;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.DBController;
+import ucu.trucu.model.dao.AbstractDAO;
+import ucu.trucu.model.dao.AccountDAO;
+import ucu.trucu.model.dao.ImageDAO;
+import ucu.trucu.model.dao.PublicationDAO;
 import ucu.trucu.model.dao.ReasonDAO;
+import ucu.trucu.model.dao.ReportDAO;
+import ucu.trucu.model.dao.RolDAO;
+import ucu.trucu.model.dto.Account;
+import ucu.trucu.model.service.AccountController;
 
 /**
  *
@@ -27,21 +35,30 @@ import ucu.trucu.model.dao.ReasonDAO;
 public class AppTest {
 
     @Autowired
-    private ReasonDAO dao;
+    private AccountController accountController;
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
-        List select = dao.select(QueryBuilder.selectFrom(dao.getTable()));
-        int i = 1;
-        for (Object obj : select) {
-            System.out.println("Object" + i++);
-            for (Method method : dao.getEntityClass().getMethods()) {
-                if (method.getName().startsWith("get")) {
-                    try {
-                        System.out.println("\t" + method.getName() + ": " + method.invoke(obj));
-                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                        System.out.println(ex);
-                    }
+
+        Account account = new Account();
+        account.setName("Esteban");
+        account.setLastName("Barrios");
+        account.setPassword("6456");
+        account.setCI("7");
+        account.setBirthDate(Date.valueOf("1942-02-14"));
+        account.setRolName("User");
+        account.setEmail("ebarrios@ucu.edu.uy");
+
+        accountController.createAccount(account);
+    }
+
+    private void printEntityInfo(Object entity) {
+        for (Method method : entity.getClass().getMethods()) {
+            if (method.getName().startsWith("get")) {
+                try {
+                    System.out.println("\t" + method.getName() + ": " + method.invoke(entity));
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    System.out.println(ex);
                 }
             }
         }

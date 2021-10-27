@@ -78,13 +78,7 @@ public class DBController {
         }
     }
 
-    public boolean executeStatement(Statement statement) {
-        try {
-            queryExecutor.execute(statement);
-            return true;
-        } catch (SQLException ex) {
-            LOGGER.error("Imposible ejecutar query");
-            return false;
-        }
+    public void executeStatement(Statement statement) throws SQLException {
+        queryExecutor.execute(statement);
     }
 }

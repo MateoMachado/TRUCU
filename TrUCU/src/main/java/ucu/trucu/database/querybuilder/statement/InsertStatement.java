@@ -2,6 +2,7 @@ package ucu.trucu.database.querybuilder.statement;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import ucu.trucu.util.StringUtils;
 
 /**
@@ -20,6 +21,12 @@ public class InsertStatement implements Statement {
 
     public InsertStatement(String tableName) {
         this.tableName = tableName;
+    }
+
+    public InsertStatement keyValue(Map<String, Object> keyValues) {
+        this.keys = keyValues.keySet().toArray(new String[0]);
+        this.values.add(keyValues.values().toArray());
+        return this;
     }
 
     public InsertStatement keys(String... keys) {
@@ -48,7 +55,7 @@ public class InsertStatement implements Statement {
         if (select != null) {
             statement += StringUtils.SPACE + select.build();
         } else {
-            String rows = StringUtils.join(StringUtils.COMA_LN, values, row -> String.format("(%s)", StringUtils.join(StringUtils.COMA, row)));
+            String rows = StringUtils.join(StringUtils.COMA_LN, values, row -> String.format("(%s)", StringUtils.join(StringUtils.COMA, row, value -> String.format("'%s'", value))));
             statement += StringUtils.SPACE + String.format(VALUES, rows);
         }
         return statement;

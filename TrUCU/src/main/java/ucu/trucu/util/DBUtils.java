@@ -58,6 +58,34 @@ public class DBUtils {
         }
     }
 
+    public static <T> List<Map<String, Object>> objectsToPropertyMap(List<T> objects) {
+        List<Map<String, Object>> mapList = new LinkedList<>();
+        objects.forEach(object -> mapList.add(objectToPropertyMap(object)));
+        return mapList;
+    }
+
+    public static <T> Map<String, Object> objectToPropertyMap(T object) {
+        Map<String, Object> keyValue = new HashMap<>();
+        for (Method method : object.getClass().getMethods()) {
+            String methodName = method.getName();
+            // Si el metodo es un getter lo ejecuto
+            if (methodName.startsWith("get") && method.getParameterCount() == 0) {
+                if (!methodName.equals("getClass")) {
+                    try {
+                        String propertyKey = methodName.substring("get".length());
+                        Object propertyValue = method.invoke(object);
+                        if (propertyValue != null) {
+                            keyValue.put(propertyKey, propertyValue);
+                        }
+                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        LOGGER.error(ex);
+                    }
+                }
+            }
+        }
+        return keyValue;
+    }
+
     /**
      * Obtiene informacion de las columnas de la tabla: Clase de la columna, y
      * metodo set asociado a cada una

@@ -1,11 +1,14 @@
 package ucu.trucu.model.dao;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import ucu.trucu.database.DBController;
-import ucu.trucu.database.querybuilder.statement.DeleteStatement;
+import ucu.trucu.database.querybuilder.Filter;
+import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
-import ucu.trucu.database.querybuilder.statement.UpdateStatement;
+import ucu.trucu.util.DBUtils;
 
 /**
  *
@@ -21,15 +24,37 @@ public abstract class AbstractDAO<T> {
 
     public abstract Class<T> getEntityClass();
 
-    public List<T> select(SelectStatement statement) {
-        return dbController.executeQuery(statement, getEntityClass());
+    public List<T> findBy(Function<Filter, String> filter) {
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable())
+                        .where(filter), getEntityClass()
+        );
     }
 
-    public void updateValues(UpdateStatement statement) {
-        dbController.executeStatement(statement);
+    public T findFirst(Function<Filter, String> filter) {
+        List<T> entities = findBy(filter);
+        return entities.isEmpty() ? null : entities.get(0);
     }
 
-    public void delete(DeleteStatement statement) {
-        dbController.executeStatement(statement);
+    public void update(T entity, Function<Filter, String> filter) throws SQLException {
+        dbController.executeStatement(
+                QueryBuilder.update(this.getTable())
+                        .set(DBUtils.objectToPropertyMap(entity))
+                        .where(filter)
+        );
+    }
+
+    public void insert(T newEntity) throws SQLException {
+        dbController.executeStatement(
+                QueryBuilder.insertInto(this.getTable())
+                        .keyValue(DBUtils.objectToPropertyMap(newEntity))
+        );
+    }
+
+    public void delete(Function<Filter, String> filter) throws SQLException {
+        dbController.executeStatement(
+                QueryBuilder.deleteFrom(getTable())
+                        .where(filter)
+        );
     }
 }

@@ -1,3 +1,3 @@
-WARN [ucu.trucu.util.DBUtils] Property 'idReason' or method .setIdReason(java.lang.Integer) not found in class ucu.trucu.model.dto.Reason, setting default value null
-INFO [ucu.trucu.database.QueryExecutor] <<< 3 entidades [class ucu.trucu.model.dto.Reason] halladas en tabla Reason
+QUERY [ucu.trucu.database.QueryExecutor] >>> UPDATE Account SET Email = 'ebarrios@ucu.edu.uy', RolName = 'User', CI = '7', LastName = 'Barrios', Name = 'Esteban', Password = '6456', BirthDate = '1942-02-14'
+WHERE CI = 7;
 INFO [ucu.trucu.database.DBController] Conexion a base de datos cerrada con exito

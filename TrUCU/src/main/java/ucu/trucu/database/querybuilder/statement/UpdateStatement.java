@@ -13,7 +13,7 @@ import ucu.trucu.util.StringUtils;
 public class UpdateStatement implements Statement {
 
     private static final String UPDATE = "UPDATE %s";
-    private static final String SET = "SET \n%s";
+    private static final String SET = "SET %s";
     private static final String WHERE = "WHERE %s";
     private static final String FROM = "FROM %s";
     private static final String INNER_JOIN = "INNER JOIN %s ON %s";
@@ -30,6 +30,11 @@ public class UpdateStatement implements Statement {
 
     public UpdateStatement set(String key, Object newValue) {
         sets.put(key, newValue);
+        return this;
+    }
+
+    public UpdateStatement set(Map<String, Object> newValues) {
+        sets.putAll(newValues);
         return this;
     }
 
@@ -69,7 +74,7 @@ public class UpdateStatement implements Statement {
         String statement = String.format(UPDATE, table);
 
         if (!sets.isEmpty()) {
-            statement += StringUtils.SPACE + String.format(SET, StringUtils.join(StringUtils.COMA_LN, sets.entrySet(), set -> String.format("%s = %s", set.getKey(), set.getValue())));
+            statement += StringUtils.SPACE + String.format(SET, StringUtils.join(StringUtils.COMA, sets.entrySet(), set -> String.format("%s = '%s'", set.getKey(), set.getValue())));
         }
         if (from != null) {
             statement += StringUtils.LN + String.format(FROM, from);
@@ -79,7 +84,7 @@ public class UpdateStatement implements Statement {
             }
         }
         if (filter != null) {
-            statement += StringUtils.LN + String.format(WHERE, filter);
+            statement += StringUtils.LN_TABBED + String.format(WHERE, filter);
         }
 
         return statement;

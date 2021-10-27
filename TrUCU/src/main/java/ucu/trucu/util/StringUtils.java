@@ -21,6 +21,10 @@ public class StringUtils {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
+    public static String decapitalize(String text) {
+        return text.substring(0, 1).toLowerCase() + text.substring(1);
+    }
+
     public static <T> String join(String separator, T[] array) {
         return join(separator, array, String::valueOf);
     }
