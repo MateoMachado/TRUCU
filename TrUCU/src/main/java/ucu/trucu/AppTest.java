@@ -32,7 +32,7 @@ import ucu.trucu.model.service.AccountController;
  *
  * @author NicoPuig
  */
-@Component
+//@Component
 public class AppTest {
 
     @Autowired
@@ -41,7 +41,7 @@ public class AppTest {
     @Autowired
     private AccountController accountController;
 
-    @EventListener(ApplicationReadyEvent.class)
+//    @EventListener(ApplicationReadyEvent.class)
     public void start() {
 
         Account logIn = accountController.logIn("nicopuig@mail.com", "1234567");

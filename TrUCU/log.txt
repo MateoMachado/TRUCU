@@ -1,4 +1,1 @@
 INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Account] halladas en tabla Account
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Rol WHERE name = 'User';
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Rol] halladas en tabla Rol
-INFO	[ucu.trucu.database.DBController]	Conexion a base de datos cerrada con exito

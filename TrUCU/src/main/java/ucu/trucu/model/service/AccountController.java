@@ -2,7 +2,13 @@ package ucu.trucu.model.service;
 
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ucu.trucu.model.dao.AccountDAO;
 import ucu.trucu.model.dao.RolDAO;
 import ucu.trucu.model.dto.Account;
@@ -14,18 +20,20 @@ import ucu.trucu.util.log.LoggerFactory;
  *
  * @author NicoPuig
  */
-@Controller
+@RestController
+@RequestMapping("trucu/account")
 public class AccountController {
-    
+
     private static final Logger LOGGER = LoggerFactory.create(AccountController.class);
-    
+
     @Autowired
     private AccountDAO accountDAO;
-    
+
     @Autowired
     private RolDAO rolDAO;
-    
-    public void createAccount(Account newAccount) {
+
+    @PostMapping("/create")
+    public void createAccount(@RequestBody Account newAccount) {
         try {
             accountDAO.insert(newAccount);
             LOGGER.info("Cuenta [CI=%s] creada correctamente", newAccount.getCI());
@@ -33,8 +41,9 @@ public class AccountController {
             LOGGER.error("Imposible crear cuenta [CI=%s] -> %s", newAccount.getCI(), ex.getMessage());
         }
     }
-    
-    public Account logIn(String email, String password) {
+
+    @GetMapping("/login")
+    public Account logIn(@RequestParam String email, @RequestParam String password) {
         Account account = accountDAO.findFirst(where -> where.eq("email", email));
         if (account != null) {
             // Sistema de autenticacion...
@@ -46,7 +55,8 @@ public class AccountController {
         }
         return null;
     }
-    
+
+    @PostMapping("/update")
     public boolean updateAccount(String CI, Account newValues) {
         try {
             accountDAO.update(newValues, where -> where.eq("CI", CI));
@@ -57,8 +67,9 @@ public class AccountController {
             return false;
         }
     }
-    
-    public boolean deleteAccount(String CI) {
+
+    @DeleteMapping("/delete")
+    public boolean deleteAccount(@RequestParam String CI) {
         try {
             accountDAO.delete(where -> where.eq("CI", CI));
             LOGGER.info("Cuenta [CI=%s] eliminada correctamente", CI);
@@ -68,7 +79,8 @@ public class AccountController {
             return false;
         }
     }
-    
+
+    @GetMapping("/rol")
     public Rol getAccountRol(Account account) {
         return rolDAO.findByPK(account.getRolName());
     }
