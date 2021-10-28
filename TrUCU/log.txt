@@ -1,3 +1,4 @@
-QUERY [ucu.trucu.database.QueryExecutor] >>> UPDATE Account SET Email = 'ebarrios@ucu.edu.uy', RolName = 'User', CI = '7', LastName = 'Barrios', Name = 'Esteban', Password = '6456', BirthDate = '1942-02-14'
-WHERE CI = 7;
-INFO [ucu.trucu.database.DBController] Conexion a base de datos cerrada con exito
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Account] halladas en tabla Account
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Rol WHERE name = 'User';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Rol] halladas en tabla Rol
+INFO	[ucu.trucu.database.DBController]	Conexion a base de datos cerrada con exito

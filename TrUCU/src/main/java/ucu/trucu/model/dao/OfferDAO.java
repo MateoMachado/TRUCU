@@ -19,4 +19,9 @@ public class OfferDAO extends AbstractDAO<Offer> {
     public Class<Offer> getEntityClass() {
         return Offer.class;
     }
+
+    @Override
+    public Offer findByPK(String... primaryKeys) {
+        return findFirst(where -> where.eq("idOffer", primaryKeys[0]));
+    }
 }

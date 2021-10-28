@@ -16,6 +16,7 @@ import ucu.trucu.model.dao.ReasonDAO;
 import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dao.RolDAO;
 import ucu.trucu.model.dto.Account;
+import ucu.trucu.model.dto.Rol;
 import ucu.trucu.model.service.AccountController;
 
 /**
@@ -35,21 +36,29 @@ import ucu.trucu.model.service.AccountController;
 public class AppTest {
 
     @Autowired
+    private AccountDAO accountDAO;
+
+    @Autowired
     private AccountController accountController;
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
 
-        Account account = new Account();
-        account.setName("Esteban");
-        account.setLastName("Barrios");
-        account.setPassword("6456");
-        account.setCI("7");
-        account.setBirthDate(Date.valueOf("1942-02-14"));
-        account.setRolName("User");
-        account.setEmail("ebarrios@ucu.edu.uy");
-
-        accountController.createAccount(account);
+        Account logIn = accountController.logIn("nicopuig@mail.com", "1234567");
+        Rol rol = accountController.getAccountRol(logIn);
+        
+        
+        System.out.println(rol);
+//        Account account = new Account();
+//        account.setName("Esteban");
+//        account.setLastName("Barrios");
+//        account.setPassword("6456");
+//        account.setCI("7");
+//        account.setBirthDate(Date.valueOf("1942-02-14"));
+//        account.setRolName("User");
+//        account.setEmail("ebarrios@ucu.edu.uy");
+//
+//        accountController.createAccount(account);
     }
 
     private void printEntityInfo(Object entity) {

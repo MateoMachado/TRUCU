@@ -6,7 +6,7 @@ package ucu.trucu.util.log;
  */
 public class Logger {
 
-    private final static String DEFAULT_FORMAT = "%s [%s] %s";
+    private final static String DEFAULT_FORMAT = "%s\t[%s]\t%s";
 
     private final Class loggedClass;
     private final Log[] classLoggers;

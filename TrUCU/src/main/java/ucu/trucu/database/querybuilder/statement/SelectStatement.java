@@ -78,13 +78,13 @@ public class SelectStatement implements Statement {
         String statement = String.format(SELECT_FROM, StringUtils.join(StringUtils.COMA, columns), table);
 
         if (!joinTables.isEmpty()) {
-            statement += StringUtils.LN_TABBED + StringUtils.join(StringUtils.LN_TABBED, joinTables.entrySet(), entry -> String.format(INNER_JOIN, entry.getKey(), entry.getValue()));
+            statement += StringUtils.SPACE + StringUtils.join(StringUtils.LN_TABBED, joinTables.entrySet(), entry -> String.format(INNER_JOIN, entry.getKey(), entry.getValue()));
         }
         if (filter != null) {
-            statement += StringUtils.LN_TABBED + String.format(WHERE, filter);
+            statement += StringUtils.SPACE + String.format(WHERE, filter);
         }
         if (order != null) {
-            statement += StringUtils.LN_TABBED + String.format(ORDER_BY, order);
+            statement += StringUtils.SPACE + String.format(ORDER_BY, order);
         }
         return statement;
     }

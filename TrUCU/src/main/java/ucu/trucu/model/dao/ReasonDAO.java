@@ -19,4 +19,9 @@ public class ReasonDAO extends AbstractDAO<Reason> {
     public Class<Reason> getEntityClass() {
         return Reason.class;
     }
+
+    @Override
+    public Reason findByPK(String... primaryKeys) {
+        return findFirst(where -> where.eq("idReason", primaryKeys[0]));
+    }
 }

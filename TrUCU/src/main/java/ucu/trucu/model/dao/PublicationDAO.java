@@ -19,4 +19,9 @@ public class PublicationDAO extends AbstractDAO<Publication> {
     public Class<Publication> getEntityClass() {
         return Publication.class;
     }
+
+    @Override
+    public Publication findByPK(String... primaryKeys) {
+        return findFirst(where -> where.eq("idPublication", primaryKeys[0]));
+    }
 }

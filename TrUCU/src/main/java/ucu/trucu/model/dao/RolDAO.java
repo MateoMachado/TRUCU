@@ -19,4 +19,9 @@ public class RolDAO extends AbstractDAO<Rol> {
     public Class<Rol> getEntityClass() {
         return Rol.class;
     }
+
+    @Override
+    public Rol findByPK(String... primaryKeys) {
+        return findFirst(where -> where.eq("name", primaryKeys[0]));
+    }
 }

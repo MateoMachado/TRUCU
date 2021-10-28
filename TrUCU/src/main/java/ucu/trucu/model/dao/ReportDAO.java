@@ -19,4 +19,9 @@ public class ReportDAO extends AbstractDAO<Report> {
     public Class<Report> getEntityClass() {
         return Report.class;
     }
+
+    @Override
+    public Report findByPK(String... primaryKeys) {
+        return findFirst(where -> where.eq("idReport", primaryKeys[0]));
+    }
 }
