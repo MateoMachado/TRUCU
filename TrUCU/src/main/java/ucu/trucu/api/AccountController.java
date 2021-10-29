@@ -1,7 +1,8 @@
-package ucu.trucu.model.service;
+package ucu.trucu.api;
 
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,50 +34,55 @@ public class AccountController {
     private RolDAO rolDAO;
 
     @PostMapping("/create")
-    public void createAccount(@RequestBody Account newAccount) {
+    public ResponseEntity createAccount(@RequestBody Account newAccount) {
         try {
             accountDAO.insert(newAccount);
             LOGGER.info("Cuenta [CI=%s] creada correctamente", newAccount.getCI());
+            return ResponseEntity.ok("Cuenta creada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear cuenta [CI=%s] -> %s", newAccount.getCI(), ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @GetMapping("/login")
-    public Account logIn(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity logIn(@RequestParam String email, @RequestParam String password) {
         Account account = accountDAO.findFirst(where -> where.eq("email", email));
         if (account != null) {
             // Sistema de autenticacion...
             if (password.equals(account.getPassword())) {
-                return account;
+                return ResponseEntity.ok(account);
+            } else {
+                LOGGER.warn("Contraseña incorrecta de [email=%s]", email);
+                return ResponseEntity.ok().body("Contraseña incorrecta");
             }
         } else {
             LOGGER.warn("Cuenta [email=%s] no existente", email);
+            return ResponseEntity.ok().body("Cuenta no existente");
         }
-        return null;
     }
 
     @PostMapping("/update")
-    public boolean updateAccount(String CI, Account newValues) {
+    public ResponseEntity updateAccount(String CI, Account newValues) {
         try {
             accountDAO.update(newValues, where -> where.eq("CI", CI));
             LOGGER.info("Valores actualizados en cuenta [CI=%s]", CI);
-            return true;
+            return ResponseEntity.ok("Valores actualizados correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible actualizar valores para cuenta [CI=%s] -> %s", CI, ex);
-            return false;
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @DeleteMapping("/delete")
-    public boolean deleteAccount(@RequestParam String CI) {
+    public ResponseEntity deleteAccount(@RequestParam String CI) {
         try {
             accountDAO.delete(where -> where.eq("CI", CI));
             LOGGER.info("Cuenta [CI=%s] eliminada correctamente", CI);
-            return true;
+            return ResponseEntity.ok("Cuenta eliminada correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible borrar cuenta [CI=%s] -> %s", CI, ex);
-            return false;
+            LOGGER.error("Imposible eliminar cuenta [CI=%s] -> %s", CI, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 

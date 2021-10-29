@@ -1,1 +1,1 @@
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Account] halladas en tabla Account
+INFO	[ucu.trucu.database.DBController]	Base de datos conectada con exito
