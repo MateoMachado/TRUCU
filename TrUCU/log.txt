@@ -1,1 +1,1 @@
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 2 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 5 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication

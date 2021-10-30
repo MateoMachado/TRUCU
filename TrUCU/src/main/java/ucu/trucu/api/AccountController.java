@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ucu.trucu.helper.AccountHelper;
-import ucu.trucu.model.dao.AccountDAO;
-import ucu.trucu.model.dao.RolDAO;
 import ucu.trucu.model.dto.Account;
 import ucu.trucu.model.dto.Rol;
 import ucu.trucu.util.log.Logger;

@@ -2,7 +2,6 @@ package ucu.trucu.helper;
 
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ucu.trucu.model.dao.AccountDAO;
 import ucu.trucu.model.dao.RolDAO;
@@ -16,6 +15,10 @@ import ucu.trucu.model.dto.Rol;
 @Service
 public class AccountHelper {
 
+    private static final String CI = "CI";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+
     @Autowired
     private AccountDAO accountDAO;
 
@@ -27,7 +30,7 @@ public class AccountHelper {
     }
 
     public Account getAccount(String email) {
-        return accountDAO.findFirst(where -> where.eq("email", email));
+        return accountDAO.findFirst(where -> where.eq(EMAIL, email));
     }
 
     public boolean logIn(Account account, String password) {
@@ -35,14 +38,14 @@ public class AccountHelper {
         return password.equals(account.getPassword());
     }
 
-    public void updateAccountData(String CI, Account newValues) throws SQLException {
-        accountDAO.update(newValues, where -> where.eq("CI", CI));
+    public void updateAccountData(String ci, Account newValues) throws SQLException {
+        accountDAO.update(newValues, where -> where.eq(CI, ci));
     }
 
-    public boolean deleteAccount(String CI, String password) throws SQLException {
+    public boolean deleteAccount(String ci, String password) throws SQLException {
         int deletedRows = accountDAO.delete(where -> where.and(
-                where.eq("CI", CI),
-                where.eq("password", password))
+                where.eq(CI, ci),
+                where.eq(PASSWORD, password))
         );
         return deletedRows == 1;
     }
