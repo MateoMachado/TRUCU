@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ucu.trucu.database.DBController;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
-import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.util.DBUtils;
 
 /**

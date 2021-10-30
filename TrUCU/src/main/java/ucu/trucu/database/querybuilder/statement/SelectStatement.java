@@ -16,12 +16,16 @@ public class SelectStatement implements Statement {
     private final static String WHERE = "WHERE %s";
     private final static String ORDER_BY = "ORDER BY %s";
     private final static String INNER_JOIN = "INNER JOIN %s ON %s";
+    private final static String OFFSET = "OFFSET %s ROWS";
+    private final static String FETCH_NEXT = "FETCH NEXT %s ROWS ONLY";
 
     private final String table;
     private final String[] columns;
     private final Map<String, String> joinTables = new HashMap<>();
     private String filter;
     private String order;
+    private Integer offset;
+    private Integer fetchNext;
 
     public SelectStatement(String table) {
         this.table = table;
@@ -73,6 +77,16 @@ public class SelectStatement implements Statement {
         return joinOn(otherTable, new Filter(on).toString());
     }
 
+    public SelectStatement offset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    public SelectStatement fetchNext(int rows) {
+        this.fetchNext = rows;
+        return this;
+    }
+
     @Override
     public String build() {
         String statement = String.format(SELECT_FROM, StringUtils.join(StringUtils.COMA, columns), table);
@@ -85,6 +99,12 @@ public class SelectStatement implements Statement {
         }
         if (order != null) {
             statement += StringUtils.SPACE + String.format(ORDER_BY, order);
+        }
+        if (offset != null) {
+            statement += StringUtils.SPACE + String.format(OFFSET, offset);
+        }
+        if (fetchNext != null && fetchNext != 0) {
+            statement += StringUtils.SPACE + String.format(FETCH_NEXT, fetchNext);
         }
         return statement;
     }

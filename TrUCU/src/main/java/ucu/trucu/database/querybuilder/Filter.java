@@ -43,11 +43,11 @@ public class Filter {
     }
 
     public <T> String notEq(String key, T value) {
-        return joinOperand("<>", key, value);
+        return joinOperand("!=", key, value);
     }
 
     public <T> String like(String key, T value) {
-        return joinOperand("LIKE", key, String.format("'%%%s%%'", value));
+        return joinOperand("LIKE", key, String.format("'%s'", value));
     }
 
     public <T> String in(String key, Collection<T> list) {
@@ -66,14 +66,25 @@ public class Filter {
         return String.format("EXISTS (%s)", select.build());
     }
 
+    public String and(String... conditions) {
+        return StringUtils.join(" AND ", conditions, condition -> String.format("(%s)", condition));
+    }
+    
+    public String or(String... conditions) {
+        return StringUtils.join(" OR ", conditions, condition -> String.format("(%s)", condition));
+    }
+
+    @Deprecated
     public String and(String condition1, String condition2, String... otherConditions) {
         return joinConjunction("AND", condition1, condition2, otherConditions);
     }
 
+    @Deprecated
     public String or(String condition1, String condition2, String... otherConditions) {
         return joinConjunction("OR", condition1, condition2, otherConditions);
     }
 
+    @Deprecated
     private static String joinConjunction(String operand, String condition1, String condition2, String[] otherConditions) {
         if (condition1 == null || condition2 == null) {
             throw new IllegalArgumentException("Conditions cant be null");

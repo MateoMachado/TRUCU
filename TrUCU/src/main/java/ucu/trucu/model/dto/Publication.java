@@ -1,6 +1,5 @@
 package ucu.trucu.model.dto;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -8,6 +7,10 @@ import java.sql.Timestamp;
  * @author NicoPuig
  */
 public class Publication {
+
+    public enum PublicationStatus {
+        OPEN, CLOSED, REPORTED, HIDDEN
+    }
 
     private Integer idPublication;
     private String title;
