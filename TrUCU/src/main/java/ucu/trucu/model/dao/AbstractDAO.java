@@ -37,8 +37,8 @@ public abstract class AbstractDAO<T> {
         return entities.isEmpty() ? null : entities.get(0);
     }
 
-    public void update(T entity, Function<Filter, String> filter) throws SQLException {
-        dbController.executeStatement(
+    public int update(T entity, Function<Filter, String> filter) throws SQLException {
+        return dbController.executeStatement(
                 QueryBuilder.update(this.getTable())
                         .set(DBUtils.objectToPropertyMap(entity))
                         .where(filter)
@@ -52,8 +52,8 @@ public abstract class AbstractDAO<T> {
         );
     }
 
-    public void delete(Function<Filter, String> filter) throws SQLException {
-        dbController.executeStatement(
+    public int delete(Function<Filter, String> filter) throws SQLException {
+        return dbController.executeStatement(
                 QueryBuilder.deleteFrom(getTable())
                         .where(filter)
         );
