@@ -24,12 +24,13 @@ public class QueryExecutor {
         this.connection = connection;
     }
 
-    public void execute(Statement statement) throws SQLException {
+    public int execute(Statement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
             LOGGER.query(statementStr);
-            sqlStatement.executeUpdate(statementStr);
+            int updatedRows = sqlStatement.executeUpdate(statementStr);
             this.connection.commit();
+            return updatedRows;
         } catch (SQLException ex) {
             this.connection.rollback();
             LOGGER.error(ex);

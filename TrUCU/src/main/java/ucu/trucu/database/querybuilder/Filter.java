@@ -74,28 +74,6 @@ public class Filter {
         return StringUtils.join(" OR ", conditions, condition -> String.format("(%s)", condition));
     }
 
-    @Deprecated
-    public String and(String condition1, String condition2, String... otherConditions) {
-        return joinConjunction("AND", condition1, condition2, otherConditions);
-    }
-
-    @Deprecated
-    public String or(String condition1, String condition2, String... otherConditions) {
-        return joinConjunction("OR", condition1, condition2, otherConditions);
-    }
-
-    @Deprecated
-    private static String joinConjunction(String operand, String condition1, String condition2, String[] otherConditions) {
-        if (condition1 == null || condition2 == null) {
-            throw new IllegalArgumentException("Conditions cant be null");
-        }
-        String result = String.format("(%s) %s (%s)", condition1, operand, condition2);
-        for (String condition : otherConditions) {
-            result += String.format(" %s (%s)", operand, condition);
-        }
-        return result;
-    }
-
     private static <T> String joinOperand(String operand, String key, T value) {
         if (key == null) {
             throw new IllegalArgumentException("Column key cant be null");

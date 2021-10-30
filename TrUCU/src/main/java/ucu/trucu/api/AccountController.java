@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ucu.trucu.helper.AccountHelper;
 import ucu.trucu.model.dao.AccountDAO;
 import ucu.trucu.model.dao.RolDAO;
 import ucu.trucu.model.dto.Account;
@@ -28,15 +29,12 @@ public class AccountController {
     private static final Logger LOGGER = LoggerFactory.create(AccountController.class);
 
     @Autowired
-    private AccountDAO accountDAO;
-
-    @Autowired
-    private RolDAO rolDAO;
+    private AccountHelper accountHelper;
 
     @PostMapping("/create")
     public ResponseEntity createAccount(@RequestBody Account newAccount) {
         try {
-            accountDAO.insert(newAccount);
+            accountHelper.createAccount(newAccount);
             LOGGER.info("Cuenta [CI=%s] creada correctamente", newAccount.getCI());
             return ResponseEntity.ok("Cuenta creada correctamente");
         } catch (SQLException ex) {
@@ -47,10 +45,9 @@ public class AccountController {
 
     @GetMapping("/login")
     public ResponseEntity logIn(@RequestParam String email, @RequestParam String password) {
-        Account account = accountDAO.findFirst(where -> where.eq("email", email));
+        Account account = accountHelper.getAccount(email);
         if (account != null) {
-            // Sistema de autenticacion...
-            if (password.equals(account.getPassword())) {
+            if (accountHelper.logIn(account, password)) {
                 return ResponseEntity.ok(account);
             } else {
                 LOGGER.warn("Contraseña incorrecta de [email=%s]", email);
@@ -65,7 +62,7 @@ public class AccountController {
     @PostMapping("/update")
     public ResponseEntity updateAccount(String CI, Account newValues) {
         try {
-            accountDAO.update(newValues, where -> where.eq("CI", CI));
+            accountHelper.updateAccountData(CI, newValues);
             LOGGER.info("Valores actualizados en cuenta [CI=%s]", CI);
             return ResponseEntity.ok("Valores actualizados correctamente");
         } catch (SQLException ex) {
@@ -75,11 +72,15 @@ public class AccountController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteAccount(@RequestParam String CI) {
+    public ResponseEntity deleteAccount(@RequestParam String CI, @RequestParam String password) {
         try {
-            accountDAO.delete(where -> where.eq("CI", CI));
-            LOGGER.info("Cuenta [CI=%s] eliminada correctamente", CI);
-            return ResponseEntity.ok("Cuenta eliminada correctamente");
+            if (accountHelper.deleteAccount(CI, password)) {
+                LOGGER.info("Cuenta [CI=%s] eliminada correctamente", CI);
+                return ResponseEntity.ok("Cuenta eliminada correctamente");
+            } else {
+                LOGGER.warn("Contraseña incorrecta para cuenta [CI=%s]", CI);
+                return ResponseEntity.ok("Contraseña incorrecta");
+            }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar cuenta [CI=%s] -> %s", CI, ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
@@ -88,6 +89,6 @@ public class AccountController {
 
     @GetMapping("/rol")
     public Rol getAccountRol(Account account) {
-        return rolDAO.findByPK(account.getRolName());
+        return accountHelper.getAccountRol(account.getRolName());
     }
 }
