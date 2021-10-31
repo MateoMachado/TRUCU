@@ -1,5 +1,6 @@
 package ucu.trucu.helper;
 
+import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.database.querybuilder.Filter;
@@ -7,6 +8,8 @@ import ucu.trucu.model.dao.PublicationDAO;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import ucu.trucu.model.dao.ImageDAO;
+import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Publication;
 
 /**
@@ -16,6 +19,7 @@ import ucu.trucu.model.dto.Publication;
 @Service
 public class PublicationHelper {
 
+    private static final String ID_PUBLICATION = "idPublication";
     private static final String TITLE = "title";
     private static final String DESCRIPTION = "description";
     private static final String UCUCOIN_VALUE = "ucuCoinValue";
@@ -26,10 +30,16 @@ public class PublicationHelper {
     @Autowired
     private PublicationDAO publicationDAO;
 
-    public Filter buildPublicationFilter(String title, String description, Integer maxUcuCoins,
+    @Autowired
+    private ImageDAO imageDAO;
+
+    public Filter buildPublicationFilter(Integer idPublication, String title, String description, Integer maxUcuCoins,
             Integer minUcuCoins, Timestamp afterDate, Timestamp beforeDate, String status, String accountCI) {
         return Filter.build(where -> {
             List<String> conditions = new LinkedList<>();
+            if (idPublication != null) {
+                conditions.add(where.eq(ID_PUBLICATION, idPublication));
+            }
             if (title != null) {
                 conditions.add(where.eq(TITLE, title));
             }
@@ -58,7 +68,23 @@ public class PublicationHelper {
         });
     }
 
+    public void createPublication(Publication newPublication) throws SQLException {
+        publicationDAO.insert(newPublication);
+    }
+
+    public void updatePublicationData(int idPublication, Publication newValues) throws SQLException {
+        publicationDAO.update(newValues, where -> where.eq(ID_PUBLICATION, idPublication));
+    }
+
+    public boolean deletePublication(int idPublication) throws SQLException {
+        return publicationDAO.delete(where -> where.eq(ID_PUBLICATION, idPublication)) == 1;
+    }
+
     public List<Publication> getPublications(int pageSize, int pageNumber, Filter filter) {
         return publicationDAO.filterPublications(pageSize, pageNumber, filter);
+    }
+
+    public List<Image> getPublicationImages(int idPublication) {
+        return imageDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
 }

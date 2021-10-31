@@ -58,7 +58,7 @@ public class AccountController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateAccount(String CI, Account newValues) {
+    public ResponseEntity updateAccount(@RequestParam String CI, @RequestBody Account newValues) {
         try {
             accountHelper.updateAccountData(CI, newValues);
             LOGGER.info("Valores actualizados en cuenta [CI=%s]", CI);
@@ -86,7 +86,7 @@ public class AccountController {
     }
 
     @GetMapping("/rol")
-    public Rol getAccountRol(Account account) {
+    public Rol getAccountRol(@RequestBody Account account) {
         return accountHelper.getAccountRol(account.getRolName());
     }
 }
