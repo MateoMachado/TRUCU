@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.model.dto.Publication;
-import ucu.trucu.model.dto.Publication.PublicationStatus;
 
 /**
  *

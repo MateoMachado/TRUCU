@@ -86,6 +86,10 @@ public class DBUtils {
         return keyValue;
     }
 
+    public static int getGeneratedId(ResultSet idResultSet) throws SQLException {
+        return idResultSet.next() ? idResultSet.getInt(1) : -1;
+    }
+
     /**
      * Obtiene informacion de las columnas de la tabla: Clase de la columna, y
      * metodo set asociado a cada una

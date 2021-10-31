@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.database.querybuilder.statement.Statement;
 import ucu.trucu.util.log.Logger;
@@ -78,7 +79,11 @@ public class DBController {
         }
     }
 
-    public int executeStatement(Statement statement) throws SQLException {
-        return queryExecutor.execute(statement);
+    public int executeUpdate(Statement statement) throws SQLException {
+        return queryExecutor.executeUpdate(statement);
+    }
+
+    public int executeInsert(InsertStatement statement) throws SQLException {
+        return queryExecutor.executeInsert(statement);
     }
 }

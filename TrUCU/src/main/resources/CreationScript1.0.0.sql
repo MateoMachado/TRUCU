@@ -74,6 +74,7 @@ CREATE TABLE Report (
 	idReport INT IDENTITY(1, 1),
 	status VARCHAR(16),
 	idReason INT,
+        idPublication INT,
 
 	CONSTRAINT PK_report PRIMARY KEY (idReport),
 	CONSTRAINT FK_report_reason FOREIGN KEY (idReason) REFERENCES Reason(idReason)
