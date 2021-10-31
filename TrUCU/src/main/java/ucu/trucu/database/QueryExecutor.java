@@ -25,6 +25,13 @@ public class QueryExecutor {
         this.connection = connection;
     }
 
+    /**
+     * Ejecuta una sentencia INSERT
+     *
+     * @param statement
+     * @return Devuelve el id de la entidad autogenerado, o -1 si no hay ninguno
+     * @throws SQLException
+     */
     public int executeInsert(InsertStatement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
@@ -39,6 +46,14 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Ejecuta una sentencia de actualizacion en la tabla (UPDATE, ALTER,
+     * DELETE, TRUNCATE)
+     *
+     * @param statement
+     * @return Devuelve la cantidad de entidades afectadas
+     * @throws SQLException
+     */
     public int executeUpdate(Statement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
@@ -53,6 +68,14 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SELECT
+     *
+     * @param selectStatement
+     * @return Devuelve una tabla dinamica, que se adapta al resultado de la
+     * query
+     * @throws SQLException
+     */
     public Table query(SelectStatement selectStatement) throws SQLException {
         try (java.sql.Statement statement = this.connection.createStatement()) {
             String query = selectStatement.build();
@@ -67,6 +90,16 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SELECT
+     *
+     * @param <T> Clase de la entidad
+     * @param selectStatement
+     * @param entityClass
+     * @return Devuelve una lista de entidades
+     * @throws SQLException
+     * @throws EntityConversionException
+     */
     public <T> List<T> query(SelectStatement selectStatement, Class<T> entityClass) throws SQLException, EntityConversionException {
         try (java.sql.Statement statement = this.connection.createStatement()) {
             String query = selectStatement.build();
