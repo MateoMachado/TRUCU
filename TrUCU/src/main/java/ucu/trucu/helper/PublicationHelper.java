@@ -9,8 +9,12 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import ucu.trucu.model.dao.ImageDAO;
+import ucu.trucu.model.dao.OfferDAO;
+import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
+import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
+import ucu.trucu.model.dto.Report;
 
 /**
  *
@@ -32,6 +36,12 @@ public class PublicationHelper {
 
     @Autowired
     private ImageDAO imageDAO;
+
+    @Autowired
+    private OfferDAO offerDAO;
+    
+    @Autowired
+    private ReportDAO reportDAO;
 
     public Filter buildPublicationFilter(Integer idPublication, String title, String description, Integer maxUcuCoins,
             Integer minUcuCoins, Timestamp afterDate, Timestamp beforeDate, String status, String accountCI) {
@@ -86,5 +96,13 @@ public class PublicationHelper {
 
     public List<Image> getPublicationImages(int idPublication) {
         return imageDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
+    }
+
+    public List<Offer> getPublicationOffers(int idPublication) {
+        return offerDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
+    }
+    
+    public List<Report> getPublicationReports(int idPublication) {
+        return reportDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
 }

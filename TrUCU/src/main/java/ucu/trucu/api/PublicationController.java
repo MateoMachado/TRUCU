@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.PublicationHelper;
 import ucu.trucu.model.dto.Image;
+import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
+import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 
@@ -77,14 +79,14 @@ public class PublicationController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize,
             @RequestParam(required = false) Integer idPublication,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description,
             @RequestParam(required = false) Integer maxUcuCoins,
             @RequestParam(required = false) Integer minUcuCoins,
-            @RequestParam(required = false) Timestamp afterDate,
-            @RequestParam(required = false) Timestamp beforeDate,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) String accountCI) {
+            @RequestParam(required = false) String accountCI,
+            @RequestParam(required = false) Timestamp afterDate,
+            @RequestParam(required = false) Timestamp beforeDate) {
 
         Filter filter = publicationHelper.buildPublicationFilter(idPublication, title, description, maxUcuCoins,
                 minUcuCoins, afterDate, beforeDate, status, accountCI);
@@ -96,5 +98,15 @@ public class PublicationController {
     @GetMapping("/images")
     public List<Image> getPublicationImages(@RequestParam int idPublication) {
         return publicationHelper.getPublicationImages(idPublication);
+    }
+
+    @GetMapping("/offers")
+    public List<Offer> getPublicationOffers(@RequestParam int idPublication) {
+        return publicationHelper.getPublicationOffers(idPublication);
+    }
+
+    @GetMapping("/reports")
+    public List<Report> getPublicationReports(@RequestParam int idPublication) {
+        return publicationHelper.getPublicationReports(idPublication);
     }
 }
