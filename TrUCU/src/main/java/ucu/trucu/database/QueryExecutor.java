@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.database.querybuilder.statement.Statement;
 import ucu.trucu.util.DBUtils;
@@ -24,7 +25,21 @@ public class QueryExecutor {
         this.connection = connection;
     }
 
-    public int execute(Statement statement) throws SQLException {
+    public int executeInsert(InsertStatement statement) throws SQLException {
+        try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
+            String statementStr = statement.build();
+            LOGGER.query(statementStr);
+            sqlStatement.executeUpdate(statementStr, java.sql.Statement.RETURN_GENERATED_KEYS);
+            this.connection.commit();
+            return DBUtils.getGeneratedId(sqlStatement.getGeneratedKeys());
+        } catch (SQLException ex) {
+            this.connection.rollback();
+            LOGGER.error(ex);
+            throw ex;
+        }
+    }
+
+    public int executeUpdate(Statement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
             LOGGER.query(statementStr);
