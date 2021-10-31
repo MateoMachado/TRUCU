@@ -13,6 +13,7 @@ import ucu.trucu.util.StringUtils;
 public class SelectStatement implements Statement {
 
     private final static String SELECT_FROM = "SELECT %s FROM %s";
+    private final static String SELECT_DISTINCT_FROM = "SELECT DISTINCT %s FROM %s";
     private final static String WHERE = "WHERE %s";
     private final static String ORDER_BY = "ORDER BY %s";
     private final static String INNER_JOIN = "INNER JOIN %s ON %s";
@@ -20,6 +21,7 @@ public class SelectStatement implements Statement {
     private final static String FETCH_NEXT = "FETCH NEXT %s ROWS ONLY";
 
     private final String table;
+    private final boolean distinct;
     private final String[] columns;
     private final Map<String, String> joinTables = new HashMap<>();
     private String filter;
@@ -30,11 +32,19 @@ public class SelectStatement implements Statement {
     public SelectStatement(String table) {
         this.table = table;
         this.columns = new String[]{"*"};
+        this.distinct = false;
     }
 
     public SelectStatement(String table, String[] columns) {
         this.table = table;
         this.columns = columns;
+        this.distinct = false;
+    }
+    
+    public SelectStatement(String table, String[] columns, boolean distinct) {
+        this.table = table;
+        this.columns = columns;
+        this.distinct = distinct;
     }
 
     public String getTable() {
@@ -89,7 +99,12 @@ public class SelectStatement implements Statement {
 
     @Override
     public String build() {
-        String statement = String.format(SELECT_FROM, StringUtils.join(StringUtils.COMA, columns), table);
+        String statement = "";
+        if (distinct) {
+            statement = String.format(SELECT_DISTINCT_FROM, StringUtils.join(StringUtils.COMA, columns), table);
+        } else {
+            statement = String.format(SELECT_FROM, StringUtils.join(StringUtils.COMA, columns), table);
+        }
 
         if (!joinTables.isEmpty()) {
             statement += StringUtils.SPACE + StringUtils.join(StringUtils.LN_TABBED, joinTables.entrySet(), entry -> String.format(INNER_JOIN, entry.getKey(), entry.getValue()));

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class OfferController {
         try {
             offerHelper.createOffer(newOffer,publications);
             LOGGER.info("Oferta creada correctamente");
-            return ResponseEntity.ok("Cuenta creada correctamente");
+            return ResponseEntity.ok("Oferta creada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear la oferta -> %s", ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
@@ -55,5 +56,10 @@ public class OfferController {
             LOGGER.error("Imposible eliminar la oferta [idOffer=%d] -> %s", idOffer, ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
+    }
+    
+    @GetMapping("/getFromUser")
+    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
+        return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
     }
 }

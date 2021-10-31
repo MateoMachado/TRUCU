@@ -17,10 +17,10 @@ public class OfferHelper {
     private OfferDAO offerDAO;
     
     public void createOffer(Offer newOffer, List<Integer> idPublications) throws SQLException {
-        offerDAO.insert(newOffer);
+        int idOffer = offerDAO.insert(newOffer);
 
         for(int idPublication: idPublications) {
-            offerDAO.addOfferedPublications(newOffer, idPublication);
+            offerDAO.addOfferedPublications(idOffer, idPublication);
         }
     }
     
@@ -34,5 +34,9 @@ public class OfferHelper {
         offerDAO.delete(where -> where.and(
                 where.eq("idOffer", idOffer))
         );
+    }
+    
+    public List<Offer> getUserOffers(int idUser) {
+        return offerDAO.getUserPublications(idUser);
     }
 }
