@@ -1,6 +1,7 @@
 package ucu.trucu.api;
 
 import java.sql.SQLException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +26,7 @@ import ucu.trucu.util.log.LoggerFactory;
  * @author Seba Mazzey
  */
 @RestController
-@RequestMapping("trucu/offfer")
+@RequestMapping("trucu/offer")
 public class OfferController {
     
     private static final Logger LOGGER = LoggerFactory.create(PublicationController.class);
@@ -34,9 +35,9 @@ public class OfferController {
     private OfferHelper offerHelper;
     
     @PostMapping("/create")
-    public ResponseEntity createAccount(@RequestBody Offer newOffer) {
+    public ResponseEntity createOffer(@RequestBody Offer newOffer, @RequestParam List<Integer> publications) {
         try {
-            offerHelper.createOffer(newOffer,null);
+            offerHelper.createOffer(newOffer,publications);
             LOGGER.info("Oferta creada correctamente");
             return ResponseEntity.ok("Cuenta creada correctamente");
         } catch (SQLException ex) {
@@ -46,7 +47,7 @@ public class OfferController {
     }
     
     @DeleteMapping("/delete")
-    public ResponseEntity deleteAccount(@RequestParam int idOffer) {
+    public ResponseEntity deleteOffer(@RequestParam int idOffer) {
         try {
             offerHelper.deleteOffer(idOffer);
             return ResponseEntity.ok("Oferta eliminada correctamente");

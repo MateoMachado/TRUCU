@@ -18,6 +18,7 @@ public class OfferHelper {
     
     public void createOffer(Offer newOffer, List<Integer> idPublications) throws SQLException {
         offerDAO.insert(newOffer);
+
         for(int idPublication: idPublications) {
             offerDAO.addOfferedPublications(newOffer, idPublication);
         }

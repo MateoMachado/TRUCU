@@ -39,10 +39,13 @@ public class OfferDAO extends AbstractDAO<Offer> {
         offerID.setIdOffer(offer.getIdOffer());
         Publication publication = new Publication();
         publication.setIdPublication(idPublication);
+        // Mapeo los atributos
+        Map<String, Object> ids = DBUtils.objectToPropertyMap(publication);
+        ids.putAll(DBUtils.objectToPropertyMap(offerID));
+        
         dbController.executeStatement(
                 QueryBuilder.insertInto("OfferedPublications")
-                        .keyValue(DBUtils.objectToPropertyMap(publication))
-                        .keyValue(DBUtils.objectToPropertyMap(offerID))
+                        .keyValue(ids)
         );
     }
     
