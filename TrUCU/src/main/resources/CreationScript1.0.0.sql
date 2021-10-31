@@ -85,3 +85,12 @@ CREATE TABLE UserAuthentication(
 	CONSTRAINT PK_userAuthentication PRIMARY KEY (CI),
 	CONSTRAINT FK_userAuthentication_account FOREIGN KEY (CI) REFERENCES Account(CI)
 );
+
+-- User creation
+CREATE LOGIN trucu WITH PASSWORD = 'Bdtrucu123'
+
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'trucu')
+BEGIN
+	CREATE USER [trucu] FOR LOGIN [trucu]
+	EXEC sp_addrolemember N'db_owner', N'trucu'
+END
