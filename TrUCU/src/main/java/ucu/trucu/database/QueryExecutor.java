@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.database.querybuilder.statement.Statement;
 import ucu.trucu.util.DBUtils;
@@ -24,7 +25,36 @@ public class QueryExecutor {
         this.connection = connection;
     }
 
-    public int execute(Statement statement) throws SQLException {
+    /**
+     * Ejecuta una sentencia INSERT
+     *
+     * @param statement
+     * @return Devuelve el id de la entidad autogenerado, o -1 si no hay ninguno
+     * @throws SQLException
+     */
+    public int executeInsert(InsertStatement statement) throws SQLException {
+        try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
+            String statementStr = statement.build();
+            LOGGER.query(statementStr);
+            sqlStatement.executeUpdate(statementStr, java.sql.Statement.RETURN_GENERATED_KEYS);
+            this.connection.commit();
+            return DBUtils.getGeneratedId(sqlStatement.getGeneratedKeys());
+        } catch (SQLException ex) {
+            this.connection.rollback();
+            LOGGER.error(ex);
+            throw ex;
+        }
+    }
+
+    /**
+     * Ejecuta una sentencia de actualizacion en la tabla (UPDATE, ALTER,
+     * DELETE, TRUNCATE)
+     *
+     * @param statement
+     * @return Devuelve la cantidad de entidades afectadas
+     * @throws SQLException
+     */
+    public int executeUpdate(Statement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
             LOGGER.query(statementStr);
@@ -38,6 +68,14 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SELECT
+     *
+     * @param selectStatement
+     * @return Devuelve una tabla dinamica, que se adapta al resultado de la
+     * query
+     * @throws SQLException
+     */
     public Table query(SelectStatement selectStatement) throws SQLException {
         try (java.sql.Statement statement = this.connection.createStatement()) {
             String query = selectStatement.build();
@@ -52,6 +90,16 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Ejecuta una sentencia SELECT
+     *
+     * @param <T> Clase de la entidad
+     * @param selectStatement
+     * @param entityClass
+     * @return Devuelve una lista de entidades
+     * @throws SQLException
+     * @throws EntityConversionException
+     */
     public <T> List<T> query(SelectStatement selectStatement, Class<T> entityClass) throws SQLException, EntityConversionException {
         try (java.sql.Statement statement = this.connection.createStatement()) {
             String query = selectStatement.build();

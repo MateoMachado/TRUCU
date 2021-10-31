@@ -37,8 +37,8 @@ public class PublicationController {
     @PostMapping("/create")
     public ResponseEntity createPublication(@RequestBody Publication newPublication) {
         try {
-            publicationHelper.createPublication(newPublication);
-            LOGGER.info("Publicacion [idPublication=%s] creada correctamente", newPublication.getIdPublication());
+            int idPublication = publicationHelper.createPublication(newPublication);
+            LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
             return ResponseEntity.ok("Publicacion creada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear publicacion [idPublication=%s] -> %s", newPublication.getIdPublication(), ex.getMessage());

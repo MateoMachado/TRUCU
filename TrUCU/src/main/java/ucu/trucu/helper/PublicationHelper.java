@@ -78,8 +78,8 @@ public class PublicationHelper {
         });
     }
 
-    public void createPublication(Publication newPublication) throws SQLException {
-        publicationDAO.insert(newPublication);
+    public int createPublication(Publication newPublication) throws SQLException {
+        return publicationDAO.insert(newPublication);
     }
 
     public void updatePublicationData(int idPublication, Publication newValues) throws SQLException {

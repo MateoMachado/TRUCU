@@ -38,22 +38,22 @@ public abstract class AbstractDAO<T> {
     }
 
     public int update(T entity, Function<Filter, String> filter) throws SQLException {
-        return dbController.executeStatement(
+        return dbController.executeUpdate(
                 QueryBuilder.update(this.getTable())
                         .set(DBUtils.objectToPropertyMap(entity))
                         .where(filter)
         );
     }
 
-    public void insert(T newEntity) throws SQLException {
-        dbController.executeStatement(
+    public int insert(T newEntity) throws SQLException {
+        return dbController.executeInsert(
                 QueryBuilder.insertInto(this.getTable())
                         .keyValue(DBUtils.objectToPropertyMap(newEntity))
         );
     }
 
     public int delete(Function<Filter, String> filter) throws SQLException {
-        return dbController.executeStatement(
+        return dbController.executeUpdate(
                 QueryBuilder.deleteFrom(getTable())
                         .where(filter)
         );

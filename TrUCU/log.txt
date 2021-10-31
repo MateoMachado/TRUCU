@@ -1,0 +1,3 @@
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> INSERT INTO Publication (Status, PublicationDate, Description, AccountCI, Title, UcuCoinValue) VALUES 
+('OPEN', '2021-09-30 21:00:00.0', 'desc2', '1', 'titulo2', '255');
+INFO	[ucu.trucu.api.PublicationController]	Publicacion [idPublication=34] creada correctamente
