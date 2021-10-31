@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ucu.trucu.helper.AccountHelper;
-import ucu.trucu.model.dao.AccountDAO;
-import ucu.trucu.model.dao.RolDAO;
 import ucu.trucu.model.dto.Account;
 import ucu.trucu.model.dto.Rol;
 import ucu.trucu.util.log.Logger;
@@ -60,7 +58,7 @@ public class AccountController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateAccount(String CI, Account newValues) {
+    public ResponseEntity updateAccount(@RequestParam String CI, @RequestBody Account newValues) {
         try {
             accountHelper.updateAccountData(CI, newValues);
             LOGGER.info("Valores actualizados en cuenta [CI=%s]", CI);
@@ -88,7 +86,7 @@ public class AccountController {
     }
 
     @GetMapping("/rol")
-    public Rol getAccountRol(Account account) {
+    public Rol getAccountRol(@RequestBody Account account) {
         return accountHelper.getAccountRol(account.getRolName());
     }
 }
