@@ -79,6 +79,6 @@ public class DBController {
     }
 
     public int executeStatement(Statement statement) throws SQLException {
-        return queryExecutor.execute(statement);
+        return queryExecutor.executeUpdate(statement);
     }
 }
