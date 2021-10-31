@@ -44,6 +44,11 @@ public class QueryBuilder {
         return new SelectStatement(table, columns);
     }
 
+    public static SelectStatement selectFrom(String table, boolean distinct,
+             String... columns) {
+        return new SelectStatement(table, columns,distinct);
+    }
+
     /**
      * >>> QueryBuilder.createTable("table") .addColumn("id", SQLType.BIGINT,
      * 20) .addColumn("col1", SQLType.INT) .addColumn("col2", SQLType.DOUBLE,
