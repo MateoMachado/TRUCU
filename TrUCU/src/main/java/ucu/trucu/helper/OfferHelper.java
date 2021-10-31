@@ -26,14 +26,11 @@ public class OfferHelper {
     
     public void deleteOffer(int idOffer) throws SQLException {
         // Elimino las publicaciones relacionadas con la oferta
-        offerDAO.deleteOfferedPublications(idOffer, where -> where.and(
-                where.eq("idOffer", idOffer))
-        );
+        offerDAO.deleteOfferedPublications(idOffer, where -> 
+                where.eq("idOffer", idOffer));
         
         // Elimino la oferta
-        offerDAO.delete(where -> where.and(
-                where.eq("idOffer", idOffer))
-        );
+        offerDAO.delete(where -> where.eq("idOffer", idOffer));
     }
     
     public List<Offer> getUserOffers(int idUser) {
