@@ -7,6 +7,10 @@ import java.sql.Date;
  * @author NicoPuig
  */
 public class Offer {
+    
+    public enum OfferStatus{
+        OPEN, CLOSED, SETTLING, REJECTED
+    }
 
     private Integer idOffer;
     private String status;

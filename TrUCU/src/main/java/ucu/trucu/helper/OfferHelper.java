@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dto.Offer;
+import ucu.trucu.model.dto.Offer.OfferStatus;
 
 /**
  *
@@ -13,27 +14,34 @@ import ucu.trucu.model.dto.Offer;
  */
 @Service
 public class OfferHelper {
+
+    private static final String ID_OFFER = "idOffer";
+
     @Autowired
     private OfferDAO offerDAO;
-    
+
     public void createOffer(Offer newOffer, List<Integer> idPublications) throws SQLException {
         int idOffer = offerDAO.insert(newOffer);
 
-        for(int idPublication: idPublications) {
+        for (int idPublication : idPublications) {
             offerDAO.addOfferedPublications(idOffer, idPublication);
         }
     }
-    
+
     public void deleteOffer(int idOffer) throws SQLException {
         // Elimino las publicaciones relacionadas con la oferta
-        offerDAO.deleteOfferedPublications(idOffer, where -> 
-                where.eq("idOffer", idOffer));
-        
+        offerDAO.deleteOfferedPublications(idOffer, where
+                -> where.eq(ID_OFFER, idOffer));
+
         // Elimino la oferta
-        offerDAO.delete(where -> where.eq("idOffer", idOffer));
+        offerDAO.delete(where -> where.eq(ID_OFFER, idOffer));
     }
-    
+
     public List<Offer> getUserOffers(int idUser) {
         return offerDAO.getUserPublications(idUser);
+    }
+
+    public void closeOffer(int idPublication, int idOffer) throws SQLException {
+        offerDAO.closeOffer(idPublication, idOffer);
     }
 }

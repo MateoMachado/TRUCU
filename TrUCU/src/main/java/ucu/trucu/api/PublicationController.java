@@ -109,4 +109,14 @@ public class PublicationController {
     public List<Report> getPublicationReports(@RequestParam int idPublication) {
         return publicationHelper.getPublicationReports(idPublication);
     }
+
+    @PostMapping("/offers/accept")
+    public ResponseEntity acceptOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
+        try {
+            publicationHelper.acceptOffer(idPublication, idOffer);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
 }

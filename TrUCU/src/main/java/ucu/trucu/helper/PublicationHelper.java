@@ -14,7 +14,9 @@ import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
+import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
+import ucu.trucu.util.StringUtils;
 
 /**
  *
@@ -39,9 +41,12 @@ public class PublicationHelper {
 
     @Autowired
     private OfferDAO offerDAO;
-    
+
     @Autowired
     private ReportDAO reportDAO;
+
+    @Autowired
+    private OfferHelper offerHelper;
 
     public Filter buildPublicationFilter(Integer idPublication, String title, String description, Integer maxUcuCoins,
             Integer minUcuCoins, Timestamp afterDate, Timestamp beforeDate, String status, String accountCI) {
@@ -101,8 +106,24 @@ public class PublicationHelper {
     public List<Offer> getPublicationOffers(int idPublication) {
         return offerDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
-    
+
     public List<Report> getPublicationReports(int idPublication) {
         return reportDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
+    }
+
+    public void acceptOffer(int idPublication, int idOffer) throws SQLException {
+        // Close Publication
+        Publication publication = new Publication();
+        publication.setStatus(PublicationStatus.CLOSED.name());
+        publicationDAO.update(publication, where -> where.eq(ID_PUBLICATION, idPublication));
+
+        // Close accepted Offer
+        offerHelper.closeOffer(idPublication, idOffer);
+        
+        // Close all acepted offer publications
+        publicationDAO.closeOfferPublications(idOffer);
+        
+        // Reject all acepted offer publications offers
+        // TODO
     }
 }

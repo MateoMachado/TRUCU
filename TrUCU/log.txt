@@ -1,3 +1,3 @@
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> INSERT INTO Publication (Status, PublicationDate, Description, AccountCI, Title, UcuCoinValue) VALUES 
-('OPEN', '2021-09-30 21:00:00.0', 'desc2', '1', 'titulo2', '255');
-INFO	[ucu.trucu.api.PublicationController]	Publicacion [idPublication=34] creada correctamente
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Account SET Name = 'pepe' WHERE CI = '1';
+ERROR	[ucu.trucu.database.QueryExecutor]	com.microsoft.sqlserver.jdbc.SQLServerException: La instrucción debe ejecutarse antes de obtener cualquier resultado.
+ERROR	[ucu.trucu.api.AccountController]	Imposible actualizar valores para cuenta [CI=1] -> com.microsoft.sqlserver.jdbc.SQLServerException: La instrucción debe ejecutarse antes de obtener cualquier resultado.
