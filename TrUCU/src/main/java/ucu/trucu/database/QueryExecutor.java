@@ -32,7 +32,7 @@ public class QueryExecutor {
      * @return Devuelve el id de la entidad autogenerado, o -1 si no hay ninguno
      * @throws SQLException
      */
-    public int executeInsert(InsertStatement statement) throws SQLException {
+    public List<Integer> executeInsert(InsertStatement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
             LOGGER.query(statementStr);

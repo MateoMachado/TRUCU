@@ -83,7 +83,7 @@ public class DBController {
         return queryExecutor.executeUpdate(statement);
     }
 
-    public int executeInsert(InsertStatement statement) throws SQLException {
+    public List<Integer> executeInsert(InsertStatement statement) throws SQLException {
         return queryExecutor.executeInsert(statement);
     }
 }

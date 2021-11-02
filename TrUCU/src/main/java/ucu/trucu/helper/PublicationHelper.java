@@ -39,7 +39,7 @@ public class PublicationHelper {
 
     @Autowired
     private OfferDAO offerDAO;
-    
+
     @Autowired
     private ReportDAO reportDAO;
 
@@ -101,7 +101,7 @@ public class PublicationHelper {
     public List<Offer> getPublicationOffers(int idPublication) {
         return offerDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
-    
+
     public List<Report> getPublicationReports(int idPublication) {
         return reportDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
