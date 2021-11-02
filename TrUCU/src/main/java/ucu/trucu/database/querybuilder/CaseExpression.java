@@ -42,10 +42,13 @@ public class CaseExpression {
     public String build() {
         if (!caseList.isEmpty()) {
             String cases = StringUtils.join(StringUtils.SPACE, caseList, aCase -> String.format(WHEN, aCase.value, aCase.result));
-            return String.format(CASE, StringUtils.concat(StringUtils.SPACE, cases)
-                    .preAddIf(param != null, param)
-                    .addIf(elseCase != null, String.format(ELSE, elseCase))
-            );
+            if (param != null) {
+                cases = param + StringUtils.SPACE + cases;
+            }
+            if (elseCase != null) {
+                cases += StringUtils.SPACE + String.format(ELSE, elseCase);
+            }
+            return String.format(CASE, cases);
         }
         return null;
     }
