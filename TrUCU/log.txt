@@ -1,3 +1,208 @@
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> INSERT INTO Publication (Status, PublicationDate, Description, AccountCI, Title, UcuCoinValue) VALUES 
-('OPEN', '2021-09-30 21:00:00.0', 'desc2', '1', 'titulo2', '255');
-INFO	[ucu.trucu.api.PublicationController]	Publicacion [idPublication=34] creada correctamente
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [null]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 4 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication

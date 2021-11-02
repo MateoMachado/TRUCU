@@ -1,1 +1,16 @@
-<p>PANTALLA PRINCIPAL</p>
+<div class="flex flex-col h-full w-full mt-14 bg-gray-200">
+    <div class="flex flex-col bg-white mr-16 ml-16 flex flex-row p-4 rounded mt-16">
+        <div *ngFor="let publication of publications;" class="flex border-t-2 border-gray-500 cursor-pointer">
+            <img class="w-64" src="assets/images/logo_UCU.png">
+            <div class="flex flex-grow flex-col m-8">
+                <label class="publicationTitle">{{publication.title}}</label>
+                <div class="flex flex-row">
+                    <img class="w-8 cursor-pointer mr-2" src="assets/images/ucucoin-icon.png">
+                    <label class="price">{{publication.ucuCoinValue}}</label>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>

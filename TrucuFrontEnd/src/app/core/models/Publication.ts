@@ -1,3 +1,5 @@
+import { Image } from "./Image";
+
 export class Publication {
     idPublication : number;
     title : string;
@@ -6,4 +8,5 @@ export class Publication {
     publicationDate : Date;
     status : string;
     accountCI : string;
+    images : Image[];
 }
