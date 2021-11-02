@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dto.Offer;
+import ucu.trucu.model.dto.Offer.OfferStatus;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 
@@ -62,5 +63,16 @@ public class OfferHelper {
 
         LOGGER.info("Cancelando otras ofertas con las publicaciones de la oferta [idOffer=%s]...", idOffer);
         offerDAO.cancelOtherOffersWithPublicationsOf(idOffer);
+    }
+
+    public void acceptOffer(int idPublication, int idOffer) throws SQLException {
+
+        LOGGER.info("Aceptando oferta [idOffer=%s] en publicacion [idPublication=%s]...", idOffer, idPublication);
+        publicationHelper.acceptOffer(idPublication, idOffer);
+
+        LOGGER.info("Aceptando oferta [idOffer=%s]...", idOffer, idPublication);
+        Offer offer = new Offer();
+        offer.setStatus(OfferStatus.SETTLING.name());
+        offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
     }
 }

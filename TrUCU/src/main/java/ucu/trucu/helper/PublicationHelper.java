@@ -113,20 +113,28 @@ public class PublicationHelper {
     public PublicationStatus getStatus(int idPublication) {
         return PublicationStatus.valueOf(publicationDAO.findByPK(idPublication).getStatus());
     }
+    
+    public void closeOfferPublications(int idOffer) throws SQLException {
+        publicationDAO.closeOfferPublications(idOffer);
+    }
 
     public void closePublication(int idPublication) throws SQLException, IllegalStateException {
+        changePublicationStatus(idPublication, PublicationStatus.SETTLING, PublicationStatus.CLOSED);
+    }
+
+    public void acceptOffer(int idPublication, int idOffer) throws SQLException {
+        changePublicationStatus(idPublication, PublicationStatus.OPEN, PublicationStatus.SETTLING);
+    }
+
+    private void changePublicationStatus(int idPublication, PublicationStatus prevStatus, PublicationStatus nextStatus) throws SQLException {
         PublicationStatus publicationStatus = getStatus(idPublication);
-        if (PublicationStatus.OPEN.equals(publicationStatus)) {
+        if (prevStatus.equals(publicationStatus)) {
             Publication publication = new Publication();
-            publication.setStatus(PublicationStatus.CLOSED.name());
+            publication.setStatus(nextStatus.name());
             publicationDAO.update(publication, where -> where.eq(ID_PUBLICATION, idPublication));
         } else {
-            throw new IllegalStateException(String.format("Publicacion no disponible para cerrarse [idPublication=%s, Status=%s]",
-                    idPublication, publicationStatus));
+            throw new IllegalStateException(String.format("Cambio de estado de publicacion [idPublication=%s] imposible %s -> %s",
+                    idPublication, publicationStatus, nextStatus));
         }
-    }
-    
-    public void closeOfferPublications(int idOffer) throws SQLException{
-        publicationDAO.closeOfferPublications(idOffer);
     }
 }
