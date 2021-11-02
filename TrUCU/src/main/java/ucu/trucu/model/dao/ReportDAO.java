@@ -21,7 +21,7 @@ public class ReportDAO extends AbstractDAO<Report> {
     }
 
     @Override
-    public Report findByPK(String... primaryKeys) {
+    public Report findByPK(Object... primaryKeys) {
         return findFirst(where -> where.eq("idReport", primaryKeys[0]));
     }
 }

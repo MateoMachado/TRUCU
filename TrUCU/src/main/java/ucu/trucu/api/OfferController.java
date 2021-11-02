@@ -21,7 +21,6 @@ import ucu.trucu.util.log.LoggerFactory;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Seba Mazzey
@@ -29,16 +28,16 @@ import ucu.trucu.util.log.LoggerFactory;
 @RestController
 @RequestMapping("trucu/offer")
 public class OfferController {
-    
+
     private static final Logger LOGGER = LoggerFactory.create(PublicationController.class);
 
     @Autowired
     private OfferHelper offerHelper;
-    
+
     @PostMapping("/create")
     public ResponseEntity createOffer(@RequestBody Offer newOffer, @RequestParam List<Integer> publications) {
         try {
-            offerHelper.createOffer(newOffer,publications);
+            offerHelper.createOffer(newOffer, publications);
             LOGGER.info("Oferta creada correctamente");
             return ResponseEntity.ok("Oferta creada correctamente");
         } catch (SQLException ex) {
@@ -46,7 +45,7 @@ public class OfferController {
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
-    
+
     @DeleteMapping("/delete")
     public ResponseEntity deleteOffer(@RequestParam int idOffer) {
         try {
@@ -57,9 +56,35 @@ public class OfferController {
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
-    
+
     @GetMapping("/getFromUser")
     public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
         return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
+    }
+
+    @PostMapping("/close")
+    public ResponseEntity closeOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
+        try {
+            offerHelper.closeOffer(idPublication, idOffer);
+            LOGGER.info("Oferta [idOffer=%s] de publicacion [idPublication=%s] cerrada correctamente", idPublication, idOffer);
+            return ResponseEntity.ok("Oferta cerrada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible cerrar oferta [idOffer=%s] de publicacion [idPublication=%s] -> %s",
+                    idPublication, idOffer, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
+    @PostMapping("/accept")
+    public ResponseEntity acceptOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
+        try {
+            offerHelper.acceptOffer(idPublication, idOffer);
+            LOGGER.info("Oferta [idOffer=%s] de publicacion [idPublication=%s] aceptada correctamente", idPublication, idOffer);
+            return ResponseEntity.ok("Oferta aceptada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible aceptar oferta [idOffer=%s] de publicacion [idPublication=%s] -> %s",
+                    idPublication, idOffer, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
     }
 }

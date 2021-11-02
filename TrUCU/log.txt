@@ -1,3 +1,40 @@
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> INSERT INTO Publication (Status, PublicationDate, Description, AccountCI, Title, UcuCoinValue) VALUES 
-('OPEN', '2021-09-30 21:00:00.0', 'desc2', '1', 'titulo2', '255');
-INFO	[ucu.trucu.api.PublicationController]	Publicacion [idPublication=34] creada correctamente
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+ERROR	[ucu.trucu.api.PublicationController]	Imposible cerrar oferta [idOffer=35] de publicacion [idPublication=7] -> java.lang.IllegalStateException: Imposible ejecutar operacion en publicacion [idPublication=35] con estado OPEN 
+INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para aceptar oferta [idPublication=35, idOffer=7]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Publication WHERE idPublication = '35';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Offer WHERE idOffer = '7';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
+INFO	[ucu.trucu.helper.OfferHelper]	Aceptando oferta [idOffer=7] en publicacion [idPublication=35]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Publication SET Status = 'SETTLING' WHERE idPublication = '35';
+INFO	[ucu.trucu.helper.OfferHelper]	Aceptando oferta [idOffer=7]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Offer SET Status = 'SETTLING' WHERE idOffer = '7';
+INFO	[ucu.trucu.api.PublicationController]	Oferta [idOffer=35] de publicacion [idPublication=7] aceptada correctamente
+INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para aceptar oferta [idPublication=35, idOffer=7]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Publication WHERE idPublication = '35';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+ERROR	[ucu.trucu.api.PublicationController]	Imposible aceptar oferta [idOffer=35] de publicacion [idPublication=7] -> java.lang.IllegalStateException: Imposible ejecutar operacion en publicacion [idPublication=35] con estado SETTLING 
+INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para aceptar oferta [idPublication=35, idOffer=7]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Publication WHERE idPublication = '35';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+ERROR	[ucu.trucu.api.PublicationController]	Imposible aceptar oferta [idOffer=35] de publicacion [idPublication=7] -> java.lang.IllegalStateException: Imposible ejecutar operacion en publicacion [idPublication=35] con estado SETTLING 
+INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para cerrar oferta [idPublication=35, idOffer=7]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Publication WHERE idPublication = '35';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Offer WHERE idOffer = '7';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
+INFO	[ucu.trucu.helper.OfferHelper]	Cerrando publicacion principal [idPublication=35]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Publication SET Status = 'CLOSED' WHERE idPublication = '35';
+INFO	[ucu.trucu.helper.OfferHelper]	Cerrando oferta aceptada [idOffer=7], y rechazando todas las otras ofertas a la publicacion [idPublication=35]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Offer SET status = CASE idOffer WHEN '7' THEN 'CLOSED' ELSE 'REJECTED' END WHERE idPublication = '35';
+INFO	[ucu.trucu.helper.OfferHelper]	Cerrando publicacion ofrecidas en la oferta [idOffer=7]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Publication SET status = 'CLOSED' WHERE idPublication IN (SELECT idPublication FROM OfferedPublications WHERE idOffer = '7');
+INFO	[ucu.trucu.helper.OfferHelper]	Rechazando ofertas realizadas a publicaciones de la oferta [idOffer=7]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Offer SET status = 'REJECTED' WHERE idPublication IN (SELECT idPublication FROM OfferedPublications WHERE OfferedPublications.idOffer = '7');
+INFO	[ucu.trucu.helper.OfferHelper]	Cancelando ofertas con las publicaciones de la oferta [idOffer=7]...
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> UPDATE Offer SET status = 'CANCELED' WHERE idOffer IN (SELECT DISTINCT idOffer FROM OfferedPublications WHERE (OfferedPublications.idOffer != '7') AND ((OfferedPublications.idPublication = '35') OR (OfferedPublications.idPublication IN (SELECT idPublication FROM OfferedPublications WHERE OfferedPublications.idOffer = '7'))));
+INFO	[ucu.trucu.api.PublicationController]	Oferta [idOffer=35] de publicacion [idPublication=7] cerrada correctamente
+INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para cerrar oferta [idPublication=35, idOffer=7]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Publication WHERE idPublication = '35';
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+ERROR	[ucu.trucu.api.PublicationController]	Imposible cerrar oferta [idOffer=35] de publicacion [idPublication=7] -> java.lang.IllegalStateException: Imposible ejecutar operacion en publicacion [idPublication=35] con estado CLOSED 
