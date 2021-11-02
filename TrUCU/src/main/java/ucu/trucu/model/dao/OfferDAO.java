@@ -1,7 +1,6 @@
 package ucu.trucu.model.dao;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -11,7 +10,6 @@ import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
 import ucu.trucu.model.dto.Publication;
-import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.util.DBUtils;
 
 /**
@@ -20,6 +18,9 @@ import ucu.trucu.util.DBUtils;
  */
 @Component
 public class OfferDAO extends AbstractDAO<Offer> {
+
+    private static final String ID_OFFER = "idOffer";
+    private static final String STATUS = "status";
 
     @Override
     public String getTable() {
@@ -32,8 +33,8 @@ public class OfferDAO extends AbstractDAO<Offer> {
     }
 
     @Override
-    public Offer findByPK(String... primaryKeys) {
-        return findFirst(where -> where.eq("idOffer", primaryKeys[0]));
+    public Offer findByPK(Object... primaryKeys) {
+        return findFirst(where -> where.eq(ID_OFFER, primaryKeys[0]));
     }
 
     public void addOfferedPublications(int idOffer, int idPublication) throws SQLException {
@@ -72,14 +73,52 @@ public class OfferDAO extends AbstractDAO<Offer> {
         );
     }
 
-    public void closeOffer(int idPublication, int idOffer) throws SQLException {
+    public void closeOfferToPublicationAndRejectOthers(int idPublication, int closedOfferId) throws SQLException {
+        dbController.executeUpdate(QueryBuilder
+                .update(getTable())
+                .where(filter -> filter.eq("idPublication", idPublication))
+                .set(STATUS, cases
+                        -> cases
+                        .forParam(ID_OFFER)
+                        .addCase(closedOfferId, OfferStatus.CLOSED)
+                        .orElse(OfferStatus.REJECTED)
+                )
+        );
+    }
+
+    public void rejectOffersToPublicationsOf(int idOffer) throws SQLException {
+
+        String offeredPublicationsQuery = QueryBuilder
+                .selectFrom("OfferedPublications", "idPublication")
+                .where(f -> f.eq("OfferedPublications.idOffer", idOffer))
+                .build();
+
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
-                        .where(filter -> filter.eq("idPublication", idPublication))
-                        .set("Offer.status", cases
-                                -> cases
-                                .addCase(when -> when.eq("idOffer", idOffer), OfferStatus.CLOSED)
-                                .orElse(OfferStatus.REJECTED))
+                        .set(STATUS, OfferStatus.REJECTED)
+                        .where(f -> f.in("idPublication", offeredPublicationsQuery))
+        );
+    }
+
+    public void cancelOtherOffersWithPublicationsOf(int idOffer) throws SQLException {
+
+        String offeredPublicationsQuery = QueryBuilder
+                .selectFrom("OfferedPublications", "idPublication")
+                .where(f -> f.eq("OfferedPublications.idOffer", idOffer))
+                .build();
+
+        String otherOffersWithPublicationsQuery = QueryBuilder
+                .selectFrom("OfferedPublications", true, "idOffer")
+                .where(f
+                        -> f.and(
+                        f.in("OfferedPublications.idPublication", offeredPublicationsQuery),
+                        f.notEq("OfferedPublications.idOffer", idOffer)))
+                .build();
+
+        dbController.executeUpdate(
+                QueryBuilder.update(getTable())
+                        .set(STATUS, OfferStatus.CANCELED)
+                        .where(f -> f.in(ID_OFFER, otherOffersWithPublicationsQuery))
         );
     }
 }

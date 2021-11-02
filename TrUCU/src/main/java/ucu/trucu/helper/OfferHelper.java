@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dto.Offer;
-import ucu.trucu.model.dto.Offer.OfferStatus;
 
 /**
  *
@@ -41,7 +40,15 @@ public class OfferHelper {
         return offerDAO.getUserPublications(idUser);
     }
 
-    public void closeOffer(int idPublication, int idOffer) throws SQLException {
-        offerDAO.closeOffer(idPublication, idOffer);
+    public void closeAcceptedOffer(int closedPublicationId, int acceptedOfferId) throws SQLException {
+        offerDAO.closeOfferToPublicationAndRejectOthers(closedPublicationId, acceptedOfferId);
+    }
+    
+    public void rejectOffersToPublicationsOf(int idOffer) throws SQLException{
+        offerDAO.rejectOffersToPublicationsOf(idOffer);
+    }
+
+    public void cancelOtherOffersWithPublicationsOf(int idOffer) throws SQLException {
+        offerDAO.cancelOtherOffersWithPublicationsOf(idOffer);
     }
 }

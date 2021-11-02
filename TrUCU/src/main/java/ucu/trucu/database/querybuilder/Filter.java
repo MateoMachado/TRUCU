@@ -23,27 +23,27 @@ public class Filter {
     }
 
     public <T> String eq(String key, T value) {
-        return joinOperand("=", key, value);
+        return joinOperand("=", key,  String.format("'%s'", value));
     }
 
     public <T> String lt(String key, T value) {
-        return joinOperand("<", key, value);
+        return joinOperand("<", key,  String.format("'%s'", value));
     }
 
     public <T> String gt(String key, T value) {
-        return joinOperand(">", key, value);
+        return joinOperand(">", key, String.format("'%s'", value));
     }
 
     public <T> String loet(String key, T value) {
-        return joinOperand("<=", key, value);
+        return joinOperand("<=", key,  String.format("'%s'", value));
     }
 
     public <T> String goet(String key, T value) {
-        return joinOperand(">=", key, value);
+        return joinOperand(">=", key,  String.format("'%s'", value));
     }
 
     public <T> String notEq(String key, T value) {
-        return joinOperand("!=", key, value);
+        return joinOperand("!=", key,  String.format("'%s'", value));
     }
 
     public <T> String like(String key, T value) {
@@ -78,7 +78,7 @@ public class Filter {
         if (key == null) {
             throw new IllegalArgumentException("Column key cant be null");
         }
-        return String.format("%s %s '%s'", key, operand, value);
+        return String.format("%s %s %s", key, operand, value);
     }
 
     public static Filter build(Function<Filter, String> builder) {

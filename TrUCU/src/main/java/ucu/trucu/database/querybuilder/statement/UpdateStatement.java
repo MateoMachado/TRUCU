@@ -34,12 +34,12 @@ public class UpdateStatement implements Statement {
     }
 
     public UpdateStatement set(String key, Object newValue) {
-        sets.put(key, newValue);
+        sets.put(key, String.format("'%s'", newValue));
         return this;
     }
 
     public UpdateStatement set(Map<String, Object> newValues) {
-        sets.putAll(newValues);
+        newValues.forEach(this::set);
         return this;
     }
 
@@ -74,7 +74,7 @@ public class UpdateStatement implements Statement {
         String statement = String.format(UPDATE, table);
 
         if (!sets.isEmpty()) {
-            statement += StringUtils.SPACE + String.format(SET, StringUtils.join(StringUtils.COMA, sets.entrySet(), set -> String.format("%s = '%s'", set.getKey(), set.getValue())));
+            statement += StringUtils.SPACE + String.format(SET, StringUtils.join(StringUtils.COMA, sets.entrySet(), set -> String.format("%s = %s", set.getKey(), set.getValue())));
         }
         if (!joinTables.isEmpty()) {
             statement += StringUtils.SPACE + String.format(FROM, table);

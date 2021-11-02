@@ -16,7 +16,8 @@ import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
-import ucu.trucu.util.StringUtils;
+import ucu.trucu.util.log.Logger;
+import ucu.trucu.util.log.LoggerFactory;
 
 /**
  *
@@ -25,6 +26,7 @@ import ucu.trucu.util.StringUtils;
 @Service
 public class PublicationHelper {
 
+    private static final Logger LOGGER = LoggerFactory.create(PublicationHelper.class);
     private static final String ID_PUBLICATION = "idPublication";
     private static final String TITLE = "title";
     private static final String DESCRIPTION = "description";
@@ -111,19 +113,37 @@ public class PublicationHelper {
         return reportDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
 
-    public void acceptOffer(int idPublication, int idOffer) throws SQLException {
-        // Close Publication
-        Publication publication = new Publication();
-        publication.setStatus(PublicationStatus.CLOSED.name());
-        publicationDAO.update(publication, where -> where.eq(ID_PUBLICATION, idPublication));
+    public PublicationStatus getStatus(int idPublication) {
+        return PublicationStatus.valueOf(publicationDAO.findByPK(idPublication).getStatus());
+    }
 
-        // Close accepted Offer
-        offerHelper.closeOffer(idPublication, idOffer);
-        
-        // Close all acepted offer publications
+    public void closePublication(int idPublication) throws SQLException, IllegalStateException {
+        PublicationStatus publicationStatus = getStatus(idPublication);
+        if (PublicationStatus.OPEN.equals(publicationStatus)) {
+            Publication publication = new Publication();
+            publication.setStatus(PublicationStatus.CLOSED.name());
+            publicationDAO.update(publication, where -> where.eq(ID_PUBLICATION, idPublication));
+        } else {
+            throw new IllegalStateException(String.format("Publicacion no disponible para cerrarse [idPublication=%s, Status=%s]",
+                    idPublication, publicationStatus));
+        }
+    }
+
+    public void finishPublicationAndOffer(int idPublication, int idOffer) throws SQLException {
+
+        LOGGER.info("Cerrando publicacion principal [idPublication=%s]...", idPublication);
+        closePublication(idPublication);
+
+        LOGGER.info("Cerrando oferta aceptada [idOffer=%s] y rechazando las otras hacia la publicacion...", idOffer);
+        offerHelper.closeAcceptedOffer(idPublication, idOffer);
+
+        LOGGER.info("Cerrando publicacion ofrecidas en la oferta [idOffer=%s]...", idOffer);
         publicationDAO.closeOfferPublications(idOffer);
-        
-        // Reject all acepted offer publications offers
-        // TODO
+
+        LOGGER.info("Rechazando ofertas realizadas a publicaciones de la oferta [idOffer=%s]...", idOffer);
+        offerHelper.rejectOffersToPublicationsOf(idOffer);
+
+        LOGGER.info("Cancelando otras ofertas con las publicaciones de la oferta [idOffer=%s]...", idOffer);
+        offerHelper.cancelOtherOffersWithPublicationsOf(idOffer);
     }
 }

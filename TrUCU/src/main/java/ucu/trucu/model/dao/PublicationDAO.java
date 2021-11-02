@@ -17,6 +17,7 @@ public class PublicationDAO extends AbstractDAO<Publication> {
 
     private static final String ID_PUBLICATION = "idPublication";
     private static final String PUBLICATION_DATE = "publicationDate";
+    private static final String STATUS = "status";
 
     @Override
     public String getTable() {
@@ -29,7 +30,7 @@ public class PublicationDAO extends AbstractDAO<Publication> {
     }
 
     @Override
-    public Publication findByPK(String... primaryKeys) {
+    public Publication findByPK(Object... primaryKeys) {
         return findFirst(where -> where.eq(ID_PUBLICATION, primaryKeys[0]));
     }
 
@@ -45,12 +46,16 @@ public class PublicationDAO extends AbstractDAO<Publication> {
     }
 
     public void closeOfferPublications(int idOffer) throws SQLException {
+
+        String offeredPublications = QueryBuilder
+                .selectFrom("OfferedPublications", ID_PUBLICATION)
+                .where(f2 -> f2.eq("idOffer", idOffer))
+                .build();
+
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
-                        .joinOn("OfferedPublications", "OfferedPublications.idPublication = Publication.idPublication")
-                        .joinOn("Offer", "OfferedPublications.idOffer = Offer.idOffer")
-                        .set(getTable() + ".status", PublicationStatus.CLOSED)
-                        .where(filter -> filter.eq("Offer.idOffer", idOffer))
+                        .set(STATUS, PublicationStatus.CLOSED)
+                        .where(f1 -> f1.in(ID_PUBLICATION, offeredPublications))
         );
     }
 }

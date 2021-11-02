@@ -21,7 +21,7 @@ public class AccountDAO extends AbstractDAO<Account> {
     }
 
     @Override
-    public Account findByPK(String... primaryKeys) {
+    public Account findByPK(Object... primaryKeys) {
         return findFirst(where -> where.eq("CI", primaryKeys[0]));
     }
 }

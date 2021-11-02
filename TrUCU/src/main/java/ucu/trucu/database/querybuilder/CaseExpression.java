@@ -12,7 +12,7 @@ import ucu.trucu.util.StringUtils;
 public class CaseExpression {
 
     private static final String CASE = "CASE %s END";
-    private static final String WHEN = "WHEN %s THEN '%s'";
+    private static final String WHEN = "WHEN '%s' THEN '%s'";
     private static final String ELSE = "ELSE '%s'";
     private final List<Case> caseList = new LinkedList<>();
 
@@ -29,6 +29,11 @@ public class CaseExpression {
         return this;
     }
 
+    public CaseExpression addCase(Object value, Object result) {
+        this.caseList.add(new Case(value, result));
+        return this;
+    }
+
     public CaseExpression orElse(Object elseReturn) {
         this.elseCase = elseReturn;
         return this;
@@ -36,7 +41,7 @@ public class CaseExpression {
 
     public String build() {
         if (!caseList.isEmpty()) {
-            String cases = StringUtils.join(StringUtils.SPACE, caseList, aCase -> String.format(WHEN, aCase.when, aCase.result));
+            String cases = StringUtils.join(StringUtils.SPACE, caseList, aCase -> String.format(WHEN, aCase.value, aCase.result));
             return String.format(CASE, StringUtils.concat(StringUtils.SPACE, cases)
                     .preAddIf(param != null, param)
                     .addIf(elseCase != null, String.format(ELSE, elseCase))
@@ -47,11 +52,11 @@ public class CaseExpression {
 
     private class Case {
 
-        private final Filter when;
+        private Object value;
         private final Object result;
 
-        public Case(Filter when, Object result) {
-            this.when = when;
+        public Case(Object value, Object result) {
+            this.value = value;
             this.result = result;
         }
     }

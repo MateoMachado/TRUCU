@@ -110,13 +110,16 @@ public class PublicationController {
         return publicationHelper.getPublicationReports(idPublication);
     }
 
-    @PostMapping("/offers/accept")
+    @PostMapping("/offers/close")
     public ResponseEntity acceptOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
         try {
-            publicationHelper.acceptOffer(idPublication, idOffer);
-        } catch (SQLException ex) {
-            System.out.println(ex);
+            publicationHelper.finishPublicationAndOffer(idPublication, idOffer);
+            LOGGER.info("Publicacion [idPublication=%s] cerrada con oferta [idOffer=%s] correctamente", idPublication, idOffer);
+            return ResponseEntity.ok("Publicacion cerrada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible cerrar publicacion [idPublication=%s] con oferta [idOffer=%s] -> %s",
+                    idPublication, idOffer, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
-        return null;
     }
 }

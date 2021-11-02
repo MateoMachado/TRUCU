@@ -43,7 +43,7 @@ public class QueryBuilder {
     public static SelectStatement selectFrom(String table, String... columns) {
         return new SelectStatement(table, columns);
     }
-
+    
     public static SelectStatement selectFrom(String table, boolean distinct,
              String... columns) {
         return new SelectStatement(table, columns,distinct);
