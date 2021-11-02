@@ -51,7 +51,7 @@ public class OfferHelper {
         LOGGER.info("Cerrando publicacion principal [idPublication=%s]...", idPublication);
         publicationHelper.closePublication(idPublication);
 
-        LOGGER.info("Cerrando oferta aceptada [idOffer=%s] y rechazando las otras hacia la publicacion...", idOffer);
+        LOGGER.info("Cerrando oferta aceptada [idOffer=%s], y rechazando todas las otras ofertas a la publicacion [idPublication=%s]...", idOffer, idPublication);
         offerDAO.closeOfferToPublicationAndRejectOthers(idPublication, idOffer);
 
         LOGGER.info("Cerrando publicacion ofrecidas en la oferta [idOffer=%s]...", idOffer);
@@ -60,7 +60,8 @@ public class OfferHelper {
         LOGGER.info("Rechazando ofertas realizadas a publicaciones de la oferta [idOffer=%s]...", idOffer);
         offerDAO.rejectOffersToPublicationsOf(idOffer);
 
-        LOGGER.info("Cancelando otras ofertas con las publicaciones de la oferta [idOffer=%s]...", idOffer);
-        offerDAO.cancelOtherOffersWithPublicationsOf(idOffer);
+        LOGGER.info("Cancelando ofertas con las publicaciones de la oferta [idOffer=%s]...", idOffer);
+        offerDAO.cancelOffersWithPublicationsOf(idPublication, idOffer);
+
     }
 }

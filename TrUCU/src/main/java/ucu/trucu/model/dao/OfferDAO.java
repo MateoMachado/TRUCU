@@ -100,25 +100,31 @@ public class OfferDAO extends AbstractDAO<Offer> {
         );
     }
 
-    public void cancelOtherOffersWithPublicationsOf(int idOffer) throws SQLException {
+    public void cancelOffersWithPublicationsOf(int idPublication, int idOffer) throws SQLException {
 
         String offeredPublicationsQuery = QueryBuilder
                 .selectFrom("OfferedPublications", "idPublication")
                 .where(f -> f.eq("OfferedPublications.idOffer", idOffer))
                 .build();
 
-        String otherOffersWithPublicationsQuery = QueryBuilder
+        String offersWithClosedOfferPublicationsQuery = QueryBuilder
                 .selectFrom("OfferedPublications", true, "idOffer")
                 .where(f
                         -> f.and(
-                        f.in("OfferedPublications.idPublication", offeredPublicationsQuery),
-                        f.notEq("OfferedPublications.idOffer", idOffer)))
+                        // No se cancela la oferta cerrada
+                        f.notEq("OfferedPublications.idOffer", idOffer),
+                        f.or(
+                                // Se cancelan las ofertas con la publicacion cerrada
+                                f.eq("OfferedPublications.idPublication", idPublication),
+                                // Se cancelan las publicaciones ofrecidas en la oferta cerrada
+                                f.in("OfferedPublications.idPublication", offeredPublicationsQuery)
+                        )))
                 .build();
 
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
                         .set(STATUS, OfferStatus.CANCELED)
-                        .where(f -> f.in(ID_OFFER, otherOffersWithPublicationsQuery))
+                        .where(f -> f.in(ID_OFFER, offersWithClosedOfferPublicationsQuery))
         );
     }
 }
