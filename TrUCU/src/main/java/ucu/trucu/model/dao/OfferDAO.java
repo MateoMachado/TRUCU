@@ -127,4 +127,13 @@ public class OfferDAO extends AbstractDAO<Offer> {
                         .where(f -> f.in(ID_OFFER, offersWithClosedOfferPublicationsQuery))
         );
     }
+
+    public OfferStatus getStatus(int idOffer) {
+        List<Offer> results = dbController.executeQuery(
+                QueryBuilder
+                        .selectFrom(getTable(), STATUS)
+                        .where(filter -> filter.eq(ID_OFFER, idOffer)),
+                getEntityClass());
+        return results.isEmpty() ? null : OfferStatus.valueOf(results.get(0).getStatus());
+    }
 }

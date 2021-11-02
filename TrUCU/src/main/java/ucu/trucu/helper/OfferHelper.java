@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ucu.trucu.helper.validation.OfferValidator;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
@@ -22,6 +23,9 @@ public class OfferHelper {
 
     @Autowired
     private OfferDAO offerDAO;
+
+    @Autowired
+    private OfferValidator offerValidator;
 
     @Autowired
     private PublicationHelper publicationHelper;
@@ -49,6 +53,10 @@ public class OfferHelper {
 
     public void closeOffer(int idPublication, int idOffer) throws SQLException {
 
+        LOGGER.info("Validando estados para cerrar oferta [idPublication=%s, idOffer=%s]", idPublication, idOffer);
+        publicationHelper.canClose(idPublication);
+        offerValidator.assertStatus(idOffer, OfferStatus.SETTLING);
+
         LOGGER.info("Cerrando publicacion principal [idPublication=%s]...", idPublication);
         publicationHelper.closePublication(idPublication);
 
@@ -63,17 +71,24 @@ public class OfferHelper {
 
         LOGGER.info("Cancelando ofertas con las publicaciones de la oferta [idOffer=%s]...", idOffer);
         offerDAO.cancelOffersWithPublicationsOf(idPublication, idOffer);
-
     }
 
     public void acceptOffer(int idPublication, int idOffer) throws SQLException {
+
+        LOGGER.info("Validando estados para aceptar oferta [idPublication=%s, idOffer=%s]", idPublication, idOffer);
+        publicationHelper.canAccept(idPublication);
+        offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
 
         LOGGER.info("Aceptando oferta [idOffer=%s] en publicacion [idPublication=%s]...", idOffer, idPublication);
         publicationHelper.acceptOffer(idPublication, idOffer);
 
         LOGGER.info("Aceptando oferta [idOffer=%s]...", idOffer, idPublication);
+        changeOfferStatus(idOffer, OfferStatus.SETTLING);
+    }
+
+    private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
         Offer offer = new Offer();
-        offer.setStatus(OfferStatus.SETTLING.name());
+        offer.setStatus(nextStatus.name());
         offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
     }
 }

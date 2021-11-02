@@ -8,6 +8,7 @@ import ucu.trucu.model.dao.PublicationDAO;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import ucu.trucu.helper.validation.PublicationValidator;
 import ucu.trucu.model.dao.ImageDAO;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dao.ReportDAO;
@@ -37,6 +38,9 @@ public class PublicationHelper {
 
     @Autowired
     private PublicationDAO publicationDAO;
+
+    @Autowired
+    private PublicationValidator publicationValidator;
 
     @Autowired
     private ImageDAO imageDAO;
@@ -110,31 +114,29 @@ public class PublicationHelper {
         return reportDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
     }
 
-    public PublicationStatus getStatus(int idPublication) {
-        return PublicationStatus.valueOf(publicationDAO.findByPK(idPublication).getStatus());
-    }
-    
     public void closeOfferPublications(int idOffer) throws SQLException {
         publicationDAO.closeOfferPublications(idOffer);
     }
 
-    public void closePublication(int idPublication) throws SQLException, IllegalStateException {
-        changePublicationStatus(idPublication, PublicationStatus.SETTLING, PublicationStatus.CLOSED);
+    public void closePublication(int idPublication) throws SQLException {
+        changePublicationStatus(idPublication, PublicationStatus.CLOSED);
     }
 
     public void acceptOffer(int idPublication, int idOffer) throws SQLException {
-        changePublicationStatus(idPublication, PublicationStatus.OPEN, PublicationStatus.SETTLING);
+        changePublicationStatus(idPublication, PublicationStatus.SETTLING);
     }
 
-    private void changePublicationStatus(int idPublication, PublicationStatus prevStatus, PublicationStatus nextStatus) throws SQLException {
-        PublicationStatus publicationStatus = getStatus(idPublication);
-        if (prevStatus.equals(publicationStatus)) {
-            Publication publication = new Publication();
-            publication.setStatus(nextStatus.name());
-            publicationDAO.update(publication, where -> where.eq(ID_PUBLICATION, idPublication));
-        } else {
-            throw new IllegalStateException(String.format("Cambio de estado de publicacion [idPublication=%s] imposible %s -> %s",
-                    idPublication, publicationStatus, nextStatus));
-        }
+    public void canClose(int idPublication) {
+        publicationValidator.assertStatus(idPublication, PublicationStatus.SETTLING);
+    }
+
+    public void canAccept(int idPublication) {
+        publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
+    }
+
+    private void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
+        Publication publication = new Publication();
+        publication.setStatus(nextStatus.name());
+        updatePublicationData(idPublication, publication);
     }
 }

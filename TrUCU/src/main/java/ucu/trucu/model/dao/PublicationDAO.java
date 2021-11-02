@@ -49,13 +49,22 @@ public class PublicationDAO extends AbstractDAO<Publication> {
 
         String offeredPublications = QueryBuilder
                 .selectFrom("OfferedPublications", ID_PUBLICATION)
-                .where(f2 -> f2.eq("idOffer", idOffer))
+                .where(f -> f.eq("idOffer", idOffer))
                 .build();
 
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
                         .set(STATUS, PublicationStatus.CLOSED)
-                        .where(f1 -> f1.in(ID_PUBLICATION, offeredPublications))
+                        .where(f -> f.in(ID_PUBLICATION, offeredPublications))
         );
+    }
+
+    public PublicationStatus getStatus(int idPublication) {
+        List<Publication> results = dbController.executeQuery(
+                QueryBuilder
+                        .selectFrom(getTable(), STATUS)
+                        .where(filter -> filter.eq(ID_PUBLICATION, idPublication)),
+                getEntityClass());
+        return results.isEmpty() ? null : PublicationStatus.valueOf(results.get(0).getStatus());
     }
 }
