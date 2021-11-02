@@ -21,7 +21,7 @@ public class ImageDAO extends AbstractDAO<Image> {
     }
 
     @Override
-    public Image findByPK(String... primaryKeys) {
+    public Image findByPK(Object... primaryKeys) {
         return findFirst(where -> where.eq("idImage", primaryKeys[0]));
     }
 }

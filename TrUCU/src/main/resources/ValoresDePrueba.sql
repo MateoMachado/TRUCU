@@ -21,7 +21,7 @@ VALUES ('Bicicleta', 'Bicicleta GT rodado 29', 1500, '20211031', 'OPEN', '519735
 insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
 VALUES ('Auriculares Logitech G533', 'Auriculares Logitech G533 Wireless', 900, '20211031', 'OPEN', '12345678')
 insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
-VALUES ('Monitor Samsung 24 pulgadas', 'Monitor Samsung 24 pulgadas 1 año de uso', 1900, '20211031', 'OPEN', '12345678')
+VALUES ('Monitor Samsung 24 pulgadas', 'Monitor Samsung 24 pulgadas 1 anio de uso', 1900, '20211031', 'OPEN', '12345678')
 insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
 VALUES ('Web Cam HD 1080P', 'Web Cam Full Hd 1080P con poco uso', 450, '20211031', 'OPEN', '12345678')
 
