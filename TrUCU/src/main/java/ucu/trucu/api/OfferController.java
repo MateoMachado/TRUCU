@@ -62,4 +62,17 @@ public class OfferController {
     public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
         return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
     }
+    
+    @PostMapping("/close")
+    public ResponseEntity closeOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
+        try {
+            offerHelper.closeOffer(idPublication, idOffer);
+            LOGGER.info("Publicacion [idPublication=%s] cerrada con oferta [idOffer=%s] correctamente", idPublication, idOffer);
+            return ResponseEntity.ok("Oferta cerrada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible cerrar publicacion [idPublication=%s] con oferta [idOffer=%s] -> %s",
+                    idPublication, idOffer, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
 }

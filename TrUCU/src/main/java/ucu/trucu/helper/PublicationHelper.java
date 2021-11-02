@@ -47,9 +47,6 @@ public class PublicationHelper {
     @Autowired
     private ReportDAO reportDAO;
 
-    @Autowired
-    private OfferHelper offerHelper;
-
     public Filter buildPublicationFilter(Integer idPublication, String title, String description, Integer maxUcuCoins,
             Integer minUcuCoins, Timestamp afterDate, Timestamp beforeDate, String status, String accountCI) {
         return Filter.build(where -> {
@@ -128,22 +125,8 @@ public class PublicationHelper {
                     idPublication, publicationStatus));
         }
     }
-
-    public void finishPublicationAndOffer(int idPublication, int idOffer) throws SQLException {
-
-        LOGGER.info("Cerrando publicacion principal [idPublication=%s]...", idPublication);
-        closePublication(idPublication);
-
-        LOGGER.info("Cerrando oferta aceptada [idOffer=%s] y rechazando las otras hacia la publicacion...", idOffer);
-        offerHelper.closeAcceptedOffer(idPublication, idOffer);
-
-        LOGGER.info("Cerrando publicacion ofrecidas en la oferta [idOffer=%s]...", idOffer);
+    
+    public void closeOfferPublications(int idOffer) throws SQLException{
         publicationDAO.closeOfferPublications(idOffer);
-
-        LOGGER.info("Rechazando ofertas realizadas a publicaciones de la oferta [idOffer=%s]...", idOffer);
-        offerHelper.rejectOffersToPublicationsOf(idOffer);
-
-        LOGGER.info("Cancelando otras ofertas con las publicaciones de la oferta [idOffer=%s]...", idOffer);
-        offerHelper.cancelOtherOffersWithPublicationsOf(idOffer);
     }
 }
