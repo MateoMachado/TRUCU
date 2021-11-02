@@ -8,6 +8,8 @@ import ucu.trucu.helper.validation.OfferValidator;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
+import ucu.trucu.model.dto.Publication;
+import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 
@@ -58,7 +60,7 @@ public class OfferHelper {
         offerValidator.assertStatus(idOffer, OfferStatus.SETTLING);
 
         LOGGER.info("Cerrando publicacion principal [idPublication=%s]...", idPublication);
-        publicationHelper.closePublication(idPublication);
+        publicationHelper.changePublicationStatus(idPublication, PublicationStatus.CLOSED);
 
         LOGGER.info("Cerrando oferta aceptada [idOffer=%s], y rechazando todas las otras ofertas a la publicacion [idPublication=%s]...", idOffer, idPublication);
         offerDAO.closeOfferToPublicationAndRejectOthers(idPublication, idOffer);
@@ -80,7 +82,7 @@ public class OfferHelper {
         offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
 
         LOGGER.info("Aceptando oferta [idOffer=%s] en publicacion [idPublication=%s]...", idOffer, idPublication);
-        publicationHelper.acceptOffer(idPublication, idOffer);
+        publicationHelper.changePublicationStatus(idPublication, PublicationStatus.SETTLING);
 
         LOGGER.info("Aceptando oferta [idOffer=%s]...", idOffer, idPublication);
         changeOfferStatus(idOffer, OfferStatus.SETTLING);
