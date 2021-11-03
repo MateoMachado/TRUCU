@@ -21,6 +21,7 @@ public class OfferDAO extends AbstractDAO<Offer> {
 
     private static final String ID_OFFER = "idOffer";
     private static final String STATUS = "status";
+    private static final String ID_PUBLICATION = "idPublication";
 
     @Override
     public String getTable() {
@@ -96,14 +97,14 @@ public class OfferDAO extends AbstractDAO<Offer> {
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
                         .set(STATUS, OfferStatus.REJECTED)
-                        .where(f -> f.in("idPublication", offeredPublicationsQuery))
+                        .where(f -> f.in(ID_PUBLICATION, offeredPublicationsQuery))
         );
     }
 
     public void cancelOffersWithPublicationsOf(int idPublication, int idOffer) throws SQLException {
 
         String offeredPublicationsQuery = QueryBuilder
-                .selectFrom("OfferedPublications", "idPublication")
+                .selectFrom("OfferedPublications", ID_PUBLICATION)
                 .where(f -> f.eq("OfferedPublications.idOffer", idOffer))
                 .build();
 
@@ -135,5 +136,14 @@ public class OfferDAO extends AbstractDAO<Offer> {
                         .where(filter -> filter.eq(ID_OFFER, idOffer)),
                 getEntityClass());
         return results.isEmpty() ? null : OfferStatus.valueOf(results.get(0).getStatus());
+    }
+
+    public int getOfferPublicationId(int idOffer) {
+        List<Offer> results = dbController.executeQuery(
+                QueryBuilder
+                        .selectFrom(getTable(), ID_PUBLICATION)
+                        .where(filter -> filter.eq(ID_OFFER, idOffer)),
+                getEntityClass());
+        return results.isEmpty() ? null : results.get(0).getIdPublication();
     }
 }

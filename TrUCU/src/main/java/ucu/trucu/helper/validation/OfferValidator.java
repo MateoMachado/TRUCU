@@ -22,4 +22,12 @@ public class OfferValidator {
                     idOffer, offerStatus));
         }
     }
+
+    public void assertStatusNotEqual(int idOffer, OfferStatus notExpectedStatus) {
+        OfferStatus offerStatus = offerDAO.getStatus(idOffer);
+        if (notExpectedStatus.equals(offerStatus)) {
+            throw new IllegalStateException(String.format("Imposible ejecutar operacion en oferta [idOffer=%s] con estado %s ",
+                    idOffer, offerStatus));
+        }
+    }
 }
