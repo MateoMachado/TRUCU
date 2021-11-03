@@ -1,43 +1,38 @@
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer ORDER BY offerDate DESC OFFSET 0 ROWS;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@74008b51]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (offerDate >= '2021-10-13 00:00:00.0');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 2 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (offerDate >= '2021-10-13 00:00:00.0') ORDER BY offerDate DESC OFFSET 0 ROWS;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 2 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@2786984a]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer ORDER BY offerDate DESC OFFSET 0 ROWS;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@376cd042]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (status = 'CLOSED');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status = 'CLOSED') ORDER BY offerDate DESC OFFSET 0 ROWS;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@3c9249ec]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (status = 'CANCELED');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status = 'CANCELED') ORDER BY offerDate DESC OFFSET 0 ROWS;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@32948e12]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (status = 'REJECTED');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status = 'REJECTED') ORDER BY offerDate DESC OFFSET 0 ROWS;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@82e3a0e]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (status = 'REJECTED');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status = 'REJECTED') ORDER BY offerDate DESC OFFSET 0 ROWS FETCH NEXT 2 ROWS ONLY;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 2 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@7a140f05]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (status = 'REJECTED');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status = 'REJECTED') ORDER BY offerDate DESC OFFSET 2 ROWS FETCH NEXT 2 ROWS ONLY;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [ucu.trucu.model.filter.OfferFilter@519aa654]
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idOffer FROM Offer WHERE (status = 'REJECTED');
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
-QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status = 'REJECTED') ORDER BY offerDate DESC OFFSET 4 ROWS FETCH NEXT 2 ROWS ONLY;
-INFO	[ucu.trucu.database.QueryExecutor]	<<< 0 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 18 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 18 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 5 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 5 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 5 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 5 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 12 ROWS FETCH NEXT 6 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status = 'OPEN')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT idPublication FROM Publication WHERE (status = 'OPEN');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 15 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status = 'OPEN') ORDER BY publicationDate DESC OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 5 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
