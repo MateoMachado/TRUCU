@@ -118,14 +118,6 @@ public class PublicationHelper {
         publicationDAO.closeOfferPublications(idOffer);
     }
 
-    public void canClose(int idPublication) {
-        publicationValidator.assertStatus(idPublication, PublicationStatus.SETTLING);
-    }
-
-    public void canAccept(int idPublication) {
-        publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
-    }
-
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
         Publication publication = new Publication();
         publication.setStatus(nextStatus.name());
