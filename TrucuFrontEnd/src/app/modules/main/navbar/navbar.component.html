@@ -1,0 +1,18 @@
+<nav class="flex items-center justify-between flex-wrap bg-cover bg-no-repeat p-3 fixed w-full bg-blue-500 shadow-md" style="z-index:900">
+    <div class="flex items-center flex-no-shrink mr-6 cursor-pointer" >
+      <svg xmlns="http://www.w3.org/2000/svg" (click)="toggleSideBar($event)" class="h-6 w-6 mr-12 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="#FFFFFF">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg> 
+        <img class="w-32" src="assets/images/logo_UCU.png" [routerLink] = "['home']">
+      </div>
+    <div class="block flex-grow lg:flex lg:items-center lg:w-auto justify-center">
+        <div class="w-1/2 p-3">
+            <div class="relative">     
+                <input type="text" class="p-4 bg-white h-14 w-full rounded-lg focus:outline-none hover:cursor-pointer" placeholder="Buscar productos"> 
+                <span class="absolute top-4 right-5 border-l pl-4">
+                    <img class="w-6 cursor-pointer" src="assets/images/search-icon.png">
+                </span> 
+            </div>
+        </div>
+    </div>
+</nav>

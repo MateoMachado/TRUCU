@@ -104,4 +104,16 @@ public class OfferController {
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
+    
+    @PostMapping("/counterOffer")
+    public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
+        try {
+            offerHelper.counterOffer(idOffer, publications);
+            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente",idOffer);
+            return ResponseEntity.ok("Contraoferta realizada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s",idOffer,ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }

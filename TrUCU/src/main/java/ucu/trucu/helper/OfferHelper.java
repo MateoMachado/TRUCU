@@ -28,12 +28,12 @@ public class OfferHelper {
 
     @Autowired
     private OfferValidator offerValidator;
+    
+    @Autowired
+    private PublicationValidator publicationValidator;
 
     @Autowired
     private PublicationHelper publicationHelper;
-
-    @Autowired
-    private PublicationValidator publicationValidator;
 
     public void createOffer(Offer newOffer, List<Integer> idPublications) throws SQLException {
         int idOffer = offerDAO.insert(newOffer);
@@ -120,6 +120,27 @@ public class OfferHelper {
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
         Offer offer = new Offer();
         offer.setStatus(nextStatus.name());
+        offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
+    }
+    
+    public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
+        // Controlo que la oferta y las publicaciones esten abierta
+        offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
+        for (int idPublication : idPublications) {
+            publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
+        }
+        
+        // Elimino las publicaciones relacionadas con la oferta
+        offerDAO.deleteOfferedPublications(idOffer, where
+                -> where.eq(ID_OFFER, idOffer));
+        // Inserto las nuevas publicaciones
+        for (int idPublication : idPublications) {
+            offerDAO.addOfferedPublications(idOffer, idPublication);
+        }
+        
+        // Cambio el estado a contraoferta
+        Offer offer = new Offer();
+        offer.setStatus(OfferStatus.CHANGED.name());
         offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
     }
 }

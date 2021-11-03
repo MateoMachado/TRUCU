@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
 ERROR	[ucu.trucu.api.PublicationController]	Imposible cerrar oferta [idOffer=7] -> java.lang.IllegalStateException: Imposible ejecutar operacion en oferta [idOffer=7] con estado OPEN 
 INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para revertir aceptacion de oferta [idOffer=6]
@@ -68,3 +69,5 @@ INFO	[ucu.trucu.helper.OfferHelper]	Validando estados para aceptar oferta [idOff
 QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT status FROM Offer WHERE idOffer = '7';
 INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
 ERROR	[ucu.trucu.api.PublicationController]	Imposible aceptar oferta [idOffer=7] -> java.lang.IllegalStateException: Imposible ejecutar operacion en oferta [idOffer=7] con estado CLOSED 
+=======
+>>>>>>> main
