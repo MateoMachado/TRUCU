@@ -34,6 +34,14 @@ public class PublicationDAO extends AbstractDAO<Publication> {
         return findFirst(where -> where.eq(ID_PUBLICATION, primaryKeys[0]));
     }
 
+    public int countPublications(Filter filter) {
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable(), ID_PUBLICATION)
+                        .where(filter),
+                getEntityClass())
+                .size();
+    }
+
     public List<Publication> filterPublications(int pageSize, int pageNumber, Filter filter) {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(getTable())
