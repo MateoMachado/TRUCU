@@ -8,13 +8,18 @@ import ucu.trucu.model.dao.PublicationDAO;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import ucu.trucu.helper.validation.PublicationValidator;
 import ucu.trucu.model.dao.ImageDAO;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
+import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
+import ucu.trucu.util.log.Logger;
+import ucu.trucu.util.log.LoggerFactory;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -23,6 +28,7 @@ import ucu.trucu.model.dto.Report;
 @Service
 public class PublicationHelper {
 
+    private static final Logger LOGGER = LoggerFactory.create(PublicationHelper.class);
     private static final String ID_PUBLICATION = "idPublication";
     private static final String TITLE = "title";
     private static final String DESCRIPTION = "description";
@@ -33,6 +39,9 @@ public class PublicationHelper {
 
     @Autowired
     private PublicationDAO publicationDAO;
+
+    @Autowired
+    private PublicationValidator publicationValidator;
 
     @Autowired
     private ImageDAO imageDAO;
@@ -90,8 +99,9 @@ public class PublicationHelper {
         return publicationDAO.delete(where -> where.eq(ID_PUBLICATION, idPublication)) == 1;
     }
 
-    public List<Publication> getPublications(int pageSize, int pageNumber, Filter filter) {
-        return publicationDAO.filterPublications(pageSize, pageNumber, filter);
+    public Page<Publication> getPublications(int pageSize, int pageNumber, Filter filter) {
+        int totalPages = publicationDAO.countPublications(filter);
+        return new Page(totalPages, pageNumber, pageSize, publicationDAO.filterPublications(pageSize, pageNumber, filter));
     }
 
     public List<Image> getPublicationImages(int idPublication) {
@@ -104,5 +114,15 @@ public class PublicationHelper {
 
     public List<Report> getPublicationReports(int idPublication) {
         return reportDAO.findBy(where -> where.eq(ID_PUBLICATION, idPublication));
+    }
+
+    public void closeOfferPublications(int idOffer) throws SQLException {
+        publicationDAO.closeOfferPublications(idOffer);
+    }
+
+    public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
+        Publication publication = new Publication();
+        publication.setStatus(nextStatus.name());
+        updatePublicationData(idPublication, publication);
     }
 }

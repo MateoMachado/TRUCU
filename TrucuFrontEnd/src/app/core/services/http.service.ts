@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Publication } from '../models/Publication';
+import { PublicationFilter } from '../models/PublicationFilter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  baseUrl='https://localhost:44308/';//Local
+  baseUrl='http://localhost:8080/trucu/';//Local
 
   constructor(private http:HttpClient) { }
 
@@ -71,4 +73,9 @@ export class HttpService {
           );
     }
   }
+
+  GetPublications(publicationFilter : any){
+    return <Observable<Publication[]>> this.Get('publication/filter',true);
+  }
+
 }

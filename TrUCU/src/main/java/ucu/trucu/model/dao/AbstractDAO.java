@@ -22,9 +22,9 @@ public abstract class AbstractDAO<T> {
     public abstract String getTable();
     
     public abstract Class<T> getEntityClass();
-    
-    public abstract T findByPK(String... primaryKeys);
-    
+
+    public abstract T findByPK(Object... primaryKeys);
+
     public List<T> findBy(Function<Filter, String> filter) {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(getTable())

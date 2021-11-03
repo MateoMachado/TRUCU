@@ -1,5 +1,5 @@
 export class Account {
-    cI : string;
+    ci : string;
     name : string;
     lastName : string;
     email : string;
