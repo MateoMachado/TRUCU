@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ucu.trucu.helper.OfferHelper;
 import ucu.trucu.model.dto.Offer;
+import ucu.trucu.model.filter.OfferFilter;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -55,6 +57,16 @@ public class OfferController {
     @GetMapping("/getFromUser")
     public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
         return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<Offer>> getPublications(
+            OfferFilter offerFilter,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "0") int pageSize) {
+
+        LOGGER.info("Obteniendo ofertas filtradas por [%s]", offerFilter);
+        return ResponseEntity.ok(offerHelper.getOffers(pageSize, pageNumber, offerFilter.toFilter()));
     }
 
     @PostMapping("/close")
@@ -104,15 +116,15 @@ public class OfferController {
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
-    
+
     @PostMapping("/counterOffer")
     public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
         try {
             offerHelper.counterOffer(idOffer, publications);
-            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente",idOffer);
+            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente", idOffer);
             return ResponseEntity.ok("Contraoferta realizada correctamente");
         } catch (SQLException | IllegalStateException ex) {
-            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s",idOffer,ex.getMessage());
+            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }

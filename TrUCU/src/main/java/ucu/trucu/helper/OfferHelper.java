@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.validation.OfferValidator;
 import ucu.trucu.helper.validation.PublicationValidator;
 import ucu.trucu.model.dao.OfferDAO;
@@ -12,6 +13,7 @@ import ucu.trucu.model.dto.Offer.OfferStatus;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -28,7 +30,7 @@ public class OfferHelper {
 
     @Autowired
     private OfferValidator offerValidator;
-    
+
     @Autowired
     private PublicationValidator publicationValidator;
 
@@ -122,14 +124,14 @@ public class OfferHelper {
         offer.setStatus(nextStatus.name());
         offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
     }
-    
+
     public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
         // Controlo que la oferta y las publicaciones esten abierta
         offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
         for (int idPublication : idPublications) {
             publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
         }
-        
+
         // Elimino las publicaciones relacionadas con la oferta
         offerDAO.deleteOfferedPublications(idOffer, where
                 -> where.eq(ID_OFFER, idOffer));
@@ -137,10 +139,15 @@ public class OfferHelper {
         for (int idPublication : idPublications) {
             offerDAO.addOfferedPublications(idOffer, idPublication);
         }
-        
+
         // Cambio el estado a contraoferta
         Offer offer = new Offer();
         offer.setStatus(OfferStatus.CHANGED.name());
         offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
+    }
+
+    public Page<Offer> getOffers(int pageSize, int pageNumber, Filter filter) {
+        int totalPages = offerDAO.countOffer(filter);
+        return new Page(totalPages, pageNumber, pageSize, offerDAO.filterOffers(pageSize, pageNumber, filter));
     }
 }

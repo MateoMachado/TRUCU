@@ -20,7 +20,6 @@ public class PublicationFilter implements DTOFilter {
     private static final String STATUS = "status";
     private static final String ACCOUNT_CI = "accountCI";
 
-    @JsonProperty("idPublication")
     private Integer idPublication;
     private String title;
     private String description;
@@ -111,10 +110,10 @@ public class PublicationFilter implements DTOFilter {
                 conditions.add(where.eq(ID_PUBLICATION, idPublication));
             }
             if (title != null) {
-                conditions.add(where.eq(TITLE, title));
+                conditions.add(where.like(TITLE, String.format("%%%s%%", title)));
             }
             if (description != null) {
-                conditions.add(where.eq(DESCRIPTION, description));
+                conditions.add(where.like(DESCRIPTION, String.format("%%%s%%", description)));
             }
             if (maxUcuCoins != null) {
                 conditions.add(where.loet(UCUCOIN_VALUE, maxUcuCoins));

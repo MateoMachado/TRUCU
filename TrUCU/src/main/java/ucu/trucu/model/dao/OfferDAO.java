@@ -22,6 +22,7 @@ public class OfferDAO extends AbstractDAO<Offer> {
     private static final String ID_OFFER = "idOffer";
     private static final String STATUS = "status";
     private static final String ID_PUBLICATION = "idPublication";
+    private static final String OFFER_DATE = "offerDate";
 
     @Override
     public String getTable() {
@@ -145,5 +146,24 @@ public class OfferDAO extends AbstractDAO<Offer> {
                         .where(filter -> filter.eq(ID_OFFER, idOffer)),
                 getEntityClass());
         return results.isEmpty() ? null : results.get(0).getIdPublication();
+    }
+
+    public int countOffer(Filter filter) {
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable(), ID_OFFER)
+                        .where(filter),
+                getEntityClass())
+                .size();
+    }
+
+    public List<Offer> filterOffers(int pageSize, int pageNumber, Filter filter) {
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable())
+                        .where(filter)
+                        .orderDesc(OFFER_DATE)
+                        .offset(pageSize * pageNumber)
+                        .fetchNext(pageSize),
+                getEntityClass()
+        );
     }
 }

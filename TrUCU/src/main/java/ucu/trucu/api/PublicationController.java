@@ -21,6 +21,7 @@ import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import ucu.trucu.model.filter.PublicationFilter;
 import ucu.trucu.util.pagination.Page;
 
 /**
@@ -79,23 +80,12 @@ public class PublicationController {
 
     @GetMapping("/filter")
     public ResponseEntity<Page<Publication>> getPublications(
+            PublicationFilter publicationFilter,
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "0") int pageSize,
-            @RequestParam(required = false) Integer idPublication,
-            @RequestParam(required = false) Integer maxUcuCoins,
-            @RequestParam(required = false) Integer minUcuCoins,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String accountCI,
-            @RequestParam(required = false) Timestamp afterDate,
-            @RequestParam(required = false) Timestamp beforeDate) {
+            @RequestParam(defaultValue = "0") int pageSize) {
 
-        Filter filter = publicationHelper.buildPublicationFilter(idPublication, title, description, maxUcuCoins,
-                minUcuCoins, afterDate, beforeDate, status, accountCI);
-
-        LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
-        return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, filter));
+        LOGGER.info("Obteniendo publicaciones filtradas por [%s]", publicationFilter);
+        return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, publicationFilter.toFilter()));
     }
 
     @GetMapping("/images")
