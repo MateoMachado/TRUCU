@@ -130,4 +130,16 @@ public class OfferController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping("/reject")
+    public ResponseEntity rejectOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.rejectOffer(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] rechazada correctamente", idOffer);
+            return ResponseEntity.ok("Oferta rechazada realizada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al rechazar la oferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
 }

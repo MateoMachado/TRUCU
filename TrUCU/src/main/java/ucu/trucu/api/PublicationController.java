@@ -1,7 +1,6 @@
 package ucu.trucu.api;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.PublicationHelper;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Offer;

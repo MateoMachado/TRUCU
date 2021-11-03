@@ -119,6 +119,14 @@ public class OfferHelper {
         changeOfferStatus(idOffer, OfferStatus.OPEN);
     }
 
+    public void rejectOffer(int idOffer) throws SQLException {
+
+        LOGGER.info("Validando estados para rechazar oferta [idOffer=%s]", idOffer);
+        offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
+
+        changeOfferStatus(idOffer, OfferStatus.REJECTED);
+    }
+
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
         Offer offer = new Offer();
         offer.setStatus(nextStatus.name());
