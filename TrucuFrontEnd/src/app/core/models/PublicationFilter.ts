@@ -1,6 +1,6 @@
 export class PublicationFilter{
-    pageNumber : number;
-    pageSize : number;
+    pageNumber : number; 
+    pageSize : number; 
     status : string;
     title : string;
     accountCI : number;

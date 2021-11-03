@@ -4,6 +4,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Publication } from '../models/Publication';
 import { PublicationFilter } from '../models/PublicationFilter';
+import { Page } from '../models/Page';
+import { Account } from '../models/Account';
 
 @Injectable({
   providedIn: 'root'
@@ -75,7 +77,11 @@ export class HttpService {
   }
 
   GetPublications(publicationFilter : any){
-    return <Observable<Publication[]>> this.Get('publication/filter',true);
+    return <Observable<Page>> this.Get('publication/filter',true, publicationFilter);
+  }
+
+  Login(emailAndPassword : any){
+    return <Observable<Account>> this.Get('account/login',true, emailAndPassword);
   }
 
 }
