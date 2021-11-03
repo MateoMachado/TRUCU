@@ -16,11 +16,6 @@ import ucu.trucu.model.dto.Offer;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Seba Mazzey
@@ -63,28 +58,62 @@ public class OfferController {
     }
 
     @PostMapping("/close")
-    public ResponseEntity closeOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
+    public ResponseEntity closeOffer(@RequestParam int idOffer) {
         try {
-            offerHelper.closeOffer(idPublication, idOffer);
-            LOGGER.info("Oferta [idOffer=%s] de publicacion [idPublication=%s] cerrada correctamente", idPublication, idOffer);
+            offerHelper.closeOffer(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] cerrada correctamente", idOffer);
             return ResponseEntity.ok("Oferta cerrada correctamente");
         } catch (SQLException | IllegalStateException ex) {
-            LOGGER.error("Imposible cerrar oferta [idOffer=%s] de publicacion [idPublication=%s] -> %s",
-                    idPublication, idOffer, ex);
+            LOGGER.error("Imposible cerrar oferta [idOffer=%s] -> %s", idOffer, ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @PostMapping("/accept")
-    public ResponseEntity acceptOffer(@RequestParam int idPublication, @RequestParam int idOffer) {
+    public ResponseEntity acceptOffer(@RequestParam int idOffer) {
         try {
-            offerHelper.acceptOffer(idPublication, idOffer);
-            LOGGER.info("Oferta [idOffer=%s] de publicacion [idPublication=%s] aceptada correctamente", idPublication, idOffer);
+            offerHelper.acceptOffer(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] aceptada correctamente", idOffer);
             return ResponseEntity.ok("Oferta aceptada correctamente");
         } catch (SQLException | IllegalStateException ex) {
-            LOGGER.error("Imposible aceptar oferta [idOffer=%s] de publicacion [idPublication=%s] -> %s",
-                    idPublication, idOffer, ex);
+            LOGGER.error("Imposible aceptar oferta [idOffer=%s] -> %s", idOffer, ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity cancelOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.cancelOffer(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] cancelada correctamente", idOffer);
+            return ResponseEntity.ok("Oferta cancelada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible cancelar oferta [idOffer=%s] -> %s", idOffer, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
+    @PostMapping("/revert")
+    public ResponseEntity revertAcceptance(@RequestParam int idOffer) {
+        try {
+            offerHelper.revertAcceptance(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] desaceptada correctamente", idOffer);
+            return ResponseEntity.ok("Oferta desaceptada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible desaceptada oferta [idOffer=%s]  -> %s", idOffer, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+    
+    @PostMapping("/counterOffer")
+    public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
+        try {
+            offerHelper.counterOffer(idOffer, publications);
+            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente",idOffer);
+            return ResponseEntity.ok("Contraoferta realizada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s",idOffer,ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 }

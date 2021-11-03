@@ -19,6 +19,7 @@ import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -98,8 +99,9 @@ public class PublicationHelper {
         return publicationDAO.delete(where -> where.eq(ID_PUBLICATION, idPublication)) == 1;
     }
 
-    public List<Publication> getPublications(int pageSize, int pageNumber, Filter filter) {
-        return publicationDAO.filterPublications(pageSize, pageNumber, filter);
+    public Page<Publication> getPublications(int pageSize, int pageNumber, Filter filter) {
+        int totalPages = publicationDAO.countPublications(filter);
+        return new Page(totalPages, pageNumber, pageSize, publicationDAO.filterPublications(pageSize, pageNumber, filter));
     }
 
     public List<Image> getPublicationImages(int idPublication) {
@@ -116,14 +118,6 @@ public class PublicationHelper {
 
     public void closeOfferPublications(int idOffer) throws SQLException {
         publicationDAO.closeOfferPublications(idOffer);
-    }
-
-    public void canClose(int idPublication) {
-        publicationValidator.assertStatus(idPublication, PublicationStatus.SETTLING);
-    }
-
-    public void canAccept(int idPublication) {
-        publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
     }
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {

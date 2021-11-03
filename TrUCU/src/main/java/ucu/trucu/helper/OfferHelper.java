@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.helper.validation.OfferValidator;
+import ucu.trucu.helper.validation.PublicationValidator;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
-import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
@@ -28,6 +28,9 @@ public class OfferHelper {
 
     @Autowired
     private OfferValidator offerValidator;
+    
+    @Autowired
+    private PublicationValidator publicationValidator;
 
     @Autowired
     private PublicationHelper publicationHelper;
@@ -53,11 +56,12 @@ public class OfferHelper {
         return offerDAO.getUserPublications(idUser);
     }
 
-    public void closeOffer(int idPublication, int idOffer) throws SQLException {
+    public void closeOffer(int idOffer) throws SQLException {
 
-        LOGGER.info("Validando estados para cerrar oferta [idPublication=%s, idOffer=%s]", idPublication, idOffer);
-        publicationHelper.canClose(idPublication);
+        LOGGER.info("Validando estados para cerrar oferta [idOffer=%s]", idOffer);
         offerValidator.assertStatus(idOffer, OfferStatus.SETTLING);
+        int idPublication = offerDAO.getOfferPublicationId(idOffer);
+        publicationValidator.assertStatus(idPublication, PublicationStatus.SETTLING);
 
         LOGGER.info("Cerrando publicacion principal [idPublication=%s]...", idPublication);
         publicationHelper.changePublicationStatus(idPublication, PublicationStatus.CLOSED);
@@ -75,11 +79,12 @@ public class OfferHelper {
         offerDAO.cancelOffersWithPublicationsOf(idPublication, idOffer);
     }
 
-    public void acceptOffer(int idPublication, int idOffer) throws SQLException {
+    public void acceptOffer(int idOffer) throws SQLException {
 
-        LOGGER.info("Validando estados para aceptar oferta [idPublication=%s, idOffer=%s]", idPublication, idOffer);
-        publicationHelper.canAccept(idPublication);
+        LOGGER.info("Validando estados para aceptar oferta [idOffer=%s]", idOffer);
         offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
+        int idPublication = offerDAO.getOfferPublicationId(idOffer);
+        publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
 
         LOGGER.info("Aceptando oferta [idOffer=%s] en publicacion [idPublication=%s]...", idOffer, idPublication);
         publicationHelper.changePublicationStatus(idPublication, PublicationStatus.SETTLING);
@@ -88,9 +93,54 @@ public class OfferHelper {
         changeOfferStatus(idOffer, OfferStatus.SETTLING);
     }
 
+    public void cancelOffer(int idOffer) throws SQLException {
+
+        LOGGER.info("Validando estados para cancelar oferta [idOffer=%s]", idOffer);
+        offerValidator.assertStatusNotEqual(idOffer, OfferStatus.CLOSED);
+
+        OfferStatus offerStatus = offerDAO.getStatus(idOffer);
+        if (OfferStatus.SETTLING.equals(offerStatus)) {
+            int idPublication = offerDAO.getOfferPublicationId(idOffer);
+            publicationHelper.changePublicationStatus(idPublication, PublicationStatus.OPEN);
+        }
+        changeOfferStatus(idOffer, OfferStatus.CANCELED);
+    }
+
+    public void revertAcceptance(int idOffer) throws SQLException {
+
+        LOGGER.info("Validando estados para revertir aceptacion de oferta [idOffer=%s]", idOffer);
+        offerValidator.assertStatus(idOffer, OfferStatus.SETTLING);
+        int idPublication = offerDAO.getOfferPublicationId(idOffer);
+        publicationValidator.assertStatus(idPublication, PublicationStatus.SETTLING);
+
+        publicationHelper.changePublicationStatus(idPublication, PublicationStatus.OPEN);
+        changeOfferStatus(idOffer, OfferStatus.OPEN);
+    }
+
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
         Offer offer = new Offer();
         offer.setStatus(nextStatus.name());
+        offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
+    }
+    
+    public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
+        // Controlo que la oferta y las publicaciones esten abierta
+        offerValidator.assertStatus(idOffer, OfferStatus.OPEN);
+        for (int idPublication : idPublications) {
+            publicationValidator.assertStatus(idPublication, PublicationStatus.OPEN);
+        }
+        
+        // Elimino las publicaciones relacionadas con la oferta
+        offerDAO.deleteOfferedPublications(idOffer, where
+                -> where.eq(ID_OFFER, idOffer));
+        // Inserto las nuevas publicaciones
+        for (int idPublication : idPublications) {
+            offerDAO.addOfferedPublications(idOffer, idPublication);
+        }
+        
+        // Cambio el estado a contraoferta
+        Offer offer = new Offer();
+        offer.setStatus(OfferStatus.CHANGED.name());
         offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
     }
 }
