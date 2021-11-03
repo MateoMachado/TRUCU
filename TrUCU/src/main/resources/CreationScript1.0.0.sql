@@ -78,6 +78,7 @@ CREATE TABLE Report (
 
 	CONSTRAINT PK_report PRIMARY KEY (idReport),
 	CONSTRAINT FK_report_reason FOREIGN KEY (idReason) REFERENCES Reason(idReason)
+        CONSTRAINT FK_report_publication FOREIGN KEY (idPublication) REFERENCES Publication(idPublication)
 );
 
 CREATE TABLE UserAuthentication(
