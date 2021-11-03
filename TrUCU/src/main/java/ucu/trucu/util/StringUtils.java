@@ -17,6 +17,10 @@ public class StringUtils {
     public static final String LN_TABBED = "\n\t";
     public static final String UNDERSCORE = "_";
 
+    public static boolean isEmpty(String text) {
+        return text == null || text.isEmpty();
+    }
+
     public static String capitalize(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }

@@ -21,6 +21,7 @@ import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -77,7 +78,7 @@ public class PublicationController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<Publication>> getPublications(
+    public ResponseEntity<Page<Publication>> getPublications(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize,
             @RequestParam(required = false) Integer idPublication,
