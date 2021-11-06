@@ -3,6 +3,8 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@import '~ngx-toastr/toastr';
+
 
 html,
 body {

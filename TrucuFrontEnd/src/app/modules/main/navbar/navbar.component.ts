@@ -39,9 +39,10 @@ export class NavbarComponent implements OnInit {
 
   searchPublication(){
     var filter = new PublicationFilter();
-    filter.title = this.searchText;
+    if(this.searchText)
+      filter.title = this.searchText;
     filter.pageSize = 10;
-    filter.pageNumber = 1;
+    filter.pageNumber = 0;
 
     this.http.GetPublications(filter).subscribe(data => {
       this.publicationService.setPage(data);

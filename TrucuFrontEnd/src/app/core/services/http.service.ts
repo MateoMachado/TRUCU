@@ -84,4 +84,8 @@ export class HttpService {
     return <Observable<Account>> this.Get('account/login',true, emailAndPassword);
   }
 
+  Register(user : any){
+    return <Observable<any>> this.http.post<Account>(this.baseUrl + 'account/create', user);
+  }
+
 }
