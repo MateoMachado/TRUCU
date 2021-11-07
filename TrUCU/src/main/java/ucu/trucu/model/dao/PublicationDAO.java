@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 
@@ -55,10 +56,9 @@ public class PublicationDAO extends AbstractDAO<Publication> {
 
     public void closeOfferPublications(int idOffer) throws SQLException {
 
-        String offeredPublications = QueryBuilder
+        SelectStatement offeredPublications = QueryBuilder
                 .selectFrom("OfferedPublications", ID_PUBLICATION)
-                .where(f -> f.eq("idOffer", idOffer))
-                .build();
+                .where(f -> f.eq("idOffer", idOffer));
 
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())

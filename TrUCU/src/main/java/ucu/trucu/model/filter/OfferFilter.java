@@ -17,7 +17,7 @@ public class OfferFilter implements DTOFilter {
     private static final String ID_PUBLICATION = "idPublication";
 
     private Integer idOffer;
-    private String status;
+    private String[] status;
     private Timestamp afterOfferDate;
     private Timestamp beforeOfferDate;
     private Integer idPublication;
@@ -30,11 +30,11 @@ public class OfferFilter implements DTOFilter {
         this.idOffer = idOffer;
     }
 
-    public String getStatus() {
+    public String[] getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String[] status) {
         this.status = status;
     }
 
@@ -70,7 +70,7 @@ public class OfferFilter implements DTOFilter {
                 conditions.add(where.eq(ID_OFFER, idOffer));
             }
             if (status != null) {
-                conditions.add(where.eq(STATUS, status));
+                conditions.add(where.in(STATUS, status));
             }
             if (idPublication != null) {
                 conditions.add(where.eq(ID_PUBLICATION, idPublication));

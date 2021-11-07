@@ -27,7 +27,7 @@ public class PublicationFilter implements DTOFilter {
     private Integer minUcuCoins;
     private Timestamp afterDate;
     private Timestamp beforeDate;
-    private String status;
+    private String[] status;
     private String accountCI;
 
     public Integer getIdPublication() {
@@ -86,11 +86,11 @@ public class PublicationFilter implements DTOFilter {
         this.beforeDate = beforeDate;
     }
 
-    public String getStatus() {
+    public String[] getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String[] status) {
         this.status = status;
     }
 
@@ -128,7 +128,7 @@ public class PublicationFilter implements DTOFilter {
                 conditions.add(where.loet(PUBLICATION_DATE, beforeDate));
             }
             if (status != null) {
-                conditions.add(where.eq(STATUS, status));
+                conditions.add(where.in(STATUS, status));
             }
             if (accountCI != null) {
                 conditions.add(where.eq(ACCOUNT_CI, accountCI));
