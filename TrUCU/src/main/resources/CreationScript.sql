@@ -1,5 +1,5 @@
 CREATE DATABASE Trucu;
-
+GO
 USE Trucu;
 
 CREATE TABLE Rol (
