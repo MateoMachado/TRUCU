@@ -4,44 +4,49 @@ USE Trucu;
 
 CREATE TABLE Rol (
 	name VARCHAR(32),
-	description VARCHAR(255),
+	description VARCHAR(255) NOT NULL,
 
 	CONSTRAINT PK_rol PRIMARY KEY (name)
 );
 
 CREATE TABLE Account (
-	CI VARCHAR(10),
+	email VARCHAR(50),
 	name VARCHAR(32) NOT NULL,
 	lastName VARCHAR(32) NOT NULL,
-	email VARCHAR(50) NOT NULL,
 	birthDate DATE NOT NULL,
 	password VARCHAR(32) NOT NULL,
 	rolName VARCHAR(32) NOT NULL,
 
-	CONSTRAINT PK_account PRIMARY KEY (CI),
+	CONSTRAINT PK_account PRIMARY KEY (email),
+	CONSTRAINT CHK_account CHECK (
+		(email like '%@%ucu.edu.uy' and email not like '%..%' and email not like '%@%@%' and email not like '%@.%' and email not like '%.@%')),
 	CONSTRAINT FK_account_rol FOREIGN KEY (rolName) REFERENCES Rol(name)
 );
 
 CREATE TABLE Publication (
 	idPublication INT IDENTITY(1, 1),
-	title VARCHAR(64),
+	title VARCHAR(64) NOT NULL,
 	description VARCHAR(256),
-	ucuCoinValue INT,
+	ucuCoinValue INT NOT NULL,
 	publicationDate DateTime DEFAULT GetDate(),
-	status VARCHAR(16),
-	accountCI VARCHAR(10),
+	status VARCHAR(16) DEFAULT 'OPEN',
+	accountEmail VARCHAR(50) NOT NULL,
 
 	CONSTRAINT PK_publication PRIMARY KEY (idPublication),
-	CONSTRAINT FK_publication_account FOREIGN KEY (accountCI) REFERENCES Account(CI)
+	CONSTRAINT CHK_publication CHECK (
+		ucuCoinValue > 0 and 
+		status in ('OPEN', 'CLOSED', 'HIDDEN', 'SETTLING', 'CANCELED', 'REPORTED')),
+	CONSTRAINT FK_publication_account FOREIGN KEY (accountEmail) REFERENCES Account(email)
 );
 
 CREATE TABLE Offer(
 	idOffer INT IDENTITY(1, 1),
-	status VARCHAR(16),
-	offerDate DateTime,
-	idPublication INT,
+	status VARCHAR(16) DEFAULT 'OPEN',
+	offerDate DateTime DEFAULT GetDate(),
+	idPublication INT NOT NULL,
 
 	CONSTRAINT PK_offer PRIMARY KEY (idOffer),
+	CONSTRAINT CHK_offer CHECK (status in ('OPEN', 'CLOSED', 'REJECTED', 'SETTLING', 'CANCELED', 'CHANGED')),
 	CONSTRAINT FK_offer_publication FOREIGN KEY (idPublication) REFERENCES Publication(idPublication)
 );
 
@@ -56,8 +61,8 @@ CREATE TABLE OfferedPublications(
 
 CREATE TABLE Image(
 	idImage INT IDENTITY(1, 1),
-	path VARCHAR(255),
-	idPublication INT,
+	imageBytes VARCHAR(MAX),
+	idPublication INT NOT NULL,
 
 	CONSTRAINT PK_image PRIMARY KEY (idImage),
 	CONSTRAINT FK_image_publication FOREIGN KEY (idPublication) REFERENCES Publication(idPublication)
@@ -72,19 +77,13 @@ CREATE TABLE Reason(
 
 CREATE TABLE Report (
 	idReport INT IDENTITY(1, 1),
-	status VARCHAR(16),
-	idReason INT,
-        idPublication INT,
+	status VARCHAR(16) DEFAULT 'OPEN',
+	idReason INT NOT NULL,
+    idPublication INT NOT NULL,
 
 	CONSTRAINT PK_report PRIMARY KEY (idReport),
+	CONSTRAINT CHK_report CHECK (status in ('OPEN', 'REJECTED', 'ACCEPTED')),
 	CONSTRAINT FK_report_reason FOREIGN KEY (idReason) REFERENCES Reason(idReason)
-);
-
-CREATE TABLE UserAuthentication(
-	CI VARCHAR(10),
-
-	CONSTRAINT PK_userAuthentication PRIMARY KEY (CI),
-	CONSTRAINT FK_userAuthentication_account FOREIGN KEY (CI) REFERENCES Account(CI)
 );
 
 -- User creation
