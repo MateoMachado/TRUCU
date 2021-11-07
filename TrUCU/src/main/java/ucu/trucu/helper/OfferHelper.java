@@ -128,9 +128,7 @@ public class OfferHelper {
     public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
         // Controlo que la oferta y las publicaciones esten abierta
         assertStatus(idOffer, OfferStatus.OPEN);
-        for (int idPublication : idPublications) {
-            publicationHelper.assertStatus(idPublication, PublicationStatus.OPEN);
-        }
+        idPublications.forEach(idPublication -> publicationHelper.assertStatus(idPublication, PublicationStatus.OPEN));
 
         // Elimino las publicaciones relacionadas con la oferta
         offerDAO.deleteOfferedPublications(idOffer, where
@@ -150,7 +148,7 @@ public class OfferHelper {
         int totalPages = offerDAO.countOffer(filter);
         return new Page(totalPages, pageNumber, pageSize, offerDAO.filterOffers(pageSize, pageNumber, filter));
     }
-    
+
     public void assertStatus(int idOffer, OfferStatus expectedStatus) {
         OfferStatus offerStatus = offerDAO.getStatus(idOffer);
         if (!expectedStatus.equals(offerStatus)) {

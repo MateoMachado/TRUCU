@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.OfferHelper;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.filter.OfferFilter;
@@ -67,8 +68,9 @@ public class OfferController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize) {
 
-        LOGGER.info("Obteniendo ofertas filtradas por [%s]", offerFilter);
-        return ResponseEntity.ok(offerHelper.getOffers(pageSize, pageNumber, offerFilter.toFilter()));
+        Filter filter = offerFilter.toFilter();
+        LOGGER.info("Obteniendo ofertas filtradas por [%s]", filter);
+        return ResponseEntity.ok(offerHelper.getOffers(pageSize, pageNumber, filter));
     }
 
     @PostMapping("/close")

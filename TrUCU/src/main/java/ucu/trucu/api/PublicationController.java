@@ -19,6 +19,7 @@ import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.filter.PublicationFilter;
 import ucu.trucu.util.pagination.Page;
 
@@ -82,8 +83,9 @@ public class PublicationController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize) {
 
-        LOGGER.info("Obteniendo publicaciones filtradas por [%s]", publicationFilter);
-        return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, publicationFilter.toFilter()));
+        Filter filter = publicationFilter.toFilter();
+        LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
+        return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, filter));
     }
 
     @GetMapping("/images")
