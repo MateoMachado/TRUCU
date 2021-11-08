@@ -46,7 +46,6 @@ public class DBController {
             LOGGER.info("Base de datos conectada con exito");
         } catch (HeadlessException | SQLException e) {
             LOGGER.error("Conexion a base de datos fallida -> %s", e.getMessage());
-            LOGGER.popUp("Imposible conectar a BD: \n%s", e.getMessage());
             throw e;
         }
     }

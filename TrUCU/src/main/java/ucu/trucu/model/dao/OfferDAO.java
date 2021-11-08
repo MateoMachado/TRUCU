@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
 import ucu.trucu.model.dto.Publication;
@@ -22,6 +23,7 @@ public class OfferDAO extends AbstractDAO<Offer> {
     private static final String ID_OFFER = "idOffer";
     private static final String STATUS = "status";
     private static final String ID_PUBLICATION = "idPublication";
+    private static final String OFFER_DATE = "offerDate";
 
     @Override
     public String getTable() {
@@ -89,10 +91,9 @@ public class OfferDAO extends AbstractDAO<Offer> {
 
     public void rejectOffersToPublicationsOf(int idOffer) throws SQLException {
 
-        String offeredPublicationsQuery = QueryBuilder
+        SelectStatement offeredPublicationsQuery = QueryBuilder
                 .selectFrom("OfferedPublications", "idPublication")
-                .where(f -> f.eq("OfferedPublications.idOffer", idOffer))
-                .build();
+                .where(f -> f.eq("OfferedPublications.idOffer", idOffer));
 
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
@@ -103,12 +104,11 @@ public class OfferDAO extends AbstractDAO<Offer> {
 
     public void cancelOffersWithPublicationsOf(int idPublication, int idOffer) throws SQLException {
 
-        String offeredPublicationsQuery = QueryBuilder
+        SelectStatement offeredPublicationsQuery = QueryBuilder
                 .selectFrom("OfferedPublications", ID_PUBLICATION)
-                .where(f -> f.eq("OfferedPublications.idOffer", idOffer))
-                .build();
+                .where(f -> f.eq("OfferedPublications.idOffer", idOffer));
 
-        String offersWithClosedOfferPublicationsQuery = QueryBuilder
+        SelectStatement offersWithClosedOfferPublicationsQuery = QueryBuilder
                 .selectFrom("OfferedPublications", true, "idOffer")
                 .where(f
                         -> f.and(
@@ -119,8 +119,7 @@ public class OfferDAO extends AbstractDAO<Offer> {
                                 f.eq("OfferedPublications.idPublication", idPublication),
                                 // Se cancelan las publicaciones ofrecidas en la oferta cerrada
                                 f.in("OfferedPublications.idPublication", offeredPublicationsQuery)
-                        )))
-                .build();
+                        )));
 
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())
@@ -145,5 +144,24 @@ public class OfferDAO extends AbstractDAO<Offer> {
                         .where(filter -> filter.eq(ID_OFFER, idOffer)),
                 getEntityClass());
         return results.isEmpty() ? null : results.get(0).getIdPublication();
+    }
+
+    public int countOffer(Filter filter) {
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable(), ID_OFFER)
+                        .where(filter),
+                getEntityClass())
+                .size();
+    }
+
+    public List<Offer> filterOffers(int pageSize, int pageNumber, Filter filter) {
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable())
+                        .where(filter)
+                        .orderDesc(OFFER_DATE)
+                        .offset(pageSize * pageNumber)
+                        .fetchNext(pageSize),
+                getEntityClass()
+        );
     }
 }

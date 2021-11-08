@@ -50,14 +50,6 @@ public class Logger {
         error(String.format(messagePattern, args));
     }
 
-    public void popUp(Object message) {
-        PopUpLog.createPopUp("PopUp", message.toString());
-    }
-
-    public void popUp(String messagePattern, Object... args) {
-        popUp(String.format(messagePattern, args));
-    }
-
     public void query(String query) {
         log(String.format(">>> %s;", query), MessageType.QUERY);
     }
