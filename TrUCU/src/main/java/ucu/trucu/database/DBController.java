@@ -60,15 +60,6 @@ public class DBController {
         }
     }
 
-    public Table executeQuery(SelectStatement query) {
-        try {
-            return queryExecutor.query(query);
-        } catch (SQLException ex) {
-            LOGGER.error("Imposible ejecutar query");
-            return null;
-        }
-    }
-
     public <T> List<T> executeQuery(SelectStatement query, Class<T> entityClass) {
         try {
             return queryExecutor.query(query, entityClass);

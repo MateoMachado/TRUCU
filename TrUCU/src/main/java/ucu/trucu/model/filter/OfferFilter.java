@@ -4,17 +4,13 @@ import ucu.trucu.database.querybuilder.Filter;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import ucu.trucu.model.dao.OfferDAO;
 
 /**
  *
  * @author NicoPuig
  */
 public class OfferFilter implements DTOFilter {
-
-    private static final String ID_OFFER = "idOffer";
-    private static final String STATUS = "status";
-    private static final String OFFER_DATE = "offerDate";
-    private static final String ID_PUBLICATION = "idPublication";
 
     private Integer idOffer;
     private String[] status;
@@ -67,19 +63,19 @@ public class OfferFilter implements DTOFilter {
         return Filter.build(where -> {
             List<String> conditions = new LinkedList<>();
             if (idOffer != null) {
-                conditions.add(where.eq(ID_OFFER, idOffer));
+                conditions.add(where.eq(OfferDAO.ID_OFFER, idOffer));
             }
             if (status != null) {
-                conditions.add(where.in(STATUS, status));
+                conditions.add(where.in(OfferDAO.STATUS, status));
             }
             if (idPublication != null) {
-                conditions.add(where.eq(ID_PUBLICATION, idPublication));
+                conditions.add(where.eq(OfferDAO.ID_PUBLICATION, idPublication));
             }
             if (afterOfferDate != null) {
-                conditions.add(where.goet(OFFER_DATE, afterOfferDate));
+                conditions.add(where.goet(OfferDAO.OFFER_DATE, afterOfferDate));
             }
             if (beforeOfferDate != null) {
-                conditions.add(where.loet(OFFER_DATE, beforeOfferDate));
+                conditions.add(where.loet(OfferDAO.OFFER_DATE, beforeOfferDate));
             }
             return conditions.isEmpty() ? null : where.and(conditions.toArray(new String[0]));
         });

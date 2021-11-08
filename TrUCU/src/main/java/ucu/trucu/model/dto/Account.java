@@ -8,21 +8,12 @@ import java.sql.Date;
  */
 public class Account {
 
-    private String CI;
+    private String email;
     private String name;
     private String lastName;
-    private String email;
     private Date birthDate;
     private String password;
     private String rolName;
-
-    public String getCI() {
-        return CI;
-    }
-
-    public void setCI(String CI) {
-        this.CI = CI;
-    }
 
     public String getName() {
         return name;
