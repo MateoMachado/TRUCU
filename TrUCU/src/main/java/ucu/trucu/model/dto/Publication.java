@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class Publication {
 
     public enum PublicationStatus {
-        OPEN, SETTLING, CLOSED, REPORTED, HIDDEN
+        OPEN, SETTLING, CLOSED, REPORTED, HIDDEN, CANCELED
     }
 
     private Integer idPublication;

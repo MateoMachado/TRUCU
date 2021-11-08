@@ -20,7 +20,6 @@ public class PublicationFilter implements DTOFilter {
     private static final String STATUS = "status";
     private static final String ACCOUNT_CI = "accountCI";
 
-    @JsonProperty("idPublication")
     private Integer idPublication;
     private String title;
     private String description;
@@ -28,7 +27,7 @@ public class PublicationFilter implements DTOFilter {
     private Integer minUcuCoins;
     private Timestamp afterDate;
     private Timestamp beforeDate;
-    private String status;
+    private String[] status;
     private String accountCI;
 
     public Integer getIdPublication() {
@@ -87,11 +86,11 @@ public class PublicationFilter implements DTOFilter {
         this.beforeDate = beforeDate;
     }
 
-    public String getStatus() {
+    public String[] getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String[] status) {
         this.status = status;
     }
 
@@ -111,10 +110,10 @@ public class PublicationFilter implements DTOFilter {
                 conditions.add(where.eq(ID_PUBLICATION, idPublication));
             }
             if (title != null) {
-                conditions.add(where.eq(TITLE, title));
+                conditions.add(where.like(TITLE, String.format("%%%s%%", title)));
             }
             if (description != null) {
-                conditions.add(where.eq(DESCRIPTION, description));
+                conditions.add(where.like(DESCRIPTION, String.format("%%%s%%", description)));
             }
             if (maxUcuCoins != null) {
                 conditions.add(where.loet(UCUCOIN_VALUE, maxUcuCoins));
@@ -129,7 +128,7 @@ public class PublicationFilter implements DTOFilter {
                 conditions.add(where.loet(PUBLICATION_DATE, beforeDate));
             }
             if (status != null) {
-                conditions.add(where.eq(STATUS, status));
+                conditions.add(where.in(STATUS, status));
             }
             if (accountCI != null) {
                 conditions.add(where.eq(ACCOUNT_CI, accountCI));
