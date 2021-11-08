@@ -14,6 +14,8 @@ import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
+import ucu.trucu.util.log.Logger;
+import ucu.trucu.util.log.LoggerFactory;
 import ucu.trucu.util.pagination.Page;
 
 /**
@@ -22,6 +24,8 @@ import ucu.trucu.util.pagination.Page;
  */
 @Service
 public class PublicationHelper {
+
+    private static final Logger LOGGER = LoggerFactory.create(PublicationHelper.class);
 
     @Autowired
     private PublicationDAO publicationDAO;
@@ -68,6 +72,20 @@ public class PublicationHelper {
         publicationDAO.closeOfferPublications(idOffer);
     }
 
+    public void cancelPublication(int idPublication) throws SQLException {
+        LOGGER.info("Validando estado para cancelar publicacion [idPublication=%s]", idPublication);
+        this.assertStatus(idPublication, PublicationStatus.OPEN, PublicationStatus.SETTLING, PublicationStatus.HIDDEN);
+
+        LOGGER.info("Cancelando publicacion [idPublication=%s]", idPublication);
+        changePublicationStatus(idPublication, PublicationStatus.CANCELED);
+
+        LOGGER.info("Rechazando ofertas a publicacion [idPublication=%s]", idPublication);
+        offerDAO.rejectOffersToPublication(idPublication);
+
+        LOGGER.info("Cancelando ofertas con la publicacion [idPublication=%s]", idPublication);
+        offerDAO.cancelOffersWithPublication(idPublication);
+    }
+
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
         Publication publication = new Publication();
         publication.setIdPublication(idPublication);
@@ -75,11 +93,13 @@ public class PublicationHelper {
         updatePublicationData(publication);
     }
 
-    public void assertStatus(int idPublication, PublicationStatus expectedStatus) {
+    public void assertStatus(int idPublication, PublicationStatus... expectedStatus) {
         PublicationStatus publicationStatus = publicationDAO.getStatus(idPublication);
-        if (!expectedStatus.equals(publicationStatus)) {
-            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s ",
-                    idPublication, publicationStatus));
+        for (PublicationStatus status : expectedStatus) {
+            if (!status.equals(publicationStatus)) {
+                throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s",
+                        idPublication, publicationStatus));
+            }
         }
     }
 }

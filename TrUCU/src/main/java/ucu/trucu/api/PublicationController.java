@@ -61,6 +61,18 @@ public class PublicationController {
         }
     }
 
+    @PostMapping("/cancel")
+    public ResponseEntity cancelPublication(@RequestBody int idPublication) {
+        try {
+            publicationHelper.cancelPublication(idPublication);
+            LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
+            return ResponseEntity.ok("Valores de actualizados correctamente");
+        } catch (SQLException ex) {
+            LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity deleteAccount(@RequestParam int idPublication) {
         try {

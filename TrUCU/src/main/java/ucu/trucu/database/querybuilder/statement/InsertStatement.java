@@ -12,7 +12,7 @@ import ucu.trucu.util.StringUtils;
 public class InsertStatement implements Statement {
 
     private static final String INSERT = "INSERT INTO %s (%s)";
-    private static final String VALUES = "VALUES \n%s";
+    private static final String VALUES = "VALUES %s";
 
     private final String tableName;
     private final List<Object[]> values = new LinkedList<>();
