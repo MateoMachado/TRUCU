@@ -35,10 +35,10 @@ public class AccountController {
     public ResponseEntity createAccount(@RequestBody Account newAccount) {
         try {
             accountHelper.createAccount(newAccount);
-            LOGGER.info("Cuenta [CI=%s] creada correctamente", newAccount.getCI());
+            LOGGER.info("Cuenta [Email=%s] creada correctamente", newAccount.getEmail());
             return ResponseEntity.ok("Cuenta creada correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible crear cuenta [CI=%s] -> %s", newAccount.getCI(), ex.getMessage());
+            LOGGER.error("Imposible crear cuenta [Email=%s] -> %s", newAccount.getEmail(), ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -60,29 +60,29 @@ public class AccountController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateAccount(@RequestParam String CI, @RequestBody Account newValues) {
+    public ResponseEntity updateAccount(@RequestBody Account newValues) {
         try {
-            accountHelper.updateAccountData(CI, newValues);
-            LOGGER.info("Valores actualizados en cuenta [CI=%s]", CI);
+            accountHelper.updateAccountData(newValues);
+            LOGGER.info("Valores actualizados en cuenta [Email=%s]", newValues.getEmail());
             return ResponseEntity.ok("Valores actualizados correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores para cuenta [CI=%s] -> %s", CI, ex);
+            LOGGER.error("Imposible actualizar valores para cuenta [Email=%s] -> %s", newValues.getEmail(), ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteAccount(@RequestParam String CI, @RequestParam String password) {
+    public ResponseEntity deleteAccount(@RequestParam String email, @RequestParam String password) {
         try {
-            if (accountHelper.deleteAccount(CI, password)) {
-                LOGGER.info("Cuenta [CI=%s] eliminada correctamente", CI);
+            if (accountHelper.deleteAccount(email, password)) {
+                LOGGER.info("Cuenta [Email=%s] eliminada correctamente", email);
                 return ResponseEntity.ok("Cuenta eliminada correctamente");
             } else {
-                LOGGER.warn("Contraseña incorrecta para cuenta [CI=%s]", CI);
+                LOGGER.warn("Contraseña incorrecta para cuenta [Email=%s]", email);
                 return ResponseEntity.ok("Contraseña incorrecta");
             }
         } catch (SQLException ex) {
-            LOGGER.error("Imposible eliminar cuenta [CI=%s] -> %s", CI, ex);
+            LOGGER.error("Imposible eliminar cuenta [Email=%s] -> %s", email, ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }

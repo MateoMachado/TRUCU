@@ -86,8 +86,12 @@ public class DBUtils {
         return keyValue;
     }
 
-    public static int getGeneratedId(ResultSet idResultSet) throws SQLException {
-        return idResultSet.next() ? idResultSet.getInt(1) : -1;
+    public static List<Integer> getGeneratedId(ResultSet idResultSet) throws SQLException {
+        List<Integer> list = new LinkedList<>();
+        while (idResultSet.next()) {
+            list.add(idResultSet.getInt(1));
+        }
+        return list;
     }
 
     /**

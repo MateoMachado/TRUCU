@@ -10,6 +10,9 @@ import ucu.trucu.model.dto.Account;
 @Component
 public class AccountDAO extends AbstractDAO<Account> {
 
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
+
     @Override
     public String getTable() {
         return "Account";
@@ -22,6 +25,6 @@ public class AccountDAO extends AbstractDAO<Account> {
 
     @Override
     public Account findByPK(Object... primaryKeys) {
-        return findFirst(where -> where.eq("CI", primaryKeys[0]));
+        return findFirst(where -> where.eq(EMAIL, primaryKeys[0]));
     }
 }

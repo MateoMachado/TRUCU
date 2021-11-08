@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,9 +34,9 @@ public class OfferController {
     private OfferHelper offerHelper;
 
     @PostMapping("/create")
-    public ResponseEntity createOffer(@RequestBody Offer newOffer, @RequestParam List<Integer> publications) {
+    public ResponseEntity createOffer(@RequestParam int idPublication, @RequestParam List<Integer> idOfferedPublications) {
         try {
-            offerHelper.createOffer(newOffer, publications);
+            offerHelper.createOffer(idPublication, idOfferedPublications);
             LOGGER.info("Oferta creada correctamente");
             return ResponseEntity.ok("Oferta creada correctamente");
         } catch (SQLException ex) {
@@ -58,8 +57,8 @@ public class OfferController {
     }
 
     @GetMapping("/getFromUser")
-    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
-        return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
+    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int accountEmail) {
+        return ResponseEntity.ok(offerHelper.getUserOffers(accountEmail));
     }
 
     @GetMapping("/filter")

@@ -60,15 +60,6 @@ public class DBController {
         }
     }
 
-    public Table executeQuery(SelectStatement query) {
-        try {
-            return queryExecutor.query(query);
-        } catch (SQLException ex) {
-            LOGGER.error("Imposible ejecutar query");
-            return null;
-        }
-    }
-
     public <T> List<T> executeQuery(SelectStatement query, Class<T> entityClass) {
         try {
             return queryExecutor.query(query, entityClass);
@@ -82,7 +73,7 @@ public class DBController {
         return queryExecutor.executeUpdate(statement);
     }
 
-    public int executeInsert(InsertStatement statement) throws SQLException {
+    public List<Integer> executeInsert(InsertStatement statement) throws SQLException {
         return queryExecutor.executeInsert(statement);
     }
 }

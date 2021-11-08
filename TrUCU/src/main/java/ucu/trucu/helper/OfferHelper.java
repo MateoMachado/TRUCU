@@ -21,7 +21,6 @@ import ucu.trucu.util.pagination.Page;
 public class OfferHelper {
 
     private static final Logger LOGGER = LoggerFactory.create(OfferHelper.class);
-    private static final String ID_OFFER = "idOffer";
 
     @Autowired
     private OfferDAO offerDAO;
@@ -29,25 +28,27 @@ public class OfferHelper {
     @Autowired
     private PublicationHelper publicationHelper;
 
-    public void createOffer(Offer newOffer, List<Integer> idPublications) throws SQLException {
-        int idOffer = offerDAO.insert(newOffer);
+    public void createOffer(int idPublication, List<Integer> idOfferedPublications) throws SQLException {
+        Offer offer = new Offer();
+        offer.setIdPublication(idPublication);
+        int idOffer = offerDAO.insert(offer);
 
-        for (int idPublication : idPublications) {
-            offerDAO.addOfferedPublications(idOffer, idPublication);
+        for (int idOfferedPublication : idOfferedPublications) {
+            offerDAO.addOfferedPublications(idOffer, idOfferedPublication);
         }
     }
 
     public void deleteOffer(int idOffer) throws SQLException {
         // Elimino las publicaciones relacionadas con la oferta
         offerDAO.deleteOfferedPublications(idOffer, where
-                -> where.eq(ID_OFFER, idOffer));
+                -> where.eq(OfferDAO.ID_OFFER, idOffer));
 
         // Elimino la oferta
-        offerDAO.delete(where -> where.eq(ID_OFFER, idOffer));
+        offerDAO.delete(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
     }
 
-    public List<Offer> getUserOffers(int idUser) {
-        return offerDAO.getUserPublications(idUser);
+    public List<Offer> getUserOffers(int accountEmail) {
+        return offerDAO.getUserPublications(accountEmail);
     }
 
     public void closeOffer(int idOffer) throws SQLException {
@@ -122,7 +123,7 @@ public class OfferHelper {
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
         Offer offer = new Offer();
         offer.setStatus(nextStatus.name());
-        offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
+        offerDAO.update(offer, where -> where.eq(OfferDAO.ID_OFFER, idOffer));
     }
 
     public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
@@ -132,7 +133,7 @@ public class OfferHelper {
 
         // Elimino las publicaciones relacionadas con la oferta
         offerDAO.deleteOfferedPublications(idOffer, where
-                -> where.eq(ID_OFFER, idOffer));
+                -> where.eq(OfferDAO.ID_OFFER, idOffer));
         // Inserto las nuevas publicaciones
         for (int idPublication : idPublications) {
             offerDAO.addOfferedPublications(idOffer, idPublication);
@@ -141,7 +142,7 @@ public class OfferHelper {
         // Cambio el estado a contraoferta
         Offer offer = new Offer();
         offer.setStatus(OfferStatus.CHANGED.name());
-        offerDAO.update(offer, where -> where.eq(ID_OFFER, idOffer));
+        offerDAO.update(offer, where -> where.eq(OfferDAO.ID_OFFER, idOffer));
     }
 
     public Page<Offer> getOffers(int pageSize, int pageNumber, Filter filter) {

@@ -32,7 +32,7 @@ public class QueryExecutor {
      * @return Devuelve el id de la entidad autogenerado, o -1 si no hay ninguno
      * @throws SQLException
      */
-    public int executeInsert(InsertStatement statement) throws SQLException {
+    public List<Integer> executeInsert(InsertStatement statement) throws SQLException {
         try (java.sql.Statement sqlStatement = this.connection.createStatement()) {
             String statementStr = statement.build();
             LOGGER.query(statementStr);
@@ -63,28 +63,6 @@ public class QueryExecutor {
             return updatedRows;
         } catch (SQLException ex) {
             this.connection.rollback();
-            LOGGER.error(ex);
-            throw ex;
-        }
-    }
-
-    /**
-     * Ejecuta una sentencia SELECT
-     *
-     * @param selectStatement
-     * @return Devuelve una tabla dinamica, que se adapta al resultado de la
-     * query
-     * @throws SQLException
-     */
-    public Table query(SelectStatement selectStatement) throws SQLException {
-        try (java.sql.Statement statement = this.connection.createStatement()) {
-            String query = selectStatement.build();
-            LOGGER.query(query);
-            ResultSet results = statement.executeQuery(query);
-            Table table = Table.toTable(results);
-            LOGGER.info("<<< %sx%s datos hallados en tabla", table.getRowCount(), table.getColumnCount());
-            return table;
-        } catch (SQLException ex) {
             LOGGER.error(ex);
             throw ex;
         }

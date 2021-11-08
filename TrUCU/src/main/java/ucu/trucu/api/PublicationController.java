@@ -50,13 +50,13 @@ public class PublicationController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody Publication newValues) {
+    public ResponseEntity updatePublication(@RequestBody Publication newValues) {
         try {
-            publicationHelper.updatePublicationData(idPublication, newValues);
-            LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
+            publicationHelper.updatePublicationData(newValues);
+            LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", newValues.getIdPublication());
             return ResponseEntity.ok("Valores de actualizados correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", newValues.getIdPublication(), ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
