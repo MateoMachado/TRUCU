@@ -39,8 +39,8 @@ public class PublicationHelper {
         return publicationDAO.insert(newPublication);
     }
 
-    public void updatePublicationData(int idPublication, Publication newValues) throws SQLException {
-        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
+    public void updatePublicationData(Publication newValues) throws SQLException {
+        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, newValues.getIdPublication()));
     }
 
     public boolean deletePublication(int idPublication) throws SQLException {
@@ -70,8 +70,9 @@ public class PublicationHelper {
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
         Publication publication = new Publication();
+        publication.setIdPublication(idPublication);
         publication.setStatus(nextStatus.name());
-        updatePublicationData(idPublication, publication);
+        updatePublicationData(publication);
     }
 
     public void assertStatus(int idPublication, PublicationStatus expectedStatus) {
