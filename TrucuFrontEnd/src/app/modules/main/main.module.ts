@@ -6,8 +6,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { MainRoutingModule } from './main-routing.module';
 import { HomeModule } from '../home/home.module';
-
-
+import { FormsModule } from '@angular/forms';
+import { LoginModule } from '../login/login.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,9 @@ import { HomeModule } from '../home/home.module';
     CommonModule,
     MainRoutingModule,
     HomeModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    LoginModule
   ]
 })
 export class MainModule { }

@@ -3,6 +3,8 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@import '~ngx-toastr/toastr';
+
 
 html,
 body {
@@ -23,4 +25,29 @@ body {
     line-height: 1.25;
     color: #333;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.paginationActual{
+    box-sizing: border-box; 
+    border-radius: 0.375rem;
+    background: rgba(0,0,0,0.1); 
+    color: #979797;
+    font-size: 16px; 
+    font-weight: 400; 
+    font-family: Arial, Helvetica, sans-serif;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.paginationTotal{ 
+    color: #979797;
+    font-size: 16px; 
+    font-weight: 400; 
+    font-family: Arial, Helvetica, sans-serif;
+    height: 36px;
+    text-align: center;
+    vertical-align: middle;
+
 }
