@@ -1,86 +1,10 @@
-<!-- <div class="bg-gray-100 flex flex-col justify-center">
-    <div class="flex justify-end p-4">
-        <img class="w-4 cursor-pointer" src="assets/images/close-icon.png" >
-   </div>
-    <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md sm:py-12">
-        <div class="flex justify-center">
-            <img class="w-32" src="assets/images/logo_UCU.png">
-        </div>
-        <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
-            <div class="flex flex-col px-5 py-7">
-                <div class="flex flex-row m-4">
-                    <div class="flex flex-col pr-2">
-                        <label class="font-semibold text-sm text-gray-600 pb-1 block">Titulo</label>
-                        <input type="number" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" [(ngModel)]="account.ci">
-                    </div>
-                </div>
-                <div class="flex flex-row m-4">
-                    <div class="flex flex-col pr-2">
-                        <label class="font-semibold text-sm text-gray-600 pb-1 block">Descripcion</label>
-                        <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" [(ngModel)]="account.name">
-                    </div>
-                </div>
-                <div class="flex flex-row m-4 w-full">
-                    <div class="flex flex-col w-full">
-                        <label class="font-semibold text-sm text-gray-600 pb-1 block">Valor en ucu coins</label>
-                        <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" [(ngModel)]="account.email" >    
-                    </div>
-                </div>
-                <div class="flex flex-row m-4">
-                    <div class="form-group pt-16">
-                        <label for="file">Choose File</label>
-                        <input type="file"
-                               id="file"
-                               (change)="handleFileInput($event.target.files)">
-                    </div>
-                </div>
-                <button type="button" 
-                    class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
-                    <span class="inline-block mr-2">Registrar</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" class="w-4 h-4 inline-block">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </button>
-            </div>
-            <div class="py-5">
-                <div class="grid grid-cols-2 gap-1">
-                    <div class="text-center sm:text-left whitespace-nowrap">
-                        <button 
-                            class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" class="w-4 h-4 inline-block align-text-top">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                            </svg>
-                            <span class="inline-block ml-1">Registrarse</span>
-                        </button>
-                    </div>
-                    <div class="text-center sm:text-right whitespace-nowrap">
-                        <button
-                            class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" class="w-4 h-4 inline-block align-text-bottom	">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                            <span class="inline-block ml-1">Help</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<form class="w-full max-w-lg m-auto mt-32">
+<div class="w-full max-w-lg m-auto mt-32 bg-white p-3 rounded-md">
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Titulo
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text">
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" [(ngModel)]="newPublication.title">
       </div>
       
     </div>
@@ -89,7 +13,7 @@
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
           Descripción
         </label>
-        <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+        <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" [(ngModel)]="newPublication.description"></textarea>
       </div>
     </div>
     <div class="flex flex-wrap -mx-3 mb-6">
@@ -97,7 +21,7 @@
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
           Valor en ucu coins
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque">
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="number" [(ngModel)]="newPublication.ucuCoinValue">
       </div>
     </div>
     <div class="flex flex-wrap -mx-3 mb-2">
@@ -116,4 +40,13 @@
         </label>
         <img class="w-4 cursor-pointer" src="assets/images/close-icon-2.png" (click)="removeFile(i)">
     </div>
-</form>
+    <button type="button" (click)="createPublication()"
+                    class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                    <span class="inline-block mr-2">Publicar</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" class="w-4 h-4 inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </button>
+</div>

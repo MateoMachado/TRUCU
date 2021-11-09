@@ -22,6 +22,6 @@ export class UserService {
   }
 
   isLogged(){
-    return this.user.ci != null;
+    return this.user.email != null;
   }
 }
