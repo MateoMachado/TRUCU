@@ -1,6 +1,10 @@
 package ucu.trucu.model.dao;
 
+import java.sql.SQLException;
+import java.util.List;
 import org.springframework.stereotype.Component;
+import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.model.dto.Image;
 
 /**
@@ -10,9 +14,14 @@ import ucu.trucu.model.dto.Image;
 @Component
 public class ImageDAO extends AbstractDAO<Image> {
 
+    public static final String ID_IMAGE = "idImage";
+    public static final String IMAGE_BYTES = "imageBytes";
+    public static final String ID_PUBLICATION = "idPublication";
+    public static final String IMAGE = "Image";
+
     @Override
     public String getTable() {
-        return "Image";
+        return IMAGE;
     }
 
     @Override
@@ -22,6 +31,16 @@ public class ImageDAO extends AbstractDAO<Image> {
 
     @Override
     public Image findByPK(Object... primaryKeys) {
-        return findFirst(where -> where.eq("idImage", primaryKeys[0]));
+        return findFirst(where -> where.eq(ID_IMAGE, primaryKeys[0]));
+    }
+
+    public List<Integer> addPublicationImages(int idPublication, List<Image> images) throws SQLException {
+        InsertStatement insert = QueryBuilder
+                .insertInto(getTable())
+                .keys(IMAGE_BYTES, ID_PUBLICATION);
+        images.forEach(image -> insert
+                .values(image.getImageBytes(), image.getIdPublication()));
+
+        return dbController.executeInsert(insert);
     }
 }

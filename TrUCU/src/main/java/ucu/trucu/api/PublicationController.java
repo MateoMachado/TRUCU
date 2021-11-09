@@ -20,6 +20,7 @@ import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import ucu.trucu.database.querybuilder.Filter;
+import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.filter.PublicationFilter;
 import ucu.trucu.util.pagination.Page;
 
@@ -38,13 +39,13 @@ public class PublicationController {
     private PublicationHelper publicationHelper;
 
     @PostMapping("/create")
-    public ResponseEntity createPublication(@RequestBody Publication newPublication) {
+    public ResponseEntity createPublication(@RequestBody PublicationWrapper newPublication) {
         try {
             int idPublication = publicationHelper.createPublication(newPublication);
             LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
             return ResponseEntity.ok("Publicacion creada correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible crear publicacion [idPublication=%s] -> %s", newPublication.getIdPublication(), ex.getMessage());
+            LOGGER.error("Imposible crear publicacion -> %s", ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -78,7 +79,7 @@ public class PublicationController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<Publication>> getPublications(
+    public ResponseEntity<Page<PublicationWrapper>> getPublications(
             PublicationFilter publicationFilter,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize) {

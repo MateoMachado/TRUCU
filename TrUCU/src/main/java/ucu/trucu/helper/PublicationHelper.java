@@ -1,11 +1,13 @@
 package ucu.trucu.helper;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.dao.PublicationDAO;
 import java.util.List;
+import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.dao.ImageDAO;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dao.ReportDAO;
@@ -35,8 +37,10 @@ public class PublicationHelper {
     @Autowired
     private ReportDAO reportDAO;
 
-    public int createPublication(Publication newPublication) throws SQLException {
-        return publicationDAO.insert(newPublication);
+    public int createPublication(PublicationWrapper newPublication) throws SQLException {
+        int idPublication = publicationDAO.insert(newPublication.getPublication());
+        imageDAO.addPublicationImages(idPublication, newPublication.getImages());
+        return idPublication;
     }
 
     public void updatePublicationData(Publication newValues) throws SQLException {
@@ -47,9 +51,12 @@ public class PublicationHelper {
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
-    public Page<Publication> getPublications(int pageSize, int pageNumber, Filter filter) {
+    public Page<PublicationWrapper> getPublications(int pageSize, int pageNumber, Filter filter) {
         int totalPages = publicationDAO.countPublications(filter);
-        return new Page(totalPages, pageNumber, pageSize, publicationDAO.filterPublications(pageSize, pageNumber, filter));
+        List<PublicationWrapper> wrappers = new LinkedList<>();
+        List<Publication> publications = publicationDAO.filterPublications(pageSize, pageNumber, filter);
+        publications.forEach(publication -> wrappers.add(new PublicationWrapper(publication, imageDAO.findBy(where -> where.eq(ImageDAO.ID_PUBLICATION, publication.getIdPublication())))));
+        return new Page<>(totalPages, pageNumber, pageSize, wrappers);
     }
 
     public List<Image> getPublicationImages(int idPublication) {
