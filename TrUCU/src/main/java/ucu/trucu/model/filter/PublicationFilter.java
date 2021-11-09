@@ -1,10 +1,10 @@
 package ucu.trucu.model.filter;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import ucu.trucu.database.querybuilder.Filter;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import ucu.trucu.model.dao.PublicationDAO;
 
 /**
  *
@@ -12,15 +12,6 @@ import java.util.List;
  */
 public class PublicationFilter implements DTOFilter {
 
-    private static final String ID_PUBLICATION = "idPublication";
-    private static final String TITLE = "title";
-    private static final String DESCRIPTION = "description";
-    private static final String UCUCOIN_VALUE = "ucuCoinValue";
-    private static final String PUBLICATION_DATE = "publicationDate";
-    private static final String STATUS = "status";
-    private static final String ACCOUNT_CI = "accountCI";
-
-    @JsonProperty("idPublication")
     private Integer idPublication;
     private String title;
     private String description;
@@ -28,8 +19,8 @@ public class PublicationFilter implements DTOFilter {
     private Integer minUcuCoins;
     private Timestamp afterDate;
     private Timestamp beforeDate;
-    private String status;
-    private String accountCI;
+    private String[] status;
+    private String accountEmail;
 
     public Integer getIdPublication() {
         return idPublication;
@@ -87,20 +78,20 @@ public class PublicationFilter implements DTOFilter {
         this.beforeDate = beforeDate;
     }
 
-    public String getStatus() {
+    public String[] getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String[] status) {
         this.status = status;
     }
 
-    public String getAccountCI() {
-        return accountCI;
+    public String getAccountEmail() {
+        return accountEmail;
     }
 
-    public void setAccountCI(String accountCI) {
-        this.accountCI = accountCI;
+    public void setAccountEmail(String accountEmail) {
+        this.accountEmail = accountEmail;
     }
 
     @Override
@@ -108,31 +99,31 @@ public class PublicationFilter implements DTOFilter {
         return Filter.build(where -> {
             List<String> conditions = new LinkedList<>();
             if (idPublication != null) {
-                conditions.add(where.eq(ID_PUBLICATION, idPublication));
+                conditions.add(where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
             }
             if (title != null) {
-                conditions.add(where.eq(TITLE, title));
+                conditions.add(where.like(PublicationDAO.TITLE, String.format("%%%s%%", title)));
             }
             if (description != null) {
-                conditions.add(where.eq(DESCRIPTION, description));
+                conditions.add(where.like(PublicationDAO.DESCRIPTION, String.format("%%%s%%", description)));
             }
             if (maxUcuCoins != null) {
-                conditions.add(where.loet(UCUCOIN_VALUE, maxUcuCoins));
+                conditions.add(where.loet(PublicationDAO.UCUCOIN_VALUE, maxUcuCoins));
             }
             if (minUcuCoins != null) {
-                conditions.add(where.goet(UCUCOIN_VALUE, minUcuCoins));
+                conditions.add(where.goet(PublicationDAO.UCUCOIN_VALUE, minUcuCoins));
             }
             if (afterDate != null) {
-                conditions.add(where.goet(PUBLICATION_DATE, afterDate));
+                conditions.add(where.goet(PublicationDAO.PUBLICATION_DATE, afterDate));
             }
             if (beforeDate != null) {
-                conditions.add(where.loet(PUBLICATION_DATE, beforeDate));
+                conditions.add(where.loet(PublicationDAO.PUBLICATION_DATE, beforeDate));
             }
             if (status != null) {
-                conditions.add(where.eq(STATUS, status));
+                conditions.add(where.in(PublicationDAO.STATUS, status));
             }
-            if (accountCI != null) {
-                conditions.add(where.eq(ACCOUNT_CI, accountCI));
+            if (accountEmail != null) {
+                conditions.add(where.eq(PublicationDAO.ACCOUNT_EMAIL, accountEmail));
             }
             return conditions.isEmpty() ? null : where.and(conditions.toArray(new String[0]));
         });

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 
@@ -15,13 +16,18 @@ import ucu.trucu.model.dto.Publication.PublicationStatus;
 @Component
 public class PublicationDAO extends AbstractDAO<Publication> {
 
-    private static final String ID_PUBLICATION = "idPublication";
-    private static final String PUBLICATION_DATE = "publicationDate";
-    private static final String STATUS = "status";
+    public static final String PUBLICATION = "Publication";
+    public static final String TITLE = "title";
+    public static final String DESCRIPTION = "description";
+    public static final String ACCOUNT_EMAIL = "accountEmail";
+    public static final String UCUCOIN_VALUE = "ucuCoinValue";
+    public static final String ID_PUBLICATION = "idPublication";
+    public static final String PUBLICATION_DATE = "publicationDate";
+    public static final String STATUS = "status";
 
     @Override
     public String getTable() {
-        return "Publication";
+        return PUBLICATION;
     }
 
     @Override
@@ -55,10 +61,9 @@ public class PublicationDAO extends AbstractDAO<Publication> {
 
     public void closeOfferPublications(int idOffer) throws SQLException {
 
-        String offeredPublications = QueryBuilder
-                .selectFrom("OfferedPublications", ID_PUBLICATION)
-                .where(f -> f.eq("idOffer", idOffer))
-                .build();
+        SelectStatement offeredPublications = QueryBuilder
+                .selectFrom(OfferDAO.OFFERED_PUBLICATIONS, ID_PUBLICATION)
+                .where(f -> f.eq(OfferDAO.ID_OFFER, idOffer));
 
         dbController.executeUpdate(
                 QueryBuilder.update(getTable())

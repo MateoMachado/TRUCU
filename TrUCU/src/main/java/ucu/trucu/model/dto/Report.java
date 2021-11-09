@@ -9,6 +9,7 @@ public class Report {
     private Integer idReport;
     private String status;
     private Integer idReason;
+    private Integer idPublication;
 
     public Integer getIdReport() {
         return idReport;
@@ -32,5 +33,13 @@ public class Report {
 
     public void setIdReason(Integer idReason) {
         this.idReason = idReason;
+    }
+
+    public Integer getIdPublication() {
+        return idPublication;
+    }
+
+    public void setIdPublication(Integer idPublication) {
+        this.idPublication = idPublication;
     }
 }

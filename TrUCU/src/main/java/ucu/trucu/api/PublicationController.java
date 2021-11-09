@@ -1,7 +1,6 @@
 package ucu.trucu.api;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.PublicationHelper;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Offer;
@@ -21,6 +19,8 @@ import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import ucu.trucu.database.querybuilder.Filter;
+import ucu.trucu.model.filter.PublicationFilter;
 import ucu.trucu.util.pagination.Page;
 
 /**
@@ -50,13 +50,13 @@ public class PublicationController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody Publication newValues) {
+    public ResponseEntity updatePublication(@RequestBody Publication newValues) {
         try {
-            publicationHelper.updatePublicationData(idPublication, newValues);
-            LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
+            publicationHelper.updatePublicationData(newValues);
+            LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", newValues.getIdPublication());
             return ResponseEntity.ok("Valores de actualizados correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", newValues.getIdPublication(), ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -79,21 +79,11 @@ public class PublicationController {
 
     @GetMapping("/filter")
     public ResponseEntity<Page<Publication>> getPublications(
+            PublicationFilter publicationFilter,
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "0") int pageSize,
-            @RequestParam(required = false) Integer idPublication,
-            @RequestParam(required = false) Integer maxUcuCoins,
-            @RequestParam(required = false) Integer minUcuCoins,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String accountCI,
-            @RequestParam(required = false) Timestamp afterDate,
-            @RequestParam(required = false) Timestamp beforeDate) {
+            @RequestParam(defaultValue = "0") int pageSize) {
 
-        Filter filter = publicationHelper.buildPublicationFilter(idPublication, title, description, maxUcuCoins,
-                minUcuCoins, afterDate, beforeDate, status, accountCI);
-
+        Filter filter = publicationFilter.toFilter();
         LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
         return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, filter));
     }

@@ -8,14 +8,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.OfferHelper;
 import ucu.trucu.model.dto.Offer;
+import ucu.trucu.model.filter.OfferFilter;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -32,9 +34,9 @@ public class OfferController {
     private OfferHelper offerHelper;
 
     @PostMapping("/create")
-    public ResponseEntity createOffer(@RequestBody Offer newOffer, @RequestParam List<Integer> publications) {
+    public ResponseEntity createOffer(@RequestParam int idPublication, @RequestParam List<Integer> idOfferedPublications) {
         try {
-            offerHelper.createOffer(newOffer, publications);
+            offerHelper.createOffer(idPublication, idOfferedPublications);
             LOGGER.info("Oferta creada correctamente");
             return ResponseEntity.ok("Oferta creada correctamente");
         } catch (SQLException ex) {
@@ -55,8 +57,19 @@ public class OfferController {
     }
 
     @GetMapping("/getFromUser")
-    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
-        return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
+    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int accountEmail) {
+        return ResponseEntity.ok(offerHelper.getUserOffers(accountEmail));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<Offer>> getPublications(
+            OfferFilter offerFilter,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "0") int pageSize) {
+
+        Filter filter = offerFilter.toFilter();
+        LOGGER.info("Obteniendo ofertas filtradas por [%s]", filter);
+        return ResponseEntity.ok(offerHelper.getOffers(pageSize, pageNumber, filter));
     }
 
     @PostMapping("/close")
@@ -106,16 +119,28 @@ public class OfferController {
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
-    
+
     @PostMapping("/counterOffer")
     public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
         try {
             offerHelper.counterOffer(idOffer, publications);
-            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente",idOffer);
+            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente", idOffer);
             return ResponseEntity.ok("Contraoferta realizada correctamente");
         } catch (SQLException | IllegalStateException ex) {
-            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s",idOffer,ex.getMessage());
+            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/reject")
+    public ResponseEntity rejectOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.rejectOffer(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] rechazada correctamente", idOffer);
+            return ResponseEntity.ok("Oferta rechazada realizada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al rechazar la oferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 }
