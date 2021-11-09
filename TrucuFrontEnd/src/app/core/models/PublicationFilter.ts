@@ -1,9 +1,9 @@
 export class PublicationFilter{
     pageNumber : number; 
     pageSize : number; 
-    status : string;
+    status : string[];
     title : string;
-    accountCI : number;
+    accountEmail : string;
     minUcuCoins : number;
     maxUcuCoins : number;
     afterDate : Date;

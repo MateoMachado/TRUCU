@@ -7,6 +7,6 @@ export class Publication {
     ucuCoinValue : number;
     publicationDate : Date;
     status : string;
-    accountCI : string;
+    accountEmail : string;
     images : Image[];
 }

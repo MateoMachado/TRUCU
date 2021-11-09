@@ -1,5 +1,5 @@
 export class Image {
-    idImage : string;
-    path : string;
-    idPublication : string;
+    idImage : number;
+    imageBytes : string;
+    idPublication : number;
 }
