@@ -120,6 +120,18 @@ public class OfferController {
         }
     }
 
+    @PostMapping("/reject")
+    public ResponseEntity rejectOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.rejectOffer(idOffer);
+            LOGGER.info("Oferta [idOffer=%s] rechazada correctamente", idOffer);
+            return ResponseEntity.ok("Oferta rechazada realizada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al rechazar la oferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
     @PostMapping("/counterOffer")
     public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
         try {
@@ -132,15 +144,27 @@ public class OfferController {
         }
     }
 
-    @PostMapping("/reject")
-    public ResponseEntity rejectOffer(@RequestParam int idOffer) {
+    @PostMapping("/counterOffer/accept")
+    public ResponseEntity acceptCounterOffer(@RequestParam int idOffer) {
         try {
-            offerHelper.rejectOffer(idOffer);
-            LOGGER.info("Oferta [idOffer=%s] rechazada correctamente", idOffer);
-            return ResponseEntity.ok("Oferta rechazada realizada correctamente");
+            offerHelper.acceptCounterOffer(idOffer);
+            LOGGER.info("Contraoferta [idOffer=%s] aceptada correctamente", idOffer);
+            return ResponseEntity.ok("Contraoferta aceptada correctamente");
         } catch (SQLException | IllegalStateException ex) {
-            LOGGER.error("Error al rechazar la oferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            LOGGER.error("Error al aceptar contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/counterOffer/reject")
+    public ResponseEntity rejectCounterOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.rejectCounterOffer(idOffer);
+            LOGGER.info("Contraoferta [idOffer=%s] rechazada correctamente", idOffer);
+            return ResponseEntity.ok("Contraoferta rechazada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al rechazar contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 }
