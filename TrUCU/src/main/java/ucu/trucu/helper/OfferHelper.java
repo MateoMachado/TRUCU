@@ -171,11 +171,12 @@ public class OfferHelper {
     public void assertStatus(int idOffer, OfferStatus... expectedStatus) {
         OfferStatus offerStatus = offerDAO.getStatus(idOffer);
         for (OfferStatus status : expectedStatus) {
-            if (!status.equals(offerStatus)) {
-                throw new IllegalStateException(String.format("Imposible ejecutar operacion en oferta [idOffer=%s] con estado %s ",
-                        idOffer, offerStatus));
+            if (status.equals(offerStatus)) {
+                return;
             }
         }
+        throw new IllegalStateException(String.format("Imposible ejecutar operacion en oferta [idOffer=%s] con estado %s ",
+                idOffer, offerStatus));
     }
 
     public void assertStatusNotEqual(int idOffer, OfferStatus notExpectedStatus) {

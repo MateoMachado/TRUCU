@@ -60,13 +60,13 @@ public class AccountController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateAccount(@RequestBody Account newValues) {
+    public ResponseEntity updateAccount(@RequestParam String email, @RequestBody Account newValues) {
         try {
-            accountHelper.updateAccountData(newValues);
-            LOGGER.info("Valores actualizados en cuenta [Email=%s]", newValues.getEmail());
+            accountHelper.updateAccountData(email, newValues);
+            LOGGER.info("Valores actualizados en cuenta [Email=%s]", email);
             return ResponseEntity.ok("Valores actualizados correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores para cuenta [Email=%s] -> %s", newValues.getEmail(), ex);
+            LOGGER.error("Imposible actualizar valores para cuenta [Email=%s] -> %s", email, ex);
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }

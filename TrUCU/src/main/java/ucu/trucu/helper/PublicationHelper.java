@@ -43,8 +43,8 @@ public class PublicationHelper {
         return publicationDAO.insert(newPublication);
     }
 
-    public void updatePublicationData(Publication newValues) throws SQLException {
-        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, newValues.getIdPublication()));
+    public void updatePublicationData(int idPublication, Publication newValues) throws SQLException {
+        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
     public boolean deletePublication(int idPublication) throws SQLException {
@@ -88,18 +88,18 @@ public class PublicationHelper {
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
         Publication publication = new Publication();
-        publication.setIdPublication(idPublication);
         publication.setStatus(nextStatus.name());
-        updatePublicationData(publication);
+        publicationDAO.update(publication, where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
     public void assertStatus(int idPublication, PublicationStatus... expectedStatus) {
         PublicationStatus publicationStatus = publicationDAO.getStatus(idPublication);
         for (PublicationStatus status : expectedStatus) {
-            if (!status.equals(publicationStatus)) {
-                throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s",
-                        idPublication, publicationStatus));
+            if (status.equals(publicationStatus)) {
+                return;
             }
         }
+        throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s",
+                idPublication, publicationStatus));
     }
 }
