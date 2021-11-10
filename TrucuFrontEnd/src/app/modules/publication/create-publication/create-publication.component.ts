@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { Image } from 'src/app/core/models/Image';
 import { Publication } from 'src/app/core/models/Publication';
+import { PublicationWrapper } from 'src/app/core/models/PublicationWrapper';
 import { HttpService } from 'src/app/core/services/http.service';
 import { UserService } from 'src/app/core/services/user.service';
 
@@ -32,36 +34,41 @@ export class CreatePublicationComponent implements OnInit {
   }
 
   createPublication(){
-    let images : Image[] = [];
-    
     if(this.files == null){
       this.toastr.warning('Debe agregar fotos a la publicación','Advertencia');
     }
-    this.files.forEach(file => {
-      let reader = new FileReader();
 
-      // Setup onload event for reader
-      reader.onload = () => {
-          // Store base64 encoded representation of file
-          let image = new Image();
-          if(reader.result != null)
-            image.imageBytes = reader.result.toString();
-          
-            images.push(image);
-      } 
-      
-      reader.readAsDataURL(file);
-    });
+    let images = [];
+    let promises = [];
+    for (let file of this.files) {
+        let filePromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            // reader.readAsText(file);
+            reader.onload = () => resolve(reader.result.toString());
+        });
+        promises.push(filePromise);
+    }
+    Promise.all(promises).then(fileContents => {
+        // fileContents will be an array containing
+        // the contents of the files, perform the
+        // character replacements and other transformations
+        // here as needed
+        fileContents.forEach(data => {
+          let image = new Image;
+          image.imageBytes = data;
+          images.push(image)
+        });
 
-    this.newPublication.images = images;
-    this.newPublication.accountEmail = this.user.userSubject.getValue().email;
-    
-    this.http.CreatePublication(this.newPublication).subscribe(data => {
-      this.newPublication.idPublication = data;
-      this.newPublication.images.forEach(image => {
-        image.idPublication = this.newPublication.idPublication;
-        this.http.CreatePublication(image); // CAMBIAR ESTO POR CREATE IMAGE
-      })
+        this.newPublication.images = images;
+        this.newPublication.accountEmail = this.user.userSubject.getValue().email;
+        
+        var publicationWrapper = new PublicationWrapper();
+        publicationWrapper.images = images;
+        publicationWrapper.publication = this.newPublication;
+        this.http.CreatePublication(publicationWrapper).subscribe(data => {
+          this.newPublication.idPublication = data;
+        });
     });
   }
 
