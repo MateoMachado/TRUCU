@@ -1,8 +1,11 @@
 package ucu.trucu.model.dao;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
+import ucu.trucu.database.querybuilder.Count;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
@@ -38,14 +41,6 @@ public class PublicationDAO extends AbstractDAO<Publication> {
     @Override
     public Publication findByPK(Object... primaryKeys) {
         return findFirst(where -> where.eq(ID_PUBLICATION, primaryKeys[0]));
-    }
-
-    public int countPublications(Filter filter) {
-        return dbController.executeQuery(
-                QueryBuilder.selectFrom(getTable(), ID_PUBLICATION)
-                        .where(filter),
-                getEntityClass())
-                .size();
     }
 
     public List<Publication> filterPublications(int pageSize, int pageNumber, Filter filter) {

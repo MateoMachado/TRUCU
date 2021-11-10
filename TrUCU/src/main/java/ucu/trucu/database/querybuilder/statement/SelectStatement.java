@@ -29,7 +29,7 @@ public class SelectStatement implements Statement {
     private Integer offset;
     private Integer fetchNext;
 
-    public SelectStatement(String table, String[] columns) {
+    public SelectStatement(String table, String... columns) {
         this.table = table;
         this.columns = columns != null && columns.length > 0 ? columns : new String[]{"*"};
         this.distinct = false;

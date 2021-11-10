@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,5 +76,17 @@ public class DBController {
 
     public List<Integer> executeInsert(InsertStatement statement) throws SQLException {
         return queryExecutor.executeInsert(statement);
+    }
+
+    public void commit() throws SQLException {
+        this.connection.commit();
+    }
+
+    public void rollback() {
+        try {
+            this.connection.rollback();
+        } catch (SQLException ex) {
+            LOGGER.error("IMPOSIBLE REALIZAR ROLLACK -> ", ex);
+        }
     }
 }
