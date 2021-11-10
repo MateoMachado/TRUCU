@@ -21,8 +21,17 @@ public class AccountHelper {
     @Autowired
     private RolDAO rolDAO;
 
-    public void createAccount(Account newAccount) throws SQLException {
+    public String create(Account newAccount) throws SQLException {
         accountDAO.insert(newAccount);
+        return newAccount.getEmail();
+    }
+
+    public int update(String email, Account newValues) throws SQLException {
+        return accountDAO.update(newValues, where -> where.eq(AccountDAO.EMAIL, email));
+    }
+
+    public boolean delete(String email) throws SQLException {
+        return accountDAO.delete(where -> where.eq(AccountDAO.EMAIL, email)) == 1;
     }
 
     public Account getAccount(String email) {
@@ -32,18 +41,6 @@ public class AccountHelper {
     public boolean logIn(Account account, String password) {
         // Sistema de autenticacion...
         return password.equals(account.getPassword());
-    }
-
-    public void updateAccountData(String email, Account newValues) throws SQLException {
-        accountDAO.update(newValues, where -> where.eq(AccountDAO.EMAIL, email));
-    }
-
-    public boolean deleteAccount(String email, String password) throws SQLException {
-        int deletedRows = accountDAO.delete(where -> where.and(
-                where.eq(AccountDAO.EMAIL, email),
-                where.eq(AccountDAO.PASSWORD, password))
-        );
-        return deletedRows == 1;
     }
 
     public Rol getAccountRol(String accountRolName) {

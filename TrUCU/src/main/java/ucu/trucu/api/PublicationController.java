@@ -73,7 +73,7 @@ public class PublicationController {
             publicationHelper.cancelPublication(idPublication);
             dbController.commit();
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
-            return ResponseEntity.ok("Valores de actualizados correctamente");
+            return ResponseEntity.ok("Publicacion cancelada correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
             dbController.rollback();

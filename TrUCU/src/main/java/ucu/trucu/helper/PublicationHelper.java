@@ -16,6 +16,7 @@ import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
+import ucu.trucu.util.StringUtils;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import ucu.trucu.util.pagination.Page;
@@ -25,7 +26,7 @@ import ucu.trucu.util.pagination.Page;
  * @author NicoPuig
  */
 @Service
-public class PublicationHelper implements EntityHelper<Integer, PublicationWrapper> {
+public class PublicationHelper {
 
     private static final Logger LOGGER = LoggerFactory.create(PublicationHelper.class);
 
@@ -41,8 +42,7 @@ public class PublicationHelper implements EntityHelper<Integer, PublicationWrapp
     @Autowired
     private ReportDAO reportDAO;
 
-    @Override
-    public int create(PublicationWrapper newPublication) throws SQLException {
+    public Integer create(PublicationWrapper newPublication) throws SQLException {
         LOGGER.info("Creando nueva publicacion...");
 
         int idPublication = publicationDAO.insert(newPublication.getPublication());
@@ -52,19 +52,16 @@ public class PublicationHelper implements EntityHelper<Integer, PublicationWrapp
         return idPublication;
     }
 
-    @Override
     public int update(Integer idPublication, PublicationWrapper newValues) throws SQLException {
         return publicationDAO.update(newValues.getPublication(), where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
-    @Override
     public boolean delete(Integer idPublication) throws SQLException {
         LOGGER.info("Eliminando publicacion [idPublication=%s] y sus imagenes...", idPublication);
         imageDAO.delete(where -> where.eq(ImageDAO.ID_PUBLICATION, idPublication));
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
-    @Override
     public Page<PublicationWrapper> filter(int pageSize, int pageNumber, Filter filter) {
 
         int totalPages = publicationDAO.count(filter);
@@ -126,5 +123,17 @@ public class PublicationHelper implements EntityHelper<Integer, PublicationWrapp
         }
         throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s",
                 idPublication, publicationStatus));
+    }
+
+    public void assertStatus(List<Integer> idPublications, PublicationStatus... expectedStatus) {
+        List<Publication> publications = publicationDAO.findBy(filter -> filter.and(
+                filter.in(PublicationDAO.ID_PUBLICATION, idPublications),
+                filter.not(filter.in(PublicationDAO.STATUS, expectedStatus))
+        ));
+        if (!publications.isEmpty()) {
+            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicaciones [idPublication=%s] con estados %s",
+                    StringUtils.join(StringUtils.COMA, publications),
+                    StringUtils.join(StringUtils.COMA, expectedStatus)));
+        }
     }
 }

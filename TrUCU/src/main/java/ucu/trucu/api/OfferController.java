@@ -70,7 +70,7 @@ public class OfferController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<Offer>> getPublications(
+    public ResponseEntity<Page<Offer>> getOffers(
             OfferFilter offerFilter,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize) {
@@ -142,7 +142,7 @@ public class OfferController {
             offerHelper.rejectOffer(idOffer);
             dbController.commit();
             LOGGER.info("Oferta [idOffer=%s] rechazada correctamente", idOffer);
-            return ResponseEntity.ok("Oferta rechazada realizada correctamente");
+            return ResponseEntity.ok("Oferta rechazada correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Error al rechazar la oferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
             dbController.rollback();

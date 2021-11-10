@@ -38,7 +38,7 @@ public class AccountController {
     @PostMapping("/create")
     public ResponseEntity createAccount(@RequestBody Account newAccount) {
         try {
-            accountHelper.createAccount(newAccount);
+            accountHelper.create(newAccount);
             dbController.commit();
             LOGGER.info("Cuenta [Email=%s] creada correctamente", newAccount.getEmail());
             return ResponseEntity.ok("Cuenta creada correctamente");
@@ -68,7 +68,7 @@ public class AccountController {
     @PostMapping("/update")
     public ResponseEntity updateAccount(@RequestParam String email, @RequestBody Account newValues) {
         try {
-            accountHelper.updateAccountData(email, newValues);
+            accountHelper.update(email, newValues);
             dbController.commit();
             LOGGER.info("Valores actualizados en cuenta [Email=%s]", email);
             return ResponseEntity.ok("Valores actualizados correctamente");
@@ -80,15 +80,15 @@ public class AccountController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteAccount(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity deleteAccount(@RequestParam String email) {
         try {
-            if (accountHelper.deleteAccount(email, password)) {
+            if (accountHelper.delete(email)) {
                 dbController.commit();
                 LOGGER.info("Cuenta [Email=%s] eliminada correctamente", email);
                 return ResponseEntity.ok("Cuenta eliminada correctamente");
             } else {
-                LOGGER.warn("Contraseña incorrecta para cuenta [Email=%s]", email);
-                return ResponseEntity.ok("Contraseña incorrecta");
+                LOGGER.warn("Cuenta no existente [Email=%s]", email);
+                return ResponseEntity.ok("Cuenta no existente");
             }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar cuenta [Email=%s] -> %s", email, ex);

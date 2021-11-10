@@ -123,7 +123,7 @@ public class OfferHelper {
         // Controlo que la oferta y las publicaciones esten abierta
         LOGGER.info("Validando estados para contraofertar [idOffer=%s]...", idOffer);
         assertStatus(idOffer, OfferStatus.OPEN);
-        idPublications.forEach(idPublication -> publicationHelper.assertStatus(idPublication, PublicationStatus.OPEN));
+        publicationHelper.assertStatus(idPublications, PublicationStatus.OPEN);
 
         LOGGER.info("Actualizando publicaciones ofertadas [idOffer=%s]...", idOffer);
 
