@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.dao.PublicationDAO;
 import java.util.List;
+import java.util.stream.Collectors;
 import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.dao.ImageDAO;
 import ucu.trucu.model.dao.OfferDAO;
@@ -39,11 +40,11 @@ public class PublicationHelper implements EntityHelper<Integer, PublicationWrapp
 
     @Autowired
     private ReportDAO reportDAO;
-    
+
     @Override
     public int create(PublicationWrapper newPublication) throws SQLException {
         LOGGER.info("Creando nueva publicacion...");
-        
+
         int idPublication = publicationDAO.insert(newPublication.getPublication());
 
         LOGGER.info("Insertando imagenes a nueva publicacion [idPublication=%s]...", idPublication);
@@ -65,9 +66,22 @@ public class PublicationHelper implements EntityHelper<Integer, PublicationWrapp
 
     @Override
     public Page<PublicationWrapper> filter(int pageSize, int pageNumber, Filter filter) {
-        int totalPages = publicationDAO.countPublications(filter);
-        List<PublicationWrapper> wrappers = new LinkedList<>();
+
+        int totalPages = publicationDAO.count(filter);
         List<Publication> publications = publicationDAO.filterPublications(pageSize, pageNumber, filter);
+        List<Integer> publicationIds = new LinkedList<>();
+        publications.forEach(publication -> publicationIds.add(publication.getIdPublication()));
+        List<Image> images = imageDAO.findBy(where -> where.in(ImageDAO.ID_PUBLICATION, publicationIds));
+        List<PublicationWrapper> wrappers = new LinkedList<>();
+        publications.forEach(publication -> {
+            wrappers.add(new PublicationWrapper(
+                    publication,
+                    images.stream()
+                            .filter(image -> image.getIdPublication().equals(publication.getIdPublication()))
+                            .collect(Collectors.toList()))
+            );
+        });
+
         return new Page<>(totalPages, pageNumber, pageSize, wrappers);
     }
 
