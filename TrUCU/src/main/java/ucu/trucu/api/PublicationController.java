@@ -41,7 +41,7 @@ public class PublicationController {
     @PostMapping("/create")
     public ResponseEntity createPublication(@RequestBody PublicationWrapper newPublication) {
         try {
-            int idPublication = publicationHelper.createPublication(newPublication);
+            int idPublication = publicationHelper.create(newPublication);
             LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
             return ResponseEntity.ok("Publicacion creada correctamente");
         } catch (SQLException ex) {
@@ -51,9 +51,9 @@ public class PublicationController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody Publication newValues) {
+    public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody PublicationWrapper newValues) {
         try {
-            publicationHelper.updatePublicationData(idPublication, newValues);
+            publicationHelper.update(idPublication, newValues);
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
             return ResponseEntity.ok("Valores de actualizados correctamente");
         } catch (SQLException ex) {
@@ -77,7 +77,7 @@ public class PublicationController {
     @DeleteMapping("/delete")
     public ResponseEntity deleteAccount(@RequestParam int idPublication) {
         try {
-            if (publicationHelper.deletePublication(idPublication)) {
+            if (publicationHelper.delete(idPublication)) {
                 LOGGER.info("Publicacion [idPublication=%s] eliminada correctamente", idPublication);
                 return ResponseEntity.ok("Publicacion eliminada correctamente");
             } else {
@@ -98,17 +98,12 @@ public class PublicationController {
 
         Filter filter = publicationFilter.toFilter();
         LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
-        return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, filter));
+        return ResponseEntity.ok(publicationHelper.filter(pageSize, pageNumber, filter));
     }
 
     @GetMapping("/images")
     public List<Image> getPublicationImages(@RequestParam int idPublication) {
         return publicationHelper.getPublicationImages(idPublication);
-    }
-
-    @GetMapping("/offers")
-    public List<Offer> getPublicationOffers(@RequestParam int idPublication) {
-        return publicationHelper.getPublicationOffers(idPublication);
     }
 
     @GetMapping("/reports")

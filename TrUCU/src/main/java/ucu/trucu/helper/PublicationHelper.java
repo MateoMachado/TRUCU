@@ -25,7 +25,7 @@ import ucu.trucu.util.pagination.Page;
  * @author NicoPuig
  */
 @Service
-public class PublicationHelper {
+public class PublicationHelper implements EntityHelper<Integer, PublicationWrapper> {
 
     private static final Logger LOGGER = LoggerFactory.create(PublicationHelper.class);
 
@@ -40,35 +40,43 @@ public class PublicationHelper {
 
     @Autowired
     private ReportDAO reportDAO;
+    
+    @Autowired
+    private DBController dbController;
 
-    public int createPublication(PublicationWrapper newPublication) throws SQLException {
+    @Override
+    public int create(PublicationWrapper newPublication) throws SQLException {
+        LOGGER.info("Creando nueva publicacion...");
+        
         int idPublication = publicationDAO.insert(newPublication.getPublication());
+
+        LOGGER.info("Insertando imagenes a nueva publicacion [idPublication=%s]...", idPublication);
         imageDAO.addPublicationImages(idPublication, newPublication.getImages());
         return idPublication;
     }
 
-    public void updatePublicationData(int idPublication, Publication newValues) throws SQLException {
-        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
+    @Override
+    public int update(Integer idPublication, PublicationWrapper newValues) throws SQLException {
+        return publicationDAO.update(newValues.getPublication(), where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
-    public boolean deletePublication(int idPublication) throws SQLException {
+    @Override
+    public boolean delete(Integer idPublication) throws SQLException {
+        LOGGER.info("Eliminando publicacion [idPublication=%s] y sus imagenes...", idPublication);
+        imageDAO.delete(where -> where.eq(ImageDAO.ID_PUBLICATION, idPublication));
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
-    public Page<PublicationWrapper> getPublications(int pageSize, int pageNumber, Filter filter) {
+    @Override
+    public Page<PublicationWrapper> filter(int pageSize, int pageNumber, Filter filter) {
         int totalPages = publicationDAO.countPublications(filter);
         List<PublicationWrapper> wrappers = new LinkedList<>();
         List<Publication> publications = publicationDAO.filterPublications(pageSize, pageNumber, filter);
-        publications.forEach(publication -> wrappers.add(new PublicationWrapper(publication, imageDAO.findBy(where -> where.eq(ImageDAO.ID_PUBLICATION, publication.getIdPublication())))));
         return new Page<>(totalPages, pageNumber, pageSize, wrappers);
     }
 
     public List<Image> getPublicationImages(int idPublication) {
         return imageDAO.findBy(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
-    }
-
-    public List<Offer> getPublicationOffers(int idPublication) {
-        return offerDAO.findBy(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
     public List<Report> getPublicationReports(int idPublication) {
