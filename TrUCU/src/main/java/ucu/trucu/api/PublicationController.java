@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ucu.trucu.helper.PublicationHelper;
 import ucu.trucu.model.dto.Image;
-import ucu.trucu.model.dto.Offer;
-import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import ucu.trucu.database.DBController;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.filter.PublicationFilter;
@@ -38,10 +37,14 @@ public class PublicationController {
     @Autowired
     private PublicationHelper publicationHelper;
 
+    @Autowired
+    private DBController dbController;
+
     @PostMapping("/create")
     public ResponseEntity createPublication(@RequestBody PublicationWrapper newPublication) {
         try {
             int idPublication = publicationHelper.create(newPublication);
+            dbController.commit();
             LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
             return ResponseEntity.ok("Publicacion creada correctamente");
         } catch (SQLException ex) {
@@ -54,10 +57,12 @@ public class PublicationController {
     public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody PublicationWrapper newValues) {
         try {
             publicationHelper.update(idPublication, newValues);
+            dbController.commit();
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
             return ResponseEntity.ok("Valores de actualizados correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -66,10 +71,12 @@ public class PublicationController {
     public ResponseEntity cancelPublication(@RequestParam int idPublication) {
         try {
             publicationHelper.cancelPublication(idPublication);
+            dbController.commit();
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
             return ResponseEntity.ok("Valores de actualizados correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -78,6 +85,7 @@ public class PublicationController {
     public ResponseEntity deleteAccount(@RequestParam int idPublication) {
         try {
             if (publicationHelper.delete(idPublication)) {
+                dbController.commit();
                 LOGGER.info("Publicacion [idPublication=%s] eliminada correctamente", idPublication);
                 return ResponseEntity.ok("Publicacion eliminada correctamente");
             } else {
@@ -86,6 +94,7 @@ public class PublicationController {
             }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar publicacion [idPublication=%s] -> %s", idPublication, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ucu.trucu.database.DBController;
 import ucu.trucu.helper.AccountHelper;
 import ucu.trucu.model.dto.Account;
 import ucu.trucu.model.dto.Rol;
@@ -30,15 +31,20 @@ public class AccountController {
 
     @Autowired
     private AccountHelper accountHelper;
+    
+    @Autowired
+    private DBController dbController;
 
     @PostMapping("/create")
     public ResponseEntity createAccount(@RequestBody Account newAccount) {
         try {
             accountHelper.createAccount(newAccount);
+            dbController.commit();
             LOGGER.info("Cuenta [Email=%s] creada correctamente", newAccount.getEmail());
             return ResponseEntity.ok("Cuenta creada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear cuenta [Email=%s] -> %s", newAccount.getEmail(), ex.getMessage());
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -63,10 +69,12 @@ public class AccountController {
     public ResponseEntity updateAccount(@RequestParam String email, @RequestBody Account newValues) {
         try {
             accountHelper.updateAccountData(email, newValues);
+            dbController.commit();
             LOGGER.info("Valores actualizados en cuenta [Email=%s]", email);
             return ResponseEntity.ok("Valores actualizados correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible actualizar valores para cuenta [Email=%s] -> %s", email, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -75,6 +83,7 @@ public class AccountController {
     public ResponseEntity deleteAccount(@RequestParam String email, @RequestParam String password) {
         try {
             if (accountHelper.deleteAccount(email, password)) {
+                dbController.commit();
                 LOGGER.info("Cuenta [Email=%s] eliminada correctamente", email);
                 return ResponseEntity.ok("Cuenta eliminada correctamente");
             } else {
@@ -83,6 +92,7 @@ public class AccountController {
             }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar cuenta [Email=%s] -> %s", email, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }

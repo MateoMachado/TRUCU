@@ -37,10 +37,8 @@ public class QueryExecutor {
             String statementStr = statement.build();
             LOGGER.query(statementStr);
             sqlStatement.executeUpdate(statementStr, java.sql.Statement.RETURN_GENERATED_KEYS);
-            this.connection.commit();
             return DBUtils.getGeneratedId(sqlStatement.getGeneratedKeys());
         } catch (SQLException ex) {
-            this.connection.rollback();
             LOGGER.error(ex);
             throw ex;
         }
@@ -59,10 +57,8 @@ public class QueryExecutor {
             String statementStr = statement.build();
             LOGGER.query(statementStr);
             int updatedRows = sqlStatement.executeUpdate(statementStr);
-            this.connection.commit();
             return updatedRows;
         } catch (SQLException ex) {
-            this.connection.rollback();
             LOGGER.error(ex);
             throw ex;
         }
