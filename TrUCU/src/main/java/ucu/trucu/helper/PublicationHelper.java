@@ -12,7 +12,6 @@ import ucu.trucu.model.dao.ImageDAO;
 import ucu.trucu.model.dao.OfferDAO;
 import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
-import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
@@ -41,9 +40,6 @@ public class PublicationHelper implements EntityHelper<Integer, PublicationWrapp
     @Autowired
     private ReportDAO reportDAO;
     
-    @Autowired
-    private DBController dbController;
-
     @Override
     public int create(PublicationWrapper newPublication) throws SQLException {
         LOGGER.info("Creando nueva publicacion...");
