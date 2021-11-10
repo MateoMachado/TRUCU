@@ -38,9 +38,9 @@ public class ImageDAO extends AbstractDAO<Image> {
         InsertStatement insert = QueryBuilder
                 .insertInto(getTable())
                 .keys(IMAGE_BYTES, ID_PUBLICATION);
-        
+
         images.forEach(image -> insert
-                .values(image.getImageBytes(), image.getIdPublication()));
+                .values(image.getImageBytes(), idPublication));
 
         return dbController.executeInsert(insert);
     }

@@ -49,6 +49,7 @@ public class PublicationController {
             return ResponseEntity.ok("Publicacion creada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear publicacion -> %s", ex.getMessage());
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
