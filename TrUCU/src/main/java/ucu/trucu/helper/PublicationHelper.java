@@ -14,6 +14,8 @@ import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Report;
+import ucu.trucu.util.log.Logger;
+import ucu.trucu.util.log.LoggerFactory;
 import ucu.trucu.util.pagination.Page;
 
 /**
@@ -22,6 +24,8 @@ import ucu.trucu.util.pagination.Page;
  */
 @Service
 public class PublicationHelper {
+
+    private static final Logger LOGGER = LoggerFactory.create(PublicationHelper.class);
 
     @Autowired
     private PublicationDAO publicationDAO;
@@ -39,8 +43,8 @@ public class PublicationHelper {
         return publicationDAO.insert(newPublication);
     }
 
-    public void updatePublicationData(Publication newValues) throws SQLException {
-        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, newValues.getIdPublication()));
+    public void updatePublicationData(int idPublication, Publication newValues) throws SQLException {
+        publicationDAO.update(newValues, where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
     public boolean deletePublication(int idPublication) throws SQLException {
@@ -68,18 +72,34 @@ public class PublicationHelper {
         publicationDAO.closeOfferPublications(idOffer);
     }
 
-    public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
-        Publication publication = new Publication();
-        publication.setIdPublication(idPublication);
-        publication.setStatus(nextStatus.name());
-        updatePublicationData(publication);
+    public void cancelPublication(int idPublication) throws SQLException {
+        LOGGER.info("Validando estado para cancelar publicacion [idPublication=%s]", idPublication);
+        this.assertStatus(idPublication, PublicationStatus.OPEN, PublicationStatus.SETTLING, PublicationStatus.HIDDEN);
+
+        LOGGER.info("Cancelando publicacion [idPublication=%s]", idPublication);
+        changePublicationStatus(idPublication, PublicationStatus.CANCELED);
+
+        LOGGER.info("Rechazando ofertas a publicacion [idPublication=%s]", idPublication);
+        offerDAO.rejectOffersToPublication(idPublication);
+
+        LOGGER.info("Cancelando ofertas con la publicacion [idPublication=%s]", idPublication);
+        offerDAO.cancelOffersWithPublication(idPublication);
     }
 
-    public void assertStatus(int idPublication, PublicationStatus expectedStatus) {
+    public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
+        Publication publication = new Publication();
+        publication.setStatus(nextStatus.name());
+        publicationDAO.update(publication, where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
+    }
+
+    public void assertStatus(int idPublication, PublicationStatus... expectedStatus) {
         PublicationStatus publicationStatus = publicationDAO.getStatus(idPublication);
-        if (!expectedStatus.equals(publicationStatus)) {
-            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s ",
-                    idPublication, publicationStatus));
+        for (PublicationStatus status : expectedStatus) {
+            if (status.equals(publicationStatus)) {
+                return;
+            }
         }
+        throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicacion [idPublication=%s] con estado %s",
+                idPublication, publicationStatus));
     }
 }

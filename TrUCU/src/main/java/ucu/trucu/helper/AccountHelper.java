@@ -34,8 +34,8 @@ public class AccountHelper {
         return password.equals(account.getPassword());
     }
 
-    public void updateAccountData(Account newValues) throws SQLException {
-        accountDAO.update(newValues, where -> where.eq(AccountDAO.EMAIL, newValues.getEmail()));
+    public void updateAccountData(String email, Account newValues) throws SQLException {
+        accountDAO.update(newValues, where -> where.eq(AccountDAO.EMAIL, email));
     }
 
     public boolean deleteAccount(String email, String password) throws SQLException {

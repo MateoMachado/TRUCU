@@ -40,8 +40,7 @@ public class OfferHelper {
 
     public void deleteOffer(int idOffer) throws SQLException {
         // Elimino las publicaciones relacionadas con la oferta
-        offerDAO.deleteOfferedPublications(idOffer, where
-                -> where.eq(OfferDAO.ID_OFFER, idOffer));
+        offerDAO.deleteOfferedPublications(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
 
         // Elimino la oferta
         offerDAO.delete(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
@@ -115,9 +114,52 @@ public class OfferHelper {
     public void rejectOffer(int idOffer) throws SQLException {
 
         LOGGER.info("Validando estados para rechazar oferta [idOffer=%s]", idOffer);
-        this.assertStatus(idOffer, OfferStatus.OPEN);
+        assertStatus(idOffer, OfferStatus.OPEN, OfferStatus.CHANGED);
 
         changeOfferStatus(idOffer, OfferStatus.REJECTED);
+    }
+
+    public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
+        // Controlo que la oferta y las publicaciones esten abierta
+        LOGGER.info("Validando estados para contraofertar [idOffer=%s]...", idOffer);
+        assertStatus(idOffer, OfferStatus.OPEN);
+        idPublications.forEach(idPublication -> publicationHelper.assertStatus(idPublication, PublicationStatus.OPEN));
+
+        LOGGER.info("Actualizando publicaciones ofertadas [idOffer=%s]...", idOffer);
+
+        // Elimino las publicaciones relacionadas con la oferta
+        offerDAO.deleteOfferedPublications(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
+
+        // Inserto las nuevas publicaciones
+        for (int idPublication : idPublications) {
+            offerDAO.addOfferedPublications(idOffer, idPublication);
+        }
+
+        // Cambio el estado a contraoferta
+        changeOfferStatus(idOffer, OfferStatus.CHANGED);
+    }
+
+    public void acceptCounterOffer(int idOffer) throws SQLException {
+
+        LOGGER.info("Validando estados para aceptar contraoferta [idOffer=%s]...", idOffer);
+        assertStatus(idOffer, OfferStatus.CHANGED);
+
+        LOGGER.info("Aceptando contraoferta [idOffer=%s]...", idOffer);
+        changeOfferStatus(idOffer, OfferStatus.OPEN);
+    }
+
+    public void rejectCounterOffer(int idOffer) throws SQLException {
+
+        LOGGER.info("Validando estados para rechazar contraoferta [idOffer=%s]...", idOffer);
+        assertStatus(idOffer, OfferStatus.CHANGED);
+
+        LOGGER.info("Aceptando contraoferta [idOffer=%s]...", idOffer);
+        changeOfferStatus(idOffer, OfferStatus.REJECTED);
+    }
+
+    public Page<Offer> getOffers(int pageSize, int pageNumber, Filter filter) {
+        int totalPages = offerDAO.countOffer(filter);
+        return new Page(totalPages, pageNumber, pageSize, offerDAO.filterOffers(pageSize, pageNumber, filter));
     }
 
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
@@ -126,36 +168,15 @@ public class OfferHelper {
         offerDAO.update(offer, where -> where.eq(OfferDAO.ID_OFFER, idOffer));
     }
 
-    public void counterOffer(int idOffer, List<Integer> idPublications) throws SQLException {
-        // Controlo que la oferta y las publicaciones esten abierta
-        assertStatus(idOffer, OfferStatus.OPEN);
-        idPublications.forEach(idPublication -> publicationHelper.assertStatus(idPublication, PublicationStatus.OPEN));
-
-        // Elimino las publicaciones relacionadas con la oferta
-        offerDAO.deleteOfferedPublications(idOffer, where
-                -> where.eq(OfferDAO.ID_OFFER, idOffer));
-        // Inserto las nuevas publicaciones
-        for (int idPublication : idPublications) {
-            offerDAO.addOfferedPublications(idOffer, idPublication);
-        }
-
-        // Cambio el estado a contraoferta
-        Offer offer = new Offer();
-        offer.setStatus(OfferStatus.CHANGED.name());
-        offerDAO.update(offer, where -> where.eq(OfferDAO.ID_OFFER, idOffer));
-    }
-
-    public Page<Offer> getOffers(int pageSize, int pageNumber, Filter filter) {
-        int totalPages = offerDAO.countOffer(filter);
-        return new Page(totalPages, pageNumber, pageSize, offerDAO.filterOffers(pageSize, pageNumber, filter));
-    }
-
-    public void assertStatus(int idOffer, OfferStatus expectedStatus) {
+    public void assertStatus(int idOffer, OfferStatus... expectedStatus) {
         OfferStatus offerStatus = offerDAO.getStatus(idOffer);
-        if (!expectedStatus.equals(offerStatus)) {
-            throw new IllegalStateException(String.format("Imposible ejecutar operacion en oferta [idOffer=%s] con estado %s ",
-                    idOffer, offerStatus));
+        for (OfferStatus status : expectedStatus) {
+            if (status.equals(offerStatus)) {
+                return;
+            }
         }
+        throw new IllegalStateException(String.format("Imposible ejecutar operacion en oferta [idOffer=%s] con estado %s ",
+                idOffer, offerStatus));
     }
 
     public void assertStatusNotEqual(int idOffer, OfferStatus notExpectedStatus) {
