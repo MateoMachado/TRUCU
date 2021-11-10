@@ -89,7 +89,7 @@ export class HttpService {
   }
 
   CreatePublication(publication : any){
-    return <Observable<any>> this.http.post<Publication>(this.baseUrl + 'publication/createPublication', publication);
+    return <Observable<any>> this.http.post<Publication>(this.baseUrl + 'publication/create', publication);
   }
 
 }

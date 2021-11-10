@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Image } from 'src/app/core/models/Image';
 import { Publication } from 'src/app/core/models/Publication';
 import { HttpService } from 'src/app/core/services/http.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-create-publication',
@@ -14,7 +15,7 @@ export class CreatePublicationComponent implements OnInit {
   newPublication : Publication = new Publication();
   confirmPassword : string;
 
-  constructor(public http : HttpService, public toastr : ToastrService) { }
+  constructor(public http : HttpService, public toastr : ToastrService, public user : UserService) { }
 
   ngOnInit(): void {
   }
@@ -53,7 +54,8 @@ export class CreatePublicationComponent implements OnInit {
     });
 
     this.newPublication.images = images;
-
+    this.newPublication.accountEmail = this.user.userSubject.getValue().email;
+    
     this.http.CreatePublication(this.newPublication).subscribe(data => {
       this.newPublication.idPublication = data;
       this.newPublication.images.forEach(image => {
