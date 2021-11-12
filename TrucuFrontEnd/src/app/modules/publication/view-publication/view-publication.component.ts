@@ -11,7 +11,8 @@ import { PublicationFilter } from 'src/app/core/models/PublicationFilter';
 })
 export class ViewPublicationComponent implements OnInit {
   wrapper: PublicationWrapper;
-
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+  
   constructor(public httpService : HttpService, public route: ActivatedRoute) { }
 
   ngOnInit(): void {

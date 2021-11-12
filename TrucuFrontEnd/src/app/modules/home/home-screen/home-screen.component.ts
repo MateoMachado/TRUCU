@@ -23,6 +23,7 @@ export class HomeScreenComponent implements OnInit {
   ngOnInit(): void {
     this.publicationService.pageSubject.subscribe(data => {
       this.currentPage = data;
+      console.log(this.currentPage);
     });
 
     this.publicationService.filterSubject.subscribe(data => {

@@ -4,7 +4,7 @@ import { CreatePublicationComponent } from './create-publication/create-publicat
 import { PublicationRoutingModule } from './publication-routing.module';
 import { FormsModule } from '@angular/forms';
 import { ViewPublicationComponent } from './view-publication/view-publication.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -15,7 +15,8 @@ import { ViewPublicationComponent } from './view-publication/view-publication.co
   imports: [
     CommonModule,
     PublicationRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   exports : [
     CreatePublicationComponent,
