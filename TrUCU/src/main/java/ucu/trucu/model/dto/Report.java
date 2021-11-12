@@ -38,7 +38,6 @@ public class Report {
     public Integer getIdPublication() {
         return idPublication;
     }
-    
     public void setIdPublication(Integer idPublication) {
         this.idPublication = idPublication;
     }

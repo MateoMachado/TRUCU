@@ -7,7 +7,7 @@ package ucu.trucu.model.dto;
 public class Image {
 
     private Integer idImage;
-    private String path;
+    private String imageBytes;
     private Integer idPublication;
 
     public Integer getIdImage() {
@@ -18,12 +18,12 @@ public class Image {
         this.idImage = idImage;
     }
 
-    public String getPath() {
-        return path;
+    public String getImageBytes() {
+        return imageBytes;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setImageBytes(String imageBytes) {
+        this.imageBytes = imageBytes;
     }
 
     public Integer getIdPublication() {

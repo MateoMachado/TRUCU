@@ -4,17 +4,21 @@ import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ucu.trucu.database.DBController;
+import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.OfferHelper;
 import ucu.trucu.model.dto.Offer;
+import ucu.trucu.model.filter.OfferFilter;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
+import ucu.trucu.util.pagination.Page;
 
 /**
  *
@@ -22,6 +26,7 @@ import ucu.trucu.util.log.LoggerFactory;
  */
 @RestController
 @RequestMapping("trucu/offer")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OfferController {
 
     private static final Logger LOGGER = LoggerFactory.create(PublicationController.class);
@@ -29,14 +34,19 @@ public class OfferController {
     @Autowired
     private OfferHelper offerHelper;
 
+    @Autowired
+    private DBController dbController;
+
     @PostMapping("/create")
-    public ResponseEntity createOffer(@RequestBody Offer newOffer, @RequestParam List<Integer> publications) {
+    public ResponseEntity createOffer(@RequestParam int idPublication, @RequestParam List<Integer> idOfferedPublications) {
         try {
-            offerHelper.createOffer(newOffer, publications);
+            offerHelper.createOffer(idPublication, idOfferedPublications);
+            dbController.commit();
             LOGGER.info("Oferta creada correctamente");
             return ResponseEntity.ok("Oferta creada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear la oferta -> %s", ex.getMessage());
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -45,26 +55,41 @@ public class OfferController {
     public ResponseEntity deleteOffer(@RequestParam int idOffer) {
         try {
             offerHelper.deleteOffer(idOffer);
+            dbController.commit();
             return ResponseEntity.ok("Oferta eliminada correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar la oferta [idOffer=%d] -> %s", idOffer, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @GetMapping("/getFromUser")
-    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int idUser) {
-        return ResponseEntity.ok(offerHelper.getUserOffers(idUser));
+    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int accountEmail) {
+        return ResponseEntity.ok(offerHelper.getUserOffers(accountEmail));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<Offer>> getOffers(
+            OfferFilter offerFilter,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "0") int pageSize) {
+
+        Filter filter = offerFilter.toFilter();
+        LOGGER.info("Obteniendo ofertas filtradas por [%s]", filter);
+        return ResponseEntity.ok(offerHelper.getOffers(pageSize, pageNumber, filter));
     }
 
     @PostMapping("/close")
     public ResponseEntity closeOffer(@RequestParam int idOffer) {
         try {
             offerHelper.closeOffer(idOffer);
+            dbController.commit();
             LOGGER.info("Oferta [idOffer=%s] cerrada correctamente", idOffer);
             return ResponseEntity.ok("Oferta cerrada correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible cerrar oferta [idOffer=%s] -> %s", idOffer, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -73,10 +98,12 @@ public class OfferController {
     public ResponseEntity acceptOffer(@RequestParam int idOffer) {
         try {
             offerHelper.acceptOffer(idOffer);
+            dbController.commit();
             LOGGER.info("Oferta [idOffer=%s] aceptada correctamente", idOffer);
             return ResponseEntity.ok("Oferta aceptada correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible aceptar oferta [idOffer=%s] -> %s", idOffer, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -85,10 +112,12 @@ public class OfferController {
     public ResponseEntity cancelOffer(@RequestParam int idOffer) {
         try {
             offerHelper.cancelOffer(idOffer);
+            dbController.commit();
             LOGGER.info("Oferta [idOffer=%s] cancelada correctamente", idOffer);
             return ResponseEntity.ok("Oferta cancelada correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible cancelar oferta [idOffer=%s] -> %s", idOffer, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -97,22 +126,68 @@ public class OfferController {
     public ResponseEntity revertAcceptance(@RequestParam int idOffer) {
         try {
             offerHelper.revertAcceptance(idOffer);
+            dbController.commit();
             LOGGER.info("Oferta [idOffer=%s] desaceptada correctamente", idOffer);
             return ResponseEntity.ok("Oferta desaceptada correctamente");
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible desaceptada oferta [idOffer=%s]  -> %s", idOffer, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
-    
+
+    @PostMapping("/reject")
+    public ResponseEntity rejectOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.rejectOffer(idOffer);
+            dbController.commit();
+            LOGGER.info("Oferta [idOffer=%s] rechazada correctamente", idOffer);
+            return ResponseEntity.ok("Oferta rechazada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al rechazar la oferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            dbController.rollback();
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
     @PostMapping("/counterOffer")
     public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
         try {
             offerHelper.counterOffer(idOffer, publications);
-            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente",idOffer);
+            dbController.commit();
+            LOGGER.info("Se creo la contraoferta [idOffer=%s] correctamente", idOffer);
             return ResponseEntity.ok("Contraoferta realizada correctamente");
         } catch (SQLException | IllegalStateException ex) {
-            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s",idOffer,ex.getMessage());
+            LOGGER.error("Error al crear la contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            dbController.rollback();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/counterOffer/accept")
+    public ResponseEntity acceptCounterOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.acceptCounterOffer(idOffer);
+            dbController.commit();
+            LOGGER.info("Contraoferta [idOffer=%s] aceptada correctamente", idOffer);
+            return ResponseEntity.ok("Contraoferta aceptada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al aceptar contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            dbController.rollback();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/counterOffer/reject")
+    public ResponseEntity rejectCounterOffer(@RequestParam int idOffer) {
+        try {
+            offerHelper.rejectCounterOffer(idOffer);
+            dbController.commit();
+            LOGGER.info("Contraoferta [idOffer=%s] rechazada correctamente", idOffer);
+            return ResponseEntity.ok("Contraoferta rechazada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Error al rechazar contraoferta [idOffer=%s] -> %s", idOffer, ex.getMessage());
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }

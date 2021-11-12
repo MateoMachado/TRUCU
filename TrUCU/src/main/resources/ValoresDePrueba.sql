@@ -1,29 +1,43 @@
+USE Trucu;
 
--- Rol creation
-insert into Rol (name,description) VALUES ('User', 'Normal user');
-insert into Rol (name,description) VALUES ('Admin', 'Administrator');
+-- Rol
+INSERT INTO Rol (name, description) VALUES 
+('User', 'Normal user'),
+('Admin', 'Administrator');
 
--- Account creation
-insert into Account (CI, name, lastName, email, birthDate, password, rolName) 
-VALUES ('51973513', 'Sebastian', 'Mazzey', 'sebastian.mazzey@correo.ucu.edu.uy','20000830', 'seba123','User');
-insert into Account (CI, name, lastName, email, birthDate, password, rolName) 
-VALUES ('12345678', 'Mateo', 'Machado', 'mateo.machado@correo.ucu.edu.uy','20010124', 'mateo123','User');
-insert into Account (CI, name, lastName, email, birthDate, password, rolName) 
-VALUES ('23456789', 'Nicolas', 'Puig', 'nicolas.puig@correo.ucu.edu.uy','20000214', 'nico123','User');
-insert into Account (CI, name, lastName, email, birthDate, password, rolName) 
-VALUES ('12345', 'Profesores', 'Base', 'profesores@correo.ucu.edu.uy','20211114', 'trucu123','User');
-
-SELECT * FROM Account
+-- Account
+INSERT INTO Account (email, name, lastName, birthDate, password, rolName) VALUES
+('nicopuig@correo.ucu.edu.uy', 'Nicolas', 'Puig', '2001-02-14', 'nicopuig', 'User'),
+('sebamazzey@correo.ucu.edu.uy', 'Sebastian', 'Mazzey', '2000-06-25', 'sebamazzey', 'User'),
+('mateomachado@correo.ucu.edu.uy', 'Mateo', 'Machado', '2000-10-16', 'mateomacha', 'User'),
+('rickyfort@ucu.edu.uy', 'Ricardo', 'Fort', '1985-01-01', 'maeame', 'Admin');
 
 -- Publication
-insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
-VALUES ('Bicicleta', 'Bicicleta GT rodado 29', 1500, '20211031', 'OPEN', '51973513')
-insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
-VALUES ('Auriculares Logitech G533', 'Auriculares Logitech G533 Wireless', 900, '20211031', 'OPEN', '12345678')
-insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
-VALUES ('Monitor Samsung 24 pulgadas', 'Monitor Samsung 24 pulgadas 1 anio de uso', 1900, '20211031', 'OPEN', '12345678')
-insert into Publication (title, description, ucuCoinValue, publicationDate, status, accountCI)
-VALUES ('Web Cam HD 1080P', 'Web Cam Full Hd 1080P con poco uso', 450, '20211031', 'OPEN', '12345678')
+INSERT INTO Publication (title, description, ucuCoinValue, publicationDate, accountEmail) VALUES
+('Bicicleta', 'Bicicleta GT rodado 29', 1500, '2021-10-31 00:05:00', 'nicopuig@correo.ucu.edu.uy'),
+('Auriculares Logitech G533', 'Auriculares Logitech G533 Wireless', 900, '2021-10-31 03:02:01', 'nicopuig@correo.ucu.edu.uy'),
+('Monitor Samsung 24 pulgadas', 'Monitor Samsung 24 pulgadas 1 anio de uso', 1900, '2021-07-31 00:00:00', 'sebamazzey@correo.ucu.edu.uy'),
+('Web Cam HD 1080P', 'Web Cam Full Hd 1080P con poco uso', 450, '2021-10-01 07:12:13', 'mateomachado@correo.ucu.edu.uy');
 
-SELECT * FROM Publication
+INSERT INTO Publication (title, description, ucuCoinValue, accountEmail) VALUES
+('Lapiz digital Sony', 'Para usar en dispositivos tactiles', 10, 'nicopuig@correo.ucu.edu.uy'),
+('Agua Salus', '1 Litro', 1, 'nicopuig@correo.ucu.edu.uy'),
+('Lampara de techo', 'Uso domestico', 150,  'mateomachado@correo.ucu.edu.uy'),
+('Sofa Cama', '200x120cm', 11500,  'mateomachado@correo.ucu.edu.uy'),
+('Sofa', '200x120cm', 11500,  'mateomachado@correo.ucu.edu.uy'),
+('Vino Faisan en caja', '1 Litro', 10000,  'sebamazzey@correo.ucu.edu.uy');
 
+-- Offer
+INSERT INTO Offer (idPublication) VALUES
+(3), (3), (2), (7), (10), (5);
+
+-- Offered Publications
+INSERT INTO OfferedPublications (idOffer, idPublication) VALUES 
+(1, 1), (1,2), (2,4), (3,10), (4, 6), (4, 5), (5, 8), (5, 9);
+
+-- Reason
+INSERT INTO Reason (description) VALUES ('Publicacion ofensiva'), ('Contenido ilegal'), ('Spam');
+
+-- Report
+INSERT INTO Report (idReason, idPublication) VALUES 
+(1, 4), (2, 10), (3,3);

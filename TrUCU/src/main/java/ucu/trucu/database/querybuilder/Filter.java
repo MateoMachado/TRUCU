@@ -23,11 +23,11 @@ public class Filter {
     }
 
     public <T> String eq(String key, T value) {
-        return joinOperand("=", key,  String.format("'%s'", value));
+        return joinOperand("=", key, String.format("'%s'", value));
     }
 
     public <T> String lt(String key, T value) {
-        return joinOperand("<", key,  String.format("'%s'", value));
+        return joinOperand("<", key, String.format("'%s'", value));
     }
 
     public <T> String gt(String key, T value) {
@@ -35,27 +35,35 @@ public class Filter {
     }
 
     public <T> String loet(String key, T value) {
-        return joinOperand("<=", key,  String.format("'%s'", value));
+        return joinOperand("<=", key, String.format("'%s'", value));
     }
 
     public <T> String goet(String key, T value) {
-        return joinOperand(">=", key,  String.format("'%s'", value));
+        return joinOperand(">=", key, String.format("'%s'", value));
     }
 
     public <T> String notEq(String key, T value) {
-        return joinOperand("!=", key,  String.format("'%s'", value));
+        return joinOperand("!=", key, String.format("'%s'", value));
     }
 
     public <T> String like(String key, T value) {
         return joinOperand("LIKE", key, String.format("'%s'", value));
     }
 
+    public String in(String key, SelectStatement selectStatement) {
+        return joinOperand("IN", key, String.format("(%s)", selectStatement.build()));
+    }
+
     public <T> String in(String key, Collection<T> list) {
-        return joinOperand("IN", key, String.format("(%s)", StringUtils.join(StringUtils.COMA, list)));
+        return joinOperand("IN", key, String.format("(%s)", StringUtils.join(StringUtils.COMA, list, value -> String.format("'%s'", value))));
     }
 
     public <T> String in(String key, T... list) {
-        return joinOperand("IN", key, String.format("(%s)", StringUtils.join(StringUtils.COMA, list)));
+        return joinOperand("IN", key, String.format("(%s)", StringUtils.join(StringUtils.COMA, list, value -> String.format("'%s'", value))));
+    }
+
+    public String not(String operation) {
+        return "NOT " + operation;
     }
 
     public String isNotNull(String key) {
@@ -69,7 +77,7 @@ public class Filter {
     public String and(String... conditions) {
         return StringUtils.join(" AND ", conditions, condition -> String.format("(%s)", condition));
     }
-    
+
     public String or(String... conditions) {
         return StringUtils.join(" OR ", conditions, condition -> String.format("(%s)", condition));
     }

@@ -3,6 +3,7 @@ package ucu.trucu.api;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ucu.trucu.database.DBController;
 import ucu.trucu.helper.AccountHelper;
 import ucu.trucu.model.dto.Account;
 import ucu.trucu.model.dto.Rol;
@@ -22,21 +24,27 @@ import ucu.trucu.util.log.LoggerFactory;
  */
 @RestController
 @RequestMapping("trucu/account")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AccountController {
 
     private static final Logger LOGGER = LoggerFactory.create(AccountController.class);
 
     @Autowired
     private AccountHelper accountHelper;
+    
+    @Autowired
+    private DBController dbController;
 
     @PostMapping("/create")
     public ResponseEntity createAccount(@RequestBody Account newAccount) {
         try {
-            accountHelper.createAccount(newAccount);
-            LOGGER.info("Cuenta [CI=%s] creada correctamente", newAccount.getCI());
+            accountHelper.create(newAccount);
+            dbController.commit();
+            LOGGER.info("Cuenta [Email=%s] creada correctamente", newAccount.getEmail());
             return ResponseEntity.ok("Cuenta creada correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible crear cuenta [CI=%s] -> %s", newAccount.getCI(), ex.getMessage());
+            LOGGER.error("Imposible crear cuenta [Email=%s] -> %s", newAccount.getEmail(), ex.getMessage());
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -58,29 +66,33 @@ public class AccountController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateAccount(@RequestParam String CI, @RequestBody Account newValues) {
+    public ResponseEntity updateAccount(@RequestParam String email, @RequestBody Account newValues) {
         try {
-            accountHelper.updateAccountData(CI, newValues);
-            LOGGER.info("Valores actualizados en cuenta [CI=%s]", CI);
+            accountHelper.update(email, newValues);
+            dbController.commit();
+            LOGGER.info("Valores actualizados en cuenta [Email=%s]", email);
             return ResponseEntity.ok("Valores actualizados correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible actualizar valores para cuenta [CI=%s] -> %s", CI, ex);
+            LOGGER.error("Imposible actualizar valores para cuenta [Email=%s] -> %s", email, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteAccount(@RequestParam String CI, @RequestParam String password) {
+    public ResponseEntity deleteAccount(@RequestParam String email) {
         try {
-            if (accountHelper.deleteAccount(CI, password)) {
-                LOGGER.info("Cuenta [CI=%s] eliminada correctamente", CI);
+            if (accountHelper.delete(email)) {
+                dbController.commit();
+                LOGGER.info("Cuenta [Email=%s] eliminada correctamente", email);
                 return ResponseEntity.ok("Cuenta eliminada correctamente");
             } else {
-                LOGGER.warn("Contraseña incorrecta para cuenta [CI=%s]", CI);
-                return ResponseEntity.ok("Contraseña incorrecta");
+                LOGGER.warn("Cuenta no existente [Email=%s]", email);
+                return ResponseEntity.ok("Cuenta no existente");
             }
         } catch (SQLException ex) {
-            LOGGER.error("Imposible eliminar cuenta [CI=%s] -> %s", CI, ex);
+            LOGGER.error("Imposible eliminar cuenta [Email=%s] -> %s", email, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }

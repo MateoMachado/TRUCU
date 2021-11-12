@@ -86,8 +86,12 @@ public class DBUtils {
         return keyValue;
     }
 
-    public static int getGeneratedId(ResultSet idResultSet) throws SQLException {
-        return idResultSet.next() ? idResultSet.getInt(1) : -1;
+    public static List<Integer> getGeneratedId(ResultSet idResultSet) throws SQLException {
+        List<Integer> list = new LinkedList<>();
+        while (idResultSet.next()) {
+            list.add(idResultSet.getInt(1));
+        }
+        return list;
     }
 
     /**
@@ -104,15 +108,17 @@ public class DBUtils {
         ColumnsMetaData entityMetadata = new ColumnsMetaData();
         for (int columnIndex = 1; columnIndex <= metaData.getColumnCount(); columnIndex++) {
             String columnName = metaData.getColumnName(columnIndex);
-            Class<?> columnClass = Class.forName(metaData.getColumnClassName(columnIndex));
-            String setterName = "set" + StringUtils.capitalize(columnName);
-            try {
-                Method setter = entityClass.getMethod(setterName, columnClass);
-                entityMetadata.addColumnSetter(columnName, setter);
-                entityMetadata.addColumnType(columnName, columnClass);
-            } catch (NoSuchMethodException ex) {
-                LOGGER.warn("Property '%s' or method .%s(%s) not found in %s -> Setting default value null",
-                        columnName, setterName, columnClass.getName(), entityClass);
+            if (!StringUtils.isEmpty(columnName)) {
+                Class<?> columnClass = Class.forName(metaData.getColumnClassName(columnIndex));
+                String setterName = "set" + StringUtils.capitalize(columnName);
+                try {
+                    Method setter = entityClass.getMethod(setterName, columnClass);
+                    entityMetadata.addColumnSetter(columnName, setter);
+                    entityMetadata.addColumnType(columnName, columnClass);
+                } catch (NoSuchMethodException ex) {
+                    LOGGER.warn("Property '%s' or method .%s(%s) not found in %s -> Setting default value null",
+                            columnName, setterName, columnClass.getName(), entityClass);
+                }
             }
         }
         return entityMetadata;

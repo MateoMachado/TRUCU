@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Page } from 'src/app/core/models/Page';
 import { Publication } from 'src/app/core/models/Publication';
 import { PublicationFilter } from 'src/app/core/models/PublicationFilter';
 import { HttpService } from 'src/app/core/services/http.service';
+import { PublicationService } from 'src/app/core/services/publication.service';
+import { Observable, of } from "rxjs";
 
 @Component({
   selector: 'app-home-screen',
@@ -10,14 +14,38 @@ import { HttpService } from 'src/app/core/services/http.service';
 })
 export class HomeScreenComponent implements OnInit {
 
+  currentPage : Page;
   publications : Publication[];
+  currentFilter : PublicationFilter;
+ 
 
-  constructor(public httpService : HttpService) { }
+  constructor(public httpService : HttpService, public publicationService : PublicationService) { }
 
   ngOnInit(): void {
-    this.httpService.GetPublications(new PublicationFilter).subscribe(x => {
-      console.log(x);
-      this.publications = x;
+    this.publicationService.pageSubject.subscribe(data => {
+      this.currentPage = data;
+      console.log(this.currentPage);
+    });
+
+    this.publicationService.filterSubject.subscribe(data => {
+      this.currentFilter = data;
+    });
+
+    var filter = new PublicationFilter();
+    filter.pageSize = 10;
+    filter.pageNumber = 0;
+
+    this.httpService.GetPublications(filter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(filter);
+    });
+  }
+
+  nextPage(){
+    this.currentFilter.pageNumber++;
+    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(this.currentFilter);
     });
   }
 
