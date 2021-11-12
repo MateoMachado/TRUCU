@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,12 +39,12 @@ public class OfferController {
     private DBController dbController;
 
     @PostMapping("/create")
-    public ResponseEntity createOffer(@RequestParam int idPublication, @RequestParam List<Integer> idOfferedPublications) {
+    public ResponseEntity createOffer(@RequestParam int idPublication, @RequestBody List<Integer> idOfferedPublications) {
         try {
             offerHelper.createOffer(idPublication, idOfferedPublications);
             dbController.commit();
             LOGGER.info("Oferta creada correctamente");
-            return ResponseEntity.ok("Oferta creada correctamente");
+            return ResponseEntity.ok("{\"result\" : \"Oferta creada correctamente\"}");
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear la oferta -> %s", ex.getMessage());
             dbController.rollback();
