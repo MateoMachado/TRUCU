@@ -21,7 +21,6 @@ public class AppMain {
 
         // SpringBoot Init
         ConfigurableApplicationContext appContext = new SpringApplicationBuilder(AppMain.class)
-                .headless(false)
                 .run(args);
     }
 }

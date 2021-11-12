@@ -23,7 +23,7 @@ import ucu.trucu.util.log.LoggerFactory;
  */
 @RestController
 @RequestMapping("trucu/account")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"${trucu.front.url.local}", "${trucu.front.url.firebase}"})
 public class AccountController {
 
     private static final Logger LOGGER = LoggerFactory.create(AccountController.class);
