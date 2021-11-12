@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import ucu.trucu.model.dao.OfferDAO;
+import ucu.trucu.model.dao.PublicationDAO;
 
 /**
  *
@@ -69,7 +70,7 @@ public class OfferFilter implements DTOFilter {
                 conditions.add(where.in(OfferDAO.STATUS, status));
             }
             if (idPublication != null) {
-                conditions.add(where.eq(OfferDAO.ID_PUBLICATION, idPublication));
+                conditions.add(where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
             }
             if (afterOfferDate != null) {
                 conditions.add(where.goet(OfferDAO.OFFER_DATE, afterOfferDate));

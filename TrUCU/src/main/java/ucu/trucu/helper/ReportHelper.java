@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.dao.ImageDAO;
+import ucu.trucu.model.dao.PublicationDAO;
 import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Publication;
@@ -54,7 +55,7 @@ public class ReportHelper {
         List<Publication> publications = reportDAO.filterPublications(pageSize, pageNumber, filter);
         List<Integer> publicationIds = new LinkedList<>();
         publications.forEach(publication -> publicationIds.add(publication.getIdPublication()));
-        List<Image> images = imageDAO.findBy(where -> where.in(ImageDAO.ID_PUBLICATION, publicationIds));
+        List<Image> images = imageDAO.findBy(where -> where.in(PublicationDAO.ID_PUBLICATION, publicationIds));
         List<PublicationWrapper> wrappers = new LinkedList<>();
         publications.forEach(publication -> {
             wrappers.add(new PublicationWrapper(

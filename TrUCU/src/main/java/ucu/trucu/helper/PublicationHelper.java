@@ -58,7 +58,7 @@ public class PublicationHelper {
 
     public boolean delete(Integer idPublication) throws SQLException {
         LOGGER.info("Eliminando publicacion [idPublication=%s] y sus imagenes...", idPublication);
-        imageDAO.delete(where -> where.eq(ImageDAO.ID_PUBLICATION, idPublication));
+        imageDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
@@ -68,7 +68,7 @@ public class PublicationHelper {
         List<Publication> publications = publicationDAO.filterPublications(pageSize, pageNumber, filter);
         List<Integer> publicationIds = new LinkedList<>();
         publications.forEach(publication -> publicationIds.add(publication.getIdPublication()));
-        List<Image> images = imageDAO.findBy(where -> where.in(ImageDAO.ID_PUBLICATION, publicationIds));
+        List<Image> images = imageDAO.findBy(where -> where.in(PublicationDAO.ID_PUBLICATION, publicationIds));
         List<PublicationWrapper> wrappers = new LinkedList<>();
         publications.forEach(publication -> {
             wrappers.add(new PublicationWrapper(
