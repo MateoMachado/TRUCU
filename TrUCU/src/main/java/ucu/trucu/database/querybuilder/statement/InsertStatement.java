@@ -55,7 +55,7 @@ public class InsertStatement implements Statement {
         if (select != null) {
             statement += StringUtils.SPACE + select.build();
         } else {
-            String rows = StringUtils.join(StringUtils.COMA_LN, values, row -> String.format("(%s)", StringUtils.join(StringUtils.COMA, row, value -> String.format("'%s'", value))));
+            String rows = StringUtils.join(StringUtils.COMA, values, row -> String.format("(%s)", StringUtils.join(StringUtils.COMA, row, value -> String.format("'%s'", value))));
             statement += StringUtils.SPACE + String.format(VALUES, rows);
         }
         return statement;

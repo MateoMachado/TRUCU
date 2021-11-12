@@ -62,6 +62,10 @@ public class Filter {
         return joinOperand("IN", key, String.format("(%s)", StringUtils.join(StringUtils.COMA, list, value -> String.format("'%s'", value))));
     }
 
+    public String not(String operation) {
+        return "NOT " + operation;
+    }
+
     public String isNotNull(String key) {
         return key + " IS NOT NULL";
     }

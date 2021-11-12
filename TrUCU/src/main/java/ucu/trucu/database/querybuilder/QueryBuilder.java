@@ -34,4 +34,8 @@ public class QueryBuilder {
     public static InsertStatement insertInto(String table) {
         return new InsertStatement(table);
     }
+    
+    public static SelectStatement countFrom(String table){
+        return new SelectStatement(table, "COUNT(*) AS 'count'");
+    }
 }
