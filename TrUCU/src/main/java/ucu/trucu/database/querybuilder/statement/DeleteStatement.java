@@ -37,7 +37,7 @@ public class DeleteStatement implements Statement {
     public String build() {
         String statement = String.format(DELETE_FROM, table);
         if (filter != null) {
-            statement += StringUtils.LN_TABBED + String.format(WHERE, filter);
+            statement += StringUtils.SPACE + String.format(WHERE, filter);
         }
         return statement;
     }

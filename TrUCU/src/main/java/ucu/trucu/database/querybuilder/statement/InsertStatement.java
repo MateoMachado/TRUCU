@@ -12,7 +12,7 @@ import ucu.trucu.util.StringUtils;
 public class InsertStatement implements Statement {
 
     private static final String INSERT = "INSERT INTO %s (%s)";
-    private static final String VALUES = "VALUES \n%s";
+    private static final String VALUES = "VALUES %s";
 
     private final String tableName;
     private final List<Object[]> values = new LinkedList<>();
@@ -55,7 +55,7 @@ public class InsertStatement implements Statement {
         if (select != null) {
             statement += StringUtils.SPACE + select.build();
         } else {
-            String rows = StringUtils.join(StringUtils.COMA_LN, values, row -> String.format("(%s)", StringUtils.join(StringUtils.COMA, row, value -> String.format("'%s'", value))));
+            String rows = StringUtils.join(StringUtils.COMA, values, row -> String.format("(%s)", StringUtils.join(StringUtils.COMA, row, value -> String.format("'%s'", value))));
             statement += StringUtils.SPACE + String.format(VALUES, rows);
         }
         return statement;

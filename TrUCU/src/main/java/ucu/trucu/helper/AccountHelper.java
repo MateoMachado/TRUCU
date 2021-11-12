@@ -15,39 +15,32 @@ import ucu.trucu.model.dto.Rol;
 @Service
 public class AccountHelper {
 
-    private static final String CI = "CI";
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-
     @Autowired
     private AccountDAO accountDAO;
 
     @Autowired
     private RolDAO rolDAO;
 
-    public void createAccount(Account newAccount) throws SQLException {
+    public String create(Account newAccount) throws SQLException {
         accountDAO.insert(newAccount);
+        return newAccount.getEmail();
+    }
+
+    public int update(String email, Account newValues) throws SQLException {
+        return accountDAO.update(newValues, where -> where.eq(AccountDAO.EMAIL, email));
+    }
+
+    public boolean delete(String email) throws SQLException {
+        return accountDAO.delete(where -> where.eq(AccountDAO.EMAIL, email)) == 1;
     }
 
     public Account getAccount(String email) {
-        return accountDAO.findFirst(where -> where.eq(EMAIL, email));
+        return accountDAO.findByPK(email);
     }
 
     public boolean logIn(Account account, String password) {
         // Sistema de autenticacion...
         return password.equals(account.getPassword());
-    }
-
-    public void updateAccountData(String ci, Account newValues) throws SQLException {
-        accountDAO.update(newValues, where -> where.eq(CI, ci));
-    }
-
-    public boolean deleteAccount(String ci, String password) throws SQLException {
-        int deletedRows = accountDAO.delete(where -> where.and(
-                where.eq(CI, ci),
-                where.eq(PASSWORD, password))
-        );
-        return deletedRows == 1;
     }
 
     public Rol getAccountRol(String accountRolName) {

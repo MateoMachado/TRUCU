@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ucu.trucu.database.DBController;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.querybuilder.Count;
 import ucu.trucu.util.DBUtils;
 
 /**
@@ -49,7 +50,7 @@ public abstract class AbstractDAO<T> {
         return dbController.executeInsert(
                 QueryBuilder.insertInto(this.getTable())
                         .keyValue(DBUtils.objectToPropertyMap(newEntity))
-        );
+        ).get(0);
     }
 
     public int delete(Function<Filter, String> filter) throws SQLException {
@@ -57,5 +58,13 @@ public abstract class AbstractDAO<T> {
                 QueryBuilder.deleteFrom(getTable())
                         .where(filter)
         );
+    }
+
+    public int count(Filter filter) {
+        List<Count> counts = dbController.executeQuery(QueryBuilder
+                .countFrom(getTable())
+                .where(filter),
+                Count.class);
+        return !counts.isEmpty() && counts.get(0) != null ? (int) counts.get(0).getCount() : 0;
     }
 }

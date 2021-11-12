@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +52,6 @@ public class DBController {
             LOGGER.info("--- Ingresa a la App en: %s ---", frontURL);
         } catch (HeadlessException | SQLException e) {
             LOGGER.error("Conexion a base de datos fallida -> %s", e.getMessage());
-            LOGGER.popUp("Imposible conectar a BD: \n%s", e.getMessage());
             throw e;
         }
     }
@@ -63,15 +63,6 @@ public class DBController {
             LOGGER.info("Conexion a base de datos cerrada con exito");
         } catch (SQLException ex) {
             LOGGER.error("Imposible cerrar conexion con BD -> %s", ex);
-        }
-    }
-
-    public Table executeQuery(SelectStatement query) {
-        try {
-            return queryExecutor.query(query);
-        } catch (SQLException ex) {
-            LOGGER.error("Imposible ejecutar query");
-            return null;
         }
     }
 
@@ -88,7 +79,19 @@ public class DBController {
         return queryExecutor.executeUpdate(statement);
     }
 
-    public int executeInsert(InsertStatement statement) throws SQLException {
+    public List<Integer> executeInsert(InsertStatement statement) throws SQLException {
         return queryExecutor.executeInsert(statement);
+    }
+
+    public void commit() throws SQLException {
+        this.connection.commit();
+    }
+
+    public void rollback() {
+        try {
+            this.connection.rollback();
+        } catch (SQLException ex) {
+            LOGGER.error("IMPOSIBLE REALIZAR ROLLACK -> ", ex);
+        }
     }
 }

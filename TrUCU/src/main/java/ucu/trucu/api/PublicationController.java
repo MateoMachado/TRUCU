@@ -1,7 +1,6 @@
 package ucu.trucu.api;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.PublicationHelper;
 import ucu.trucu.model.dto.Image;
-import ucu.trucu.model.dto.Offer;
-import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import ucu.trucu.database.DBController;
+import ucu.trucu.database.querybuilder.Filter;
+import ucu.trucu.model.api.PublicationWrapper;
+import ucu.trucu.model.filter.PublicationFilter;
 import ucu.trucu.util.pagination.Page;
 
 /**
@@ -37,26 +37,47 @@ public class PublicationController {
     @Autowired
     private PublicationHelper publicationHelper;
 
+    @Autowired
+    private DBController dbController;
+
     @PostMapping("/create")
-    public ResponseEntity createPublication(@RequestBody Publication newPublication) {
+    public ResponseEntity createPublication(@RequestBody PublicationWrapper newPublication) {
         try {
-            int idPublication = publicationHelper.createPublication(newPublication);
+            int idPublication = publicationHelper.create(newPublication);
+            dbController.commit();
             LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
             return ResponseEntity.ok("Publicacion creada correctamente");
         } catch (SQLException ex) {
-            LOGGER.error("Imposible crear publicacion [idPublication=%s] -> %s", newPublication.getIdPublication(), ex.getMessage());
+            LOGGER.error("Imposible crear publicacion -> %s", ex.getMessage());
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @PostMapping("/update")
-    public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody Publication newValues) {
+    public ResponseEntity updatePublication(@RequestParam int idPublication, @RequestBody PublicationWrapper newValues) {
         try {
-            publicationHelper.updatePublicationData(idPublication, newValues);
+            publicationHelper.update(idPublication, newValues);
+            dbController.commit();
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
             return ResponseEntity.ok("Valores de actualizados correctamente");
         } catch (SQLException ex) {
             LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            dbController.rollback();
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity cancelPublication(@RequestParam int idPublication) {
+        try {
+            publicationHelper.cancelPublication(idPublication);
+            dbController.commit();
+            LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
+            return ResponseEntity.ok("Publicacion cancelada correctamente");
+        } catch (SQLException | IllegalStateException ex) {
+            LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
@@ -64,7 +85,8 @@ public class PublicationController {
     @DeleteMapping("/delete")
     public ResponseEntity deleteAccount(@RequestParam int idPublication) {
         try {
-            if (publicationHelper.deletePublication(idPublication)) {
+            if (publicationHelper.delete(idPublication)) {
+                dbController.commit();
                 LOGGER.info("Publicacion [idPublication=%s] eliminada correctamente", idPublication);
                 return ResponseEntity.ok("Publicacion eliminada correctamente");
             } else {
@@ -73,39 +95,25 @@ public class PublicationController {
             }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar publicacion [idPublication=%s] -> %s", idPublication, ex);
+            dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<Publication>> getPublications(
+    public ResponseEntity<Page<PublicationWrapper>> getPublications(
+            PublicationFilter publicationFilter,
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "0") int pageSize,
-            @RequestParam(required = false) Integer idPublication,
-            @RequestParam(required = false) Integer maxUcuCoins,
-            @RequestParam(required = false) Integer minUcuCoins,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String accountCI,
-            @RequestParam(required = false) Timestamp afterDate,
-            @RequestParam(required = false) Timestamp beforeDate) {
+            @RequestParam(defaultValue = "0") int pageSize) {
 
-        Filter filter = publicationHelper.buildPublicationFilter(idPublication, title, description, maxUcuCoins,
-                minUcuCoins, afterDate, beforeDate, status, accountCI);
-
+        Filter filter = publicationFilter.toFilter();
         LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
-        return ResponseEntity.ok(publicationHelper.getPublications(pageSize, pageNumber, filter));
+        return ResponseEntity.ok(publicationHelper.filter(pageSize, pageNumber, filter));
     }
 
     @GetMapping("/images")
     public List<Image> getPublicationImages(@RequestParam int idPublication) {
         return publicationHelper.getPublicationImages(idPublication);
-    }
-
-    @GetMapping("/offers")
-    public List<Offer> getPublicationOffers(@RequestParam int idPublication) {
-        return publicationHelper.getPublicationOffers(idPublication);
     }
 
     @GetMapping("/reports")

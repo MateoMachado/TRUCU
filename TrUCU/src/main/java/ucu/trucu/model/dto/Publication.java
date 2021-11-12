@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class Publication {
 
     public enum PublicationStatus {
-        OPEN, SETTLING, CLOSED, REPORTED, HIDDEN
+        OPEN, SETTLING, CLOSED, REPORTED, HIDDEN, CANCELED
     }
 
     private Integer idPublication;
@@ -18,7 +18,7 @@ public class Publication {
     private Integer ucuCoinValue;
     private Timestamp publicationDate;
     private String status;
-    private String accountCI;
+    private String accountEmail;
 
     public Integer getIdPublication() {
         return idPublication;
@@ -68,11 +68,11 @@ public class Publication {
         this.status = status;
     }
 
-    public String getAccountCI() {
-        return accountCI;
+    public String getAccountEmail() {
+        return accountEmail;
     }
 
-    public void setAccountCI(String accountCI) {
-        this.accountCI = accountCI;
+    public void setAccountEmail(String accountEmail) {
+        this.accountEmail = accountEmail;
     }
 }

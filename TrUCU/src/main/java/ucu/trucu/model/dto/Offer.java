@@ -1,6 +1,6 @@
 package ucu.trucu.model.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -14,7 +14,7 @@ public class Offer {
 
     private Integer idOffer;
     private String status;
-    private Date offerDate;
+    private Timestamp offerDate;
     private Integer idPublication;
 
     public Integer getIdOffer() {
@@ -33,11 +33,11 @@ public class Offer {
         this.status = status;
     }
 
-    public Date getOfferDate() {
+    public Timestamp getOfferDate() {
         return offerDate;
     }
 
-    public void setOfferDate(Date offerDate) {
+    public void setOfferDate(Timestamp offerDate) {
         this.offerDate = offerDate;
     }
 
