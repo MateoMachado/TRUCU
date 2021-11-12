@@ -15,7 +15,6 @@ import { Observable, of } from "rxjs";
 export class HomeScreenComponent implements OnInit {
 
   currentPage : Page;
-  publications : Publication[];
   currentFilter : PublicationFilter;
  
 

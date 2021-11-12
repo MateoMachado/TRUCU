@@ -8,6 +8,7 @@ import { MainRoutingModule } from './main-routing.module';
 import { HomeModule } from '../home/home.module';
 import { FormsModule } from '@angular/forms';
 import { LoginModule } from '../login/login.module';
+import { PublicationModule } from '../publication/publication.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoginModule } from '../login/login.module';
     HomeModule,
     RouterModule,
     FormsModule,
-    LoginModule
+    LoginModule,
+    PublicationModule
   ]
 })
 export class MainModule { }

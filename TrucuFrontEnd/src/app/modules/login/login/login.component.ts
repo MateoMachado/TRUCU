@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkNotNull(){
-    if(this.account.birthDate && this.account.ci && this.account.email && this.account.lastName && this.account.name && this.account.password && this.account.rolName){
+    if(this.account.birthDate && this.account.email && this.account.lastName && this.account.name && this.account.password && this.account.rolName){
       return true;
     }else{
       return false;

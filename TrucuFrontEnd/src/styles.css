@@ -51,3 +51,19 @@ body {
     vertical-align: middle;
 
 }
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
+    filter: invert(51%) sepia(48%) saturate(6318%) hue-rotate(205deg) brightness(102%) contrast(93%);
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon /*, .carousel-indicators */ {
+  width: 2rem;
+  height: 2rem;
+}
+
+.carousel-indicators li {
+    background-color: blue;
+  }

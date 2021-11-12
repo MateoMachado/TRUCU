@@ -1,0 +1,52 @@
+<div class="w-full max-w-lg m-auto mt-32 bg-white p-3 rounded-md" style="margin-top: 12rem !important;">
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+          Titulo
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" [(ngModel)]="newPublication.title">
+      </div>
+      
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+          Descripción
+        </label>
+        <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" [(ngModel)]="newPublication.description"></textarea>
+      </div>
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+          Valor en ucu coins
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="number" [(ngModel)]="newPublication.ucuCoinValue">
+      </div>
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-2">
+        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+            Elegir archivo
+          </label>
+          <input type="file"
+                   id="file"
+                   (change)="handleFileInput($event.target.files)">
+        </div>
+    </div>
+    <div class="flex flex-row w-full px-3 mb-6 md:mb-0" *ngFor="let image of files; index as i;">
+        <label class="flex flex-grow block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+          {{image.name}}
+        </label>
+        <img class="w-4 cursor-pointer" src="assets/images/close-icon-2.png" (click)="removeFile(i)">
+    </div>
+    <button type="button" (click)="createPublication()"
+                    class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                    <span class="inline-block mr-2">Publicar</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" class="w-4 h-4 inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </button>
+</div>
