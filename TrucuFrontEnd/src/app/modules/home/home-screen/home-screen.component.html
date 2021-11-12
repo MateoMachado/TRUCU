@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full mt-14">
     <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
-        <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer" [routerLink]="[ 'viewPublication/:id',wrapper.publication.idPublication]">
+        <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
             <img class="w-64" src="assets/images/logo_UCU.png">
             <div class="flex flex-grow flex-col m-8">
                 <label class="publicationTitle">{{wrapper.publication.title}}</label>

@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'viewPublication/:id',
-    component: ViewPublicationComponent 
+    component: ViewPublicationComponent
   }  
 ];
 

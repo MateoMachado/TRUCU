@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: CreatePublicationComponent,
-  },
-  {
-    path: 'viewPublication/:publication', 
-    component: ViewPublicationComponent
   }
 ];
 
