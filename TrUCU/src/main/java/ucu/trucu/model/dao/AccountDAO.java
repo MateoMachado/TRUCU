@@ -10,12 +10,13 @@ import ucu.trucu.model.dto.Account;
 @Component
 public class AccountDAO extends AbstractDAO<Account> {
 
+    public static final String ACCOUNT = "Account";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
 
     @Override
     public String getTable() {
-        return "Account";
+        return ACCOUNT;
     }
 
     @Override

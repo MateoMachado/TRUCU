@@ -64,7 +64,7 @@ public class PublicationHelper {
 
     public Page<PublicationWrapper> filter(int pageSize, int pageNumber, Filter filter) {
 
-        int totalPages = publicationDAO.count(filter);
+        int totalPublications = publicationDAO.count(filter);
         List<Publication> publications = publicationDAO.filterPublications(pageSize, pageNumber, filter);
         List<Integer> publicationIds = new LinkedList<>();
         publications.forEach(publication -> publicationIds.add(publication.getIdPublication()));
@@ -79,7 +79,7 @@ public class PublicationHelper {
             );
         });
 
-        return new Page<>(totalPages, pageNumber, pageSize, wrappers);
+        return new Page<>(totalPublications, pageNumber, pageSize, wrappers);
     }
 
     public List<Image> getPublicationImages(int idPublication) {

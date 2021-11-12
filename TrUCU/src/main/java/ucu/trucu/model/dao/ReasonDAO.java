@@ -10,9 +10,12 @@ import ucu.trucu.model.dto.Reason;
 @Component
 public class ReasonDAO extends AbstractDAO<Reason> {
 
+    public static final String REASON = "Reason";
+    public static final String ID_REASON = "idReason";
+    
     @Override
     public String getTable() {
-        return "Reason";
+        return REASON;
     }
 
     @Override
@@ -22,6 +25,6 @@ public class ReasonDAO extends AbstractDAO<Reason> {
 
     @Override
     public Reason findByPK(Object... primaryKeys) {
-        return findFirst(where -> where.eq("idReason", primaryKeys[0]));
+        return findFirst(where -> where.eq(ID_REASON, primaryKeys[0]));
     }
 }
