@@ -1,6 +1,9 @@
 package ucu.trucu.database;
 
+import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,11 +40,7 @@ public class DBController {
 
     @Value("${trucu.db.password}")
     private String dbPassword;
-    
-    @Value("${trucu.front.url.firebase}")
-    private URL frontURL;
 
-    @PostConstruct
     public void initConnection() throws SQLException {
         try {
             LOGGER.info("Iniciando conexion con base de datos [%s]", dbURL);
@@ -49,7 +48,6 @@ public class DBController {
             connection.setAutoCommit(false);
             queryExecutor = new QueryExecutor(connection);
             LOGGER.info("Base de datos conectada con exito");
-            LOGGER.info("--- Ingresa a la App en: %s ---", frontURL);
         } catch (HeadlessException | SQLException e) {
             LOGGER.error("Conexion a base de datos fallida -> %s", e.getMessage());
             throw e;
