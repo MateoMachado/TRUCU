@@ -1,6 +1,7 @@
 export class Page{
     totalPages : number;
-    currentPage : number;
+    pageNumber : number;
     pageSize : number;
     content : any[];
+    totalElements : number;
 }

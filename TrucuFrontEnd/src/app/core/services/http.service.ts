@@ -89,7 +89,11 @@ export class HttpService {
   }
 
   CreatePublication(publication : any){
-    return <Observable<any>> this.http.post<Publication>(this.baseUrl + 'publication/createPublication', publication);
+    return <Observable<any>> this.http.post<Publication>(this.baseUrl + 'publication/create', publication);
+  }
+
+  CreateOffer(idPublication : number, idPublications :number[]){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/create?idPublication='+idPublication , idPublications);
   }
 
 }

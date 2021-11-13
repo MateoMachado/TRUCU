@@ -6,7 +6,7 @@
             <img src="../assets/images/home-icon.png"class="h-6 w-6"> 
             <p *ngIf="!collapseShow" class="px-3">Inicio</p>
           </li>
-          <li (click)="this.collapseShow = true" class="flex w-full h-full p-3 hover:bg-blue-300 cursor-pointer outline-none" [routerLink]="['createPublication']">
+          <li *ngIf="user.isLogged()" (click)="this.collapseShow = true" class="flex w-full h-full p-3 hover:bg-blue-300 cursor-pointer outline-none" [routerLink]="['createPublication']">
             <img src="../assets/images/create-icon.png"class="h-6 w-6"> 
             <p *ngIf="!collapseShow" class="px-3">Crear</p>
           </li>

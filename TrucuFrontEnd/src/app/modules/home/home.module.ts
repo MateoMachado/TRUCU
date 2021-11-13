@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { HomeRoutingModule } from './home-routing.module';
+import { PublicationModule } from '../publication/publication.module';
 
 
 
@@ -11,7 +12,8 @@ import { HomeRoutingModule } from './home-routing.module';
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    PublicationModule
   ],
   exports: [
     HomeScreenComponent
