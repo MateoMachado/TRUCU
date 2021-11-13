@@ -67,6 +67,18 @@ public class PublicationDAO extends AbstractDAO<Publication> {
         );
     }
 
+    public List<Publication> getOfferedPublications(int idOffer) {
+        SelectStatement offeredPublicationsIds = QueryBuilder
+                .selectFrom(OfferDAO.OFFERED_PUBLICATIONS, ID_PUBLICATION)
+                .where(f -> f.eq(OfferDAO.ID_OFFER, idOffer));
+
+        return dbController.executeQuery(
+                QueryBuilder.selectFrom(getTable())
+                        .where(filter -> filter.in(ID_PUBLICATION, offeredPublicationsIds)),
+                getEntityClass()
+        );
+    }
+
     public PublicationStatus getStatus(int idPublication) {
         List<Publication> results = dbController.executeQuery(
                 QueryBuilder

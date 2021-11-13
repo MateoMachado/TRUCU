@@ -1,11 +1,14 @@
 package ucu.trucu.helper;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.database.querybuilder.Filter;
+import ucu.trucu.model.api.OfferWrapper;
 import ucu.trucu.model.dao.OfferDAO;
+import ucu.trucu.model.dao.PublicationDAO;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
@@ -26,6 +29,9 @@ public class OfferHelper {
     private OfferDAO offerDAO;
 
     @Autowired
+    private PublicationDAO publicationDAO;
+
+    @Autowired
     private PublicationHelper publicationHelper;
 
     public void createOffer(int idPublication, List<Integer> idOfferedPublications) throws SQLException {
@@ -33,9 +39,7 @@ public class OfferHelper {
         offer.setIdPublication(idPublication);
         int idOffer = offerDAO.insert(offer);
 
-        for (int idOfferedPublication : idOfferedPublications) {
-            offerDAO.addOfferedPublications(idOffer, idOfferedPublication);
-        }
+        offerDAO.addOfferedPublications(idOffer, idOfferedPublications);
     }
 
     public void deleteOffer(int idOffer) throws SQLException {
@@ -44,10 +48,6 @@ public class OfferHelper {
 
         // Elimino la oferta
         offerDAO.delete(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
-    }
-
-    public List<Offer> getUserOffers(int accountEmail) {
-        return offerDAO.getUserPublications(accountEmail);
     }
 
     public void closeOffer(int idOffer) throws SQLException {
@@ -131,9 +131,7 @@ public class OfferHelper {
         offerDAO.deleteOfferedPublications(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
 
         // Inserto las nuevas publicaciones
-        for (int idPublication : idPublications) {
-            offerDAO.addOfferedPublications(idOffer, idPublication);
-        }
+        offerDAO.addOfferedPublications(idOffer, idPublications);
 
         // Cambio el estado a contraoferta
         changeOfferStatus(idOffer, OfferStatus.CHANGED);
@@ -157,9 +155,17 @@ public class OfferHelper {
         changeOfferStatus(idOffer, OfferStatus.REJECTED);
     }
 
-    public Page<Offer> getOffers(int pageSize, int pageNumber, Filter filter) {
-        int totalPages = offerDAO.countOffer(filter);
-        return new Page(totalPages, pageNumber, pageSize, offerDAO.filterOffers(pageSize, pageNumber, filter));
+    public Page<OfferWrapper> filter(int pageSize, int pageNumber, Filter filter) {
+
+        int totalPages = offerDAO.count(filter);
+        List<Offer> offers = offerDAO.filterOffers(pageSize, pageNumber, filter);
+        List<OfferWrapper> wrappers = new LinkedList<>();
+        offers.forEach(offer -> wrappers.add(new OfferWrapper(
+                offer,
+                publicationDAO.getOfferedPublications(offer.getIdOffer()),
+                publicationDAO.findByPK(offer.getIdPublication())
+        )));
+        return new Page(totalPages, pageNumber, pageSize, wrappers);
     }
 
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {

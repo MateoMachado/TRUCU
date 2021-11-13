@@ -6,6 +6,10 @@ package ucu.trucu.model.dto;
  */
 public class Report {
 
+    public enum ReportStatus {
+        OPEN, REJECTED, ACCEPTED
+    }
+    
     private Integer idReport;
     private String status;
     private Integer idReason;
@@ -38,7 +42,6 @@ public class Report {
     public Integer getIdPublication() {
         return idPublication;
     }
-
     public void setIdPublication(Integer idPublication) {
         this.idPublication = idPublication;
     }
