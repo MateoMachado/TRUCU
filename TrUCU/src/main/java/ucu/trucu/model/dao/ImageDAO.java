@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.database.querybuilder.statement.InsertStatement;
+import static ucu.trucu.model.dao.PublicationDAO.ID_PUBLICATION;
 import ucu.trucu.model.dto.Image;
 
 /**
@@ -16,7 +17,6 @@ public class ImageDAO extends AbstractDAO<Image> {
 
     public static final String ID_IMAGE = "idImage";
     public static final String IMAGE_BYTES = "imageBytes";
-    public static final String ID_PUBLICATION = "idPublication";
     public static final String IMAGE = "Image";
 
     @Override
