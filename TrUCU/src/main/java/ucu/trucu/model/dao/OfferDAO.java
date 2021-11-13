@@ -161,14 +161,6 @@ public class OfferDAO extends AbstractDAO<Offer> {
         return results.isEmpty() ? null : results.get(0).getIdPublication();
     }
 
-    public int countOffer(Filter filter) {
-        return dbController.executeQuery(
-                QueryBuilder.selectFrom(getTable(), ID_OFFER)
-                        .where(filter),
-                getEntityClass())
-                .size();
-    }
-
     public List<Offer> filterOffers(int pageSize, int pageNumber, Filter filter) {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(getTable())

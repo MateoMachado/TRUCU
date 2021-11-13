@@ -1,13 +1,20 @@
 package ucu.trucu.helper;
 
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucu.trucu.database.querybuilder.Filter;
+import ucu.trucu.model.api.OfferWrapper;
 import ucu.trucu.model.dao.OfferDAO;
+import ucu.trucu.model.dao.PublicationDAO;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
+import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
@@ -24,6 +31,9 @@ public class OfferHelper {
 
     @Autowired
     private OfferDAO offerDAO;
+
+    @Autowired
+    private PublicationDAO publicationDAO;
 
     @Autowired
     private PublicationHelper publicationHelper;
@@ -153,9 +163,24 @@ public class OfferHelper {
         changeOfferStatus(idOffer, OfferStatus.REJECTED);
     }
 
-    public Page<Offer> getOffers(int pageSize, int pageNumber, Filter filter) {
-        int totalPages = offerDAO.countOffer(filter);
-        return new Page(totalPages, pageNumber, pageSize, offerDAO.filterOffers(pageSize, pageNumber, filter));
+    public Page<OfferWrapper> filter(int pageSize, int pageNumber, Filter filter) {
+        // TODO
+//        int totalPages = offerDAO.count(filter);
+//        List<Offer> offers = offerDAO.filterOffers(pageSize, pageNumber, filter);
+//        Set<Integer> publicationIds = new HashSet<>();
+//        offers.forEach(offer -> publicationIds.add(offer.getIdPublication()));
+//        List<Publication> publications = publicationDAO.findBy(where -> where.in(PublicationDAO.ID_PUBLICATION, publicationIds));
+//        List<OfferWrapper> wrappers = new LinkedList<>();
+//        offers.forEach(offer -> {
+//            wrappers.add(new OfferWrapper(
+//                    offer,
+//                    publications.stream()
+//                            .filter(publication -> publication.getIdPublication().equals(offer.getIdPublication()))
+//                            .collect(Collectors.toList())
+//            ));
+//        });
+
+        return new Page(totalPages, pageNumber, pageSize, wrappers);
     }
 
     private void changeOfferStatus(int idOffer, OfferStatus nextStatus) throws SQLException {
