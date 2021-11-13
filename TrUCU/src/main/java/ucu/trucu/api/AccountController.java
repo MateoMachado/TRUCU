@@ -31,7 +31,7 @@ public class AccountController {
 
     @Autowired
     private AccountHelper accountHelper;
-    
+
     @Autowired
     private DBController dbController;
 
@@ -95,6 +95,11 @@ public class AccountController {
             dbController.rollback();
             return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
         }
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<Account> getAccount(@RequestParam String email) {
+        return ResponseEntity.ok(accountHelper.getAccount(email));
     }
 
     @GetMapping("/rol")
