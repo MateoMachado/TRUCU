@@ -4,13 +4,14 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.context.event.EventListener;
+import ucu.trucu.api.FrontController;
 import ucu.trucu.database.DBController;
 import ucu.trucu.util.log.ConsoleLog;
 import ucu.trucu.util.log.FileLog;
@@ -24,7 +25,10 @@ import ucu.trucu.util.log.LoggerFactory;
 public class AppMain {
 
     @Autowired
-    private App app;
+    private DBController dbController;
+
+    @Autowired
+    private FrontController frontController;
 
     public static void main(String[] args) {
 
@@ -37,29 +41,13 @@ public class AppMain {
                 .run(args);
     }
 
-    @Component
-    public class App {
-
-        @Autowired
-        private DBController dbController;
-
-        @Value("${trucu.front.url.firebase}")
-        private URI frontURL;
-
-        @Value("${trucu.front.open}")
-        private boolean autoOpenFront;
-
-        @PostConstruct
-        public void start() {
-            try {
-                dbController.initConnection();
-                if (autoOpenFront) {
-                    Desktop.getDesktop().browse(frontURL);
-                }
-            } catch (SQLException | IOException ex) {
-                System.err.println(ex);
-                System.exit(1);
-            }
+    @EventListener(ApplicationReadyEvent.class)
+    public void runApp() {
+        try {
+            dbController.initConnection();
+            frontController.initFront();
+        } catch (SQLException | IOException ex) {
+            System.exit(1);
         }
     }
 }
