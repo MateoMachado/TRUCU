@@ -10,6 +10,14 @@
             <img src="../assets/images/create-icon.png"class="h-6 w-6"> 
             <p *ngIf="!collapseShow" class="px-3">Crear</p>
           </li>
+          <li *ngIf="user.isLogged()" (click)="this.collapseShow = true" class="flex w-full h-full p-3 hover:bg-blue-300 cursor-pointer outline-none" [routerLink]="['viewMyPublications']">
+            <img src="../assets/images/publication-icon.png"class="h-6 w-6"> 
+            <p *ngIf="!collapseShow" class="px-3">Mis publicaciones</p>
+          </li>
+          <li *ngIf="user.isLogged()" (click)="this.collapseShow = true" class="flex w-full h-full p-3 hover:bg-blue-300 cursor-pointer outline-none" [routerLink]="['viewMyOffers']">
+            <img src="../assets/images/offer-icon.png"class="h-6 w-6"> 
+            <p *ngIf="!collapseShow" class="px-3">Mis ofertas</p>
+          </li>
       </ul>
   
   </aside>

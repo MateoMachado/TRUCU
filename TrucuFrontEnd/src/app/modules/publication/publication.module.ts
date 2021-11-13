@@ -6,12 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { ViewPublicationComponent } from './view-publication/view-publication.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OfferModule } from '../offer/offer.module';
+import { PublicationListComponent } from './publication-list/publication-list.component';
 
 
 @NgModule({
   declarations: [
     CreatePublicationComponent,
-    ViewPublicationComponent
+    ViewPublicationComponent,
+    PublicationListComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,8 @@ import { OfferModule } from '../offer/offer.module';
   ],
   exports : [
     CreatePublicationComponent,
-    ViewPublicationComponent
+    ViewPublicationComponent,
+    PublicationListComponent
   ]
 })
 export class PublicationModule { }
