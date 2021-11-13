@@ -66,11 +66,6 @@ public class OfferController {
         }
     }
 
-    @GetMapping("/getFromUser")
-    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int accountEmail) {
-        return ResponseEntity.ok(offerHelper.getUserOffers(accountEmail));
-    }
-
     @GetMapping("/filter")
     public ResponseEntity<Page<OfferWrapper>> getOffers(
             OfferFilter offerFilter,

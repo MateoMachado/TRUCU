@@ -55,18 +55,6 @@ public class OfferDAO extends AbstractDAO<Offer> {
         );
     }
 
-    public List<Offer> getUserPublications(int accountEmail) {
-        return dbController.executeQuery(QueryBuilder
-                .selectDistinctFrom(getTable(), getTable() + ".*")
-                .joinOn(OFFERED_PUBLICATIONS,
-                        "OfferedPublications.idOffer = Offer.idOffer")
-                .joinOn(PublicationDAO.PUBLICATION,
-                        "Publication.idPublication = OfferedPublications.idPublication")
-                .where(where -> where.eq("Publication.accountEmail", accountEmail)),
-                getEntityClass()
-        );
-    }
-
     public void closeOfferToPublicationAndRejectOthers(int idPublication, int closedOfferId) throws SQLException {
         dbController.executeUpdate(QueryBuilder
                 .update(getTable())

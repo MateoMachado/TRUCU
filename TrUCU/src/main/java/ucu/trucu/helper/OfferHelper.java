@@ -50,10 +50,6 @@ public class OfferHelper {
         offerDAO.delete(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
     }
 
-    public List<Offer> getUserOffers(int accountEmail) {
-        return offerDAO.getUserPublications(accountEmail);
-    }
-
     public void closeOffer(int idOffer) throws SQLException {
 
         LOGGER.info("Validando estados para cerrar oferta [idOffer=%s]", idOffer);

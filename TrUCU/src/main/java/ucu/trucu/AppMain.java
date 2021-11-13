@@ -45,7 +45,7 @@ public class AppMain {
             dbController.initConnection();
             frontController.initFront();
         } catch (SQLException | IOException | URISyntaxException ex) {
-            System.exit(1);
+            System.exit(0);
         }
     }
 }
