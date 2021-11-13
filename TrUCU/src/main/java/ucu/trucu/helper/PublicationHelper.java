@@ -58,17 +58,21 @@ public class PublicationHelper {
 
     public boolean delete(Integer idPublication) throws SQLException {
         LOGGER.info("Eliminando publicacion [idPublication=%s] y sus imagenes...", idPublication);
-        imageDAO.delete(where -> where.eq(ImageDAO.ID_PUBLICATION, idPublication));
+        imageDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
+        
+        LOGGER.info("Eliminando reportes hechos a la publicacion [idPublication=%s]",idPublication);
+        reportDAO.cancelPublicationReports(idPublication);
+        
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
     public Page<PublicationWrapper> filter(int pageSize, int pageNumber, Filter filter) {
 
-        int totalPages = publicationDAO.count(filter);
+        int totalPublications = publicationDAO.count(filter);
         List<Publication> publications = publicationDAO.filterPublications(pageSize, pageNumber, filter);
         List<Integer> publicationIds = new LinkedList<>();
         publications.forEach(publication -> publicationIds.add(publication.getIdPublication()));
-        List<Image> images = imageDAO.findBy(where -> where.in(ImageDAO.ID_PUBLICATION, publicationIds));
+        List<Image> images = imageDAO.findBy(where -> where.in(PublicationDAO.ID_PUBLICATION, publicationIds));
         List<PublicationWrapper> wrappers = new LinkedList<>();
         publications.forEach(publication -> {
             wrappers.add(new PublicationWrapper(
@@ -79,7 +83,7 @@ public class PublicationHelper {
             );
         });
 
-        return new Page<>(totalPages, pageNumber, pageSize, wrappers);
+        return new Page<>(totalPublications, pageNumber, pageSize, wrappers);
     }
 
     public List<Image> getPublicationImages(int idPublication) {
@@ -106,6 +110,9 @@ public class PublicationHelper {
 
         LOGGER.info("Cancelando ofertas con la publicacion [idPublication=%s]", idPublication);
         offerDAO.cancelOffersWithPublication(idPublication);
+        
+        LOGGER.info("Cancelando reportes a la publicacion [idPublication=%S]", idPublication);
+        reportDAO.cancelPublicationReports(idPublication);
     }
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {

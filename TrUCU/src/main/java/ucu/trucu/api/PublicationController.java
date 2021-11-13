@@ -115,9 +115,4 @@ public class PublicationController {
     public List<Image> getPublicationImages(@RequestParam int idPublication) {
         return publicationHelper.getPublicationImages(idPublication);
     }
-
-    @GetMapping("/reports")
-    public List<Report> getPublicationReports(@RequestParam int idPublication) {
-        return publicationHelper.getPublicationReports(idPublication);
-    }
 }
