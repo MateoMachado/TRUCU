@@ -59,6 +59,10 @@ public class PublicationHelper {
     public boolean delete(Integer idPublication) throws SQLException {
         LOGGER.info("Eliminando publicacion [idPublication=%s] y sus imagenes...", idPublication);
         imageDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
+        
+        LOGGER.info("Eliminando reportes hechos a la publicacion [idPublication=%s]",idPublication);
+        reportDAO.cancelPublicationReports(idPublication);
+        
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
@@ -106,6 +110,9 @@ public class PublicationHelper {
 
         LOGGER.info("Cancelando ofertas con la publicacion [idPublication=%s]", idPublication);
         offerDAO.cancelOffersWithPublication(idPublication);
+        
+        LOGGER.info("Cancelando reportes a la publicacion [idPublication=%S]", idPublication);
+        reportDAO.cancelPublicationReports(idPublication);
     }
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
