@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ucu.trucu.database.DBController;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.helper.OfferHelper;
+import ucu.trucu.model.api.OfferWrapper;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.filter.OfferFilter;
 import ucu.trucu.util.log.Logger;
@@ -65,20 +66,15 @@ public class OfferController {
         }
     }
 
-    @GetMapping("/getFromUser")
-    public ResponseEntity<List<Offer>> getUserOffers(@RequestParam int accountEmail) {
-        return ResponseEntity.ok(offerHelper.getUserOffers(accountEmail));
-    }
-
     @GetMapping("/filter")
-    public ResponseEntity<Page<Offer>> getOffers(
+    public ResponseEntity<Page<OfferWrapper>> getOffers(
             OfferFilter offerFilter,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "0") int pageSize) {
 
         Filter filter = offerFilter.toFilter();
         LOGGER.info("Obteniendo ofertas filtradas por [%s]", filter);
-        return ResponseEntity.ok(offerHelper.getOffers(pageSize, pageNumber, filter));
+        return ResponseEntity.ok(offerHelper.filter(pageSize, pageNumber, filter));
     }
 
     @PostMapping("/close")

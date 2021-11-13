@@ -73,6 +73,10 @@ public class SelectStatement implements Statement {
         return this;
     }
 
+    public SelectStatement joinOnId(String otherTable, String onId) {
+        return joinOn(otherTable, String.format("%s.%s = %s.%s", table, onId, otherTable, onId));
+    }
+
     public SelectStatement joinOn(String otherTable, Filter on) {
         return joinOn(otherTable, on.toString());
     }

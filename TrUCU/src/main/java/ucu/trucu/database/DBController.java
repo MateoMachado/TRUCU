@@ -1,16 +1,10 @@
 package ucu.trucu.database;
 
-import java.awt.Desktop;
 import java.awt.HeadlessException;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -56,11 +50,13 @@ public class DBController {
 
     @PreDestroy
     public void closeConnection() {
-        try {
-            connection.close();
-            LOGGER.info("Conexion a base de datos cerrada con exito");
-        } catch (SQLException ex) {
-            LOGGER.error("Imposible cerrar conexion con BD -> %s", ex);
+        if (connection != null) {
+            try {
+                connection.close();
+                LOGGER.info("Conexion a base de datos cerrada con exito");
+            } catch (SQLException ex) {
+                LOGGER.error("Imposible cerrar conexion con BD -> %s", ex);
+            }
         }
     }
 

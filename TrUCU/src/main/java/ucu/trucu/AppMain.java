@@ -1,11 +1,9 @@
 package ucu.trucu;
 
-import java.awt.Desktop;
 import java.io.IOException;
-import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -46,8 +44,8 @@ public class AppMain {
         try {
             dbController.initConnection();
             frontController.initFront();
-        } catch (SQLException | IOException ex) {
-            System.exit(1);
+        } catch (SQLException | IOException | URISyntaxException ex) {
+            System.exit(0);
         }
     }
 }
