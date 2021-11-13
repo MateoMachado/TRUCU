@@ -29,7 +29,7 @@ import ucu.trucu.util.pagination.Page;
  */
 @RestController
 @RequestMapping("trucu/publication")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"${trucu.front.url.local}", "${trucu.front.url.firebase}"})
 public class PublicationController {
 
     private static final Logger LOGGER = LoggerFactory.create(PublicationController.class);

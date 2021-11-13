@@ -1,6 +1,10 @@
 package ucu.trucu.database;
 
+import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -37,7 +41,6 @@ public class DBController {
     @Value("${trucu.db.password}")
     private String dbPassword;
 
-    @PostConstruct
     public void initConnection() throws SQLException {
         try {
             LOGGER.info("Iniciando conexion con base de datos [%s]", dbURL);
