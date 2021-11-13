@@ -2,7 +2,6 @@ package ucu.trucu.model.dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
@@ -11,8 +10,6 @@ import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
-import ucu.trucu.model.dto.Publication;
-import ucu.trucu.util.DBUtils;
 
 /**
  *
