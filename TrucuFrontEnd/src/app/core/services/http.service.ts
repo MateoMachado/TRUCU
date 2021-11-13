@@ -6,6 +6,7 @@ import { Publication } from '../models/Publication';
 import { PublicationFilter } from '../models/PublicationFilter';
 import { Page } from '../models/Page';
 import { Account } from '../models/Account';
+import { OfferWrapper } from '../models/OfferWrapper';
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +81,14 @@ export class HttpService {
     return <Observable<Page>> this.Get('publication/filter',true, publicationFilter);
   }
 
+  GetOffers(offerFilter : any){
+    return <Observable<Page>> this.Get('offer/filter',true, offerFilter);
+  }
+
+  GetUserOffers(offerFilter : any){
+    return <Observable<Page>> this.Get('offer/getFromUser',true, offerFilter);
+  }
+
   Login(emailAndPassword : any){
     return <Observable<Account>> this.Get('account/login',true, emailAndPassword);
   }
@@ -95,5 +104,20 @@ export class HttpService {
   CreateOffer(idPublication : number, idPublications :number[]){
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/create?idPublication='+idPublication , idPublications);
   }
+
+  AcceptOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/accept?idOffer='+idOffer , null);
+  }
+
+  RejectOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/reject?idOffer='+idOffer , null);
+  }
+
+  CancelOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/cancel?idOffer='+idOffer , null);
+  }
+
+ 
+
 
 }

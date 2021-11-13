@@ -1,0 +1,19 @@
+<div class="flex flex-col w-full mt-14">
+    <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
+        <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer">
+            <label>Ofertaste a {{wrapper.publication.title}} con tus siguientes publicaciones: </label>
+            <div class="flex flex-col" *ngFor="let offeredPublication of wrapper.offeredPublications">
+                <label>{{offeredPublication.title}}</label>
+            </div>
+            <button class="bg-red-500" (click)="cancelOffer(wrapper.offer.id)">Cancelar oferta</button>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-center p-4" style="align-items: baseline;">
+        <label class="paginationActual m-2">{{currentPage.pageNumber + 1}}</label>
+        <label class="paginationTotal m-2"> de {{currentPage.totalPages}}</label>
+        <button *ngIf="currentPage.pageNumber < currentPage.pageNumber" class="paginationTotal ml-2 text-red-500" (click)="nextPage()">Siguiente ></button>
+
+    </div>
+    
+</div>
