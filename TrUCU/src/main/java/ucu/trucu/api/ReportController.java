@@ -76,6 +76,27 @@ public class ReportController {
     
     @PostMapping("/acceptReport")
     public ResponseEntity acceptReport(@RequestParam int idPublication) {
-        return ResponseEntity.ok("Reporte aceptado correctamente");
+        try {
+            reportHelper.acceptReport(idPublication);
+            LOGGER.info("Reporte aceptado para la publicacion [idPublication=%s]", idPublication);
+            return ResponseEntity.ok("Reporte aceptado correctamente");
+        } catch (SQLException ex) {
+            LOGGER.error("Error al aceptar el reporte de la publicacion [idPublication=%s] -> %s", idPublication, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
+    }
+    
+    @PostMapping("/cancelReport")
+    public ResponseEntity cancelReport(@RequestParam int idPublication) {
+        try {
+            reportHelper.cancelReport(idPublication);
+            dbController.commit();
+            LOGGER.info("Reporte rechazado para la publicacion [idPublication=%s]", idPublication);
+            return ResponseEntity.ok("Reporte rechazado correctamente");
+        } catch (SQLException ex) {
+            dbController.rollback();
+            LOGGER.error("Error al aceptar el reporte de la publicacion [idPublication=%s] -> %s", idPublication, ex);
+            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+        }
     }
 }

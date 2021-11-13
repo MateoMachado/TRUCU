@@ -1,5 +1,6 @@
 package ucu.trucu.model.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Count;
@@ -23,6 +24,7 @@ public class ReportDAO extends AbstractDAO<Report> {
 
     public static final String REPORT = "Report";
     public static final String ID_REPORT = "idReport";
+    public static final String STATUS = "status";
     
     @Override
     public String getTable() {
@@ -79,6 +81,29 @@ public class ReportDAO extends AbstractDAO<Report> {
                         .offset(pageSize * pageNumber)
                         .fetchNext(pageSize),
                 Publication.class
+        );
+    }
+    
+    public void acceptReport(int idPublication) throws SQLException {
+        dbController.executeUpdate(
+                QueryBuilder.update(REPORT)
+                .set(STATUS, Report.ReportStatus.ACCEPTED)
+                .where(where -> where.eq(ID_PUBLICATION, idPublication))
+        );
+    }
+    
+    public void cancelReport(int idPublication) throws SQLException {
+        dbController.executeUpdate(
+                QueryBuilder.update(REPORT)
+                .set(STATUS, Report.ReportStatus.REJECTED)
+                .where(filter -> filter.eq(ID_PUBLICATION, idPublication))
+        );
+    }
+    
+    public void cancelPublicationReports(int idPublication) throws SQLException {
+        dbController.executeUpdate(
+                QueryBuilder.deleteFrom(REPORT)
+                .where(filter -> filter.eq(ID_PUBLICATION, idPublication))
         );
     }
 }

@@ -45,11 +45,6 @@ public class ReportHelper {
         return reportDAO.insert(newReport);
     }
     
-    public Page<PublicationWrapper> getPublications(int pageSize, int pageNumber, Filter filter) {
-        List<Report> output = reportDAO.filterReports(pageSize, pageNumber, filter);
-        return null ;
-    }
-    
     public Page<PublicationWrapper> filterPublications(int pageSize, int pageNumber, Filter filter) {
         int totalPublications = reportDAO.count(filter);
         List<Publication> publications = reportDAO.filterPublications(pageSize, pageNumber, filter);
@@ -78,5 +73,13 @@ public class ReportHelper {
         });
         
         return reasonCount;
+    }
+    
+    public void acceptReport(int idPubication) throws SQLException {
+        reportDAO.acceptReport(idPubication);
+    }
+    
+    public void cancelReport(int idPublication) throws SQLException {
+        reportDAO.cancelReport(idPublication);
     }
 }

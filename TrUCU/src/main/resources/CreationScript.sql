@@ -79,11 +79,11 @@ CREATE TABLE Report (
 	idReport INT IDENTITY(1, 1),
 	status VARCHAR(16) DEFAULT 'OPEN',
 	idReason INT NOT NULL,
-    idPublication INT NOT NULL,
+        idPublication INT NOT NULL,
 
 	CONSTRAINT PK_report PRIMARY KEY (idReport),
 	CONSTRAINT CHK_report CHECK (status in ('OPEN', 'REJECTED', 'ACCEPTED')),
-	CONSTRAINT FK_report_reason FOREIGN KEY (idReason) REFERENCES Reason(idReason)
+	CONSTRAINT FK_report_reason FOREIGN KEY (idReason) REFERENCES Reason(idReason),
         CONSTRAINT FK_report_publication FOREIGN KEY (idPublication) REFERENCES Publication(idPublication)
 );
 

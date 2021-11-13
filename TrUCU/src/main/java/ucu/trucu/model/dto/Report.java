@@ -7,7 +7,7 @@ package ucu.trucu.model.dto;
 public class Report {
 
     public enum ReportStatus {
-        OPEN, REJECTED, ACEPTED
+        OPEN, REJECTED, ACCEPTED
     }
     
     private Integer idReport;
