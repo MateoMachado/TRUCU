@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "trucu-aa53f": {
+      "hosting": {
+        "TrucuFrontEnd": [
+          "trucu-aa53f"
+        ]
+      }
+    }
+  }
+}
