@@ -5,6 +5,7 @@ import { PublicationRoutingModule } from './publication-routing.module';
 import { FormsModule } from '@angular/forms';
 import { ViewPublicationComponent } from './view-publication/view-publication.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { OfferModule } from '../offer/offer.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     PublicationRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    OfferModule
   ],
   exports : [
     CreatePublicationComponent,
