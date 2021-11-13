@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
+import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
@@ -41,21 +42,13 @@ public class OfferDAO extends AbstractDAO<Offer> {
         return findFirst(where -> where.eq(ID_OFFER, primaryKeys[0]));
     }
 
-    public void addOfferedPublications(int idOffer, int idPublication) throws SQLException {
-        // Creo una oferta y una publicación unicamente con los ID
-        Offer offerID = new Offer();
-        offerID.setIdOffer(idOffer);
-        Publication publication = new Publication();
-        publication.setIdPublication(idPublication);
+    public void addOfferedPublications(int idOffer, List<Integer> idPublications) throws SQLException {
+        InsertStatement insert = QueryBuilder
+                .insertInto(OFFERED_PUBLICATIONS)
+                .keys(ID_OFFER, ID_PUBLICATION);
 
-        // Mapeo los atributos
-        Map<String, Object> ids = DBUtils.objectToPropertyMap(publication);
-        ids.putAll(DBUtils.objectToPropertyMap(offerID));
-
-        dbController.executeInsert(
-                QueryBuilder.insertInto(OFFERED_PUBLICATIONS)
-                        .keyValue(ids)
-        );
+        idPublications.forEach(idPublication -> insert.values(idOffer, idPublication));
+        dbController.executeInsert(insert);
     }
 
     public void deleteOfferedPublications(Function<Filter, String> filter) throws SQLException {

@@ -33,9 +33,7 @@ public class OfferHelper {
         offer.setIdPublication(idPublication);
         int idOffer = offerDAO.insert(offer);
 
-        for (int idOfferedPublication : idOfferedPublications) {
-            offerDAO.addOfferedPublications(idOffer, idOfferedPublication);
-        }
+        offerDAO.addOfferedPublications(idOffer, idOfferedPublications);
     }
 
     public void deleteOffer(int idOffer) throws SQLException {
@@ -131,9 +129,7 @@ public class OfferHelper {
         offerDAO.deleteOfferedPublications(where -> where.eq(OfferDAO.ID_OFFER, idOffer));
 
         // Inserto las nuevas publicaciones
-        for (int idPublication : idPublications) {
-            offerDAO.addOfferedPublications(idOffer, idPublication);
-        }
+        offerDAO.addOfferedPublications(idOffer, idPublications);
 
         // Cambio el estado a contraoferta
         changeOfferStatus(idOffer, OfferStatus.CHANGED);
