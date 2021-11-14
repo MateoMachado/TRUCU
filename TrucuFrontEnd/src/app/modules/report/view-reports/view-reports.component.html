@@ -1,0 +1,39 @@
+<div class="flex flex-col w-full mt-14">
+    <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
+        <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
+            <img class="w-64" src="{{wrapper.images[0].imageBytes}}">
+            <div class="flex flex-grow flex-col m-8">
+                <label class="publicationTitle">{{wrapper.publication.title}}</label>
+                <div class="flex flex-row">
+                    <img class="w-8 cursor-pointer mr-2" src="assets/images/ucucoin-icon.png">
+                    <label class="price">{{wrapper.publication.ucuCoinValue}}</label>
+                </div>
+                <div *ngFor="let reportReason of reportsReasons.get(wrapper.publication.idPublication) | keyvalue">
+                    <div *ngFor="let x of reasons">
+                        <label *ngIf="x.idReason == reportReason.key">La publicacion fue reportada por {{x.description}} {{reportReason.key}}  veces</label>
+                    </div>
+                    <!-- Reportada por {{reasons.get(reportReason.key).description}} {{reportReason.value}} veces -->
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <button type="button" (click)="acceptReport(wrapper.publication.idPublication)"
+                        class="m-2 transition duration-200 bg-green-500 hover:bg-green-600 focus:bg-green-700 focus:shadow-sm focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                        <span class="inline-block m-2">Aceptar</span>
+                </button>
+                <button type="button" (click)="rejectReport(wrapper.publication.idPublication)"
+                    class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                    <span class="inline-block m-2">Rechazar</span>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="flex flex-row justify-center p-4" style="align-items: baseline;">
+        <label class="paginationActual m-2">{{currentPage.pageNumber + 1}}</label>
+        <label class="paginationTotal m-2"> de {{currentPage.totalPages}}</label>
+        <button *ngIf="currentPage.pageNumber < currentPage.pageNumber" class="paginationTotal ml-2 text-red-500" (click)="nextPage()">Siguiente ></button>
+
+    </div>
+    
+</div>

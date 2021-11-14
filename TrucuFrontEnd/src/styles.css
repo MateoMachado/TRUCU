@@ -66,4 +66,21 @@ body {
 
 .carousel-indicators li {
     background-color: blue;
-  }
+}
+
+
+
+.input-form-design {
+background-color: #ffffff;
+box-shadow: 2px 2px 2px #00000029;
+border-radius: 10px;
+opacity: 1;
+padding-left: 1rem;
+padding-right: 1rem;
+padding-top: 0.25rem;
+padding-bottom: 0.25rem;
+width: 100%;
+font-family: "Futura";
+margin-top: 3px;
+min-height: 1.8rem;
+}

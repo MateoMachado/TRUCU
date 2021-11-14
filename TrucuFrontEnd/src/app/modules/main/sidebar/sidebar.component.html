@@ -18,6 +18,10 @@
             <img src="../assets/images/offer-icon.png"class="h-6 w-6"> 
             <p *ngIf="!collapseShow" class="px-3">Mis ofertas</p>
           </li>
+          <li *ngIf="user.isLogged() && user.user.rolName == 'Admin'" (click)="this.collapseShow = true" class="flex w-full h-full p-3 hover:bg-blue-300 cursor-pointer outline-none" [routerLink]="['viewReports']">
+            <img src="../assets/images/reports-icon.png"class="h-6 w-6"> 
+            <p *ngIf="!collapseShow" class="px-3">Publicaciones reportadas</p>
+          </li>
       </ul>
   
   </aside>

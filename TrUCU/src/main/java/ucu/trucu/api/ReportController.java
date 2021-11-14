@@ -1,6 +1,7 @@
 package ucu.trucu.api;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +71,7 @@ public class ReportController {
     }
     
     @GetMapping("/reportReasons")
-    public ResponseEntity<Map<Reason, Integer>> getReportReasons(@RequestParam int idPublication) {
+    public ResponseEntity<Map<Integer, Integer>> getReportReasons(@RequestParam int idPublication) {
         return ResponseEntity.ok(reportHelper.getReportReasons(idPublication));
     }
 
@@ -78,9 +79,11 @@ public class ReportController {
     public ResponseEntity acceptReport(@RequestParam int idPublication) {
         try {
             reportHelper.acceptReport(idPublication);
+            dbController.commit();
             LOGGER.info("Reporte aceptado para la publicacion [idPublication=%s]", idPublication);
             return ResponseEntity.ok(new Message("Reporte aceptado correctamente"));
         } catch (SQLException ex) {
+            dbController.rollback();
             LOGGER.error("Error al aceptar el reporte de la publicacion [idPublication=%s] -> %s", idPublication, ex);
             return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
