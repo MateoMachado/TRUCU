@@ -142,7 +142,7 @@ public class PublicationHelper {
                 filter.not(filter.in(PublicationDAO.STATUS, expectedStatus))
         ));
         if (!publications.isEmpty()) {
-            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicaciones [idPublication=%s] con distinto a %s",
+            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicaciones [idPublication=%s] con estado distinto a %s",
                     StringUtils.join(StringUtils.COMA, publications),
                     StringUtils.join(StringUtils.COMA, expectedStatus)));
         }
