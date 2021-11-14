@@ -17,7 +17,7 @@ import { CreateCounterOfferComponent } from './create-counter-offer/create-count
   imports: [
     CommonModule,
     OfferRoutingModule,
-    AccountModule
+    AccountModule,
   ],
   exports: [
     CreateOfferComponent,

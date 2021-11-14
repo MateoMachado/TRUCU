@@ -16,6 +16,7 @@ export class HomeScreenComponent implements OnInit {
 
   currentPage : Page;
   currentFilter : PublicationFilter;
+  showFilter : boolean = false;
  
 
   constructor(public httpService : HttpService, public publicationService : PublicationService) { }
@@ -32,6 +33,7 @@ export class HomeScreenComponent implements OnInit {
     var filter = new PublicationFilter();
     filter.pageSize = 10;
     filter.pageNumber = 0;
+    filter.status = ['OPEN','SETTLING'];
 
     this.httpService.GetPublications(filter).subscribe(data => {
       this.publicationService.setPage(data);
@@ -47,4 +49,48 @@ export class HomeScreenComponent implements OnInit {
     });
   }
 
+  previousPage(){
+    this.currentFilter.pageNumber--;
+    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(this.currentFilter);
+    });
+  }
+
+  onFilter(event : any){
+    if(event == 'reset'){
+      var filter = new PublicationFilter();
+      filter.pageSize = 10;
+      filter.pageNumber = 0;
+      filter.status = ['OPEN','SETTLING'];
+  
+      this.httpService.GetPublications(filter).subscribe(data => {
+        this.publicationService.setPage(data);
+        this.publicationService.setFilter(filter);
+      });
+    }
+    console.log(event);
+    this.currentFilter.pageNumber = 0;
+    if(event.maxUcuCoins)
+      this.currentFilter.maxUcuCoins = event.maxUcuCoins;
+    if(event.minUcuCoins)
+      this.currentFilter.minUcuCoins = event.minUcuCoins;
+    if(event.afterDate){
+      this.currentFilter.afterDate = new Date(event.afterDate).toISOString().slice(0, 19).replace('T', ' ');
+    }
+      
+    if(event.beforeDate){
+      this.currentFilter.beforeDate = new Date(event.beforeDate).toISOString().slice(0, 19).replace('T', ' ');
+    }
+      
+    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(this.currentFilter);
+    });
+  }
+
+  onToggleFilter(event:any){
+    event.stopPropagation();
+    this.showFilter = !this.showFilter;
+  }
 }

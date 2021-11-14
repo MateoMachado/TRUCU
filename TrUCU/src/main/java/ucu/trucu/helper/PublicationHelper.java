@@ -94,10 +94,6 @@ public class PublicationHelper {
         return reportDAO.findBy(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
     }
 
-    public void closeOfferPublications(int idOffer) throws SQLException {
-        publicationDAO.closeOfferPublications(idOffer);
-    }
-
     public void cancelPublication(int idPublication) throws SQLException {
         LOGGER.info("Validando estado para cancelar publicacion [idPublication=%s]", idPublication);
         this.assertStatus(idPublication, PublicationStatus.OPEN, PublicationStatus.SETTLING, PublicationStatus.HIDDEN);
@@ -115,8 +111,22 @@ public class PublicationHelper {
         LOGGER.info("Rechazando ofertas a publicacion [idPublication=%s]", idPublication);
         offerDAO.rejectOffersToPublication(idPublication);
 
+        LOGGER.info("Deshaciendo negociaciones con la publicacion cerrada [idPublication=%s]...", idPublication);
+        publicationDAO.reopenSettlingPublicationWithCanceledOffer(idPublication);
+
         LOGGER.info("Cancelando ofertas con la publicacion [idPublication=%s]", idPublication);
         offerDAO.cancelOffersWithPublication(idPublication);
+    }
+
+    public void hidePublication(int idPublication) throws SQLException {
+        changePublicationStatus(idPublication, PublicationStatus.HIDDEN);
+        finishPublicationOffers(idPublication);
+    }
+
+    public void showPublication(int idPublication) throws SQLException {
+        LOGGER.info("Validando estados para desocultar publicacion [idPublication=%s]...", idPublication);
+        assertStatus(idPublication, PublicationStatus.HIDDEN);
+        changePublicationStatus(idPublication, PublicationStatus.OPEN);
     }
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {

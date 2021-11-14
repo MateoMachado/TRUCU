@@ -29,6 +29,9 @@ export class MakeReportComponent implements OnInit {
     this.selectedReason = event;
   }
 
+  toggleModal(){
+    this.showModal = !this.showModal;
+  }
   report(){
     var report = new Report();
     report.idReason = this.selectedReason.idReason;

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
+import ucu.trucu.model.dto.Offer;
+import ucu.trucu.model.dto.Offer.OfferStatus;
 import ucu.trucu.model.dto.Publication;
 import ucu.trucu.model.dto.Publication.PublicationStatus;
 
@@ -83,5 +85,24 @@ public class PublicationDAO extends AbstractDAO<Publication> {
                         .where(filter -> filter.eq(ID_PUBLICATION, idPublication)),
                 getEntityClass());
         return results.isEmpty() ? null : PublicationStatus.valueOf(results.get(0).getStatus());
+    }
+
+    public void reopenSettlingPublicationWithCanceledOffer(int idPublication) throws SQLException {
+        SelectStatement offersWithPublication = QueryBuilder
+                .selectFrom(OfferDAO.OFFERED_PUBLICATIONS, OfferDAO.ID_OFFER)
+                .where(where -> where.eq(OfferDAO.OFFERED_PUBLICATIONS + "." + ID_PUBLICATION, idPublication));
+
+        SelectStatement publicationsWithOffers = QueryBuilder
+                .selectDistinctFrom(OfferDAO.OFFER, ID_PUBLICATION)
+                .where(where
+                        -> where.and(
+                        where.in(OfferDAO.ID_OFFER, offersWithPublication),
+                        where.eq(OfferDAO.STATUS, OfferStatus.SETTLING)));
+
+        dbController.executeUpdate(
+                QueryBuilder.update(getTable())
+                        .set(STATUS, PublicationStatus.OPEN)
+                        .where(where -> where.in(ID_PUBLICATION, publicationsWithOffers))
+        );
     }
 }

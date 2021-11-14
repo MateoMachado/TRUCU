@@ -18,9 +18,11 @@ export class ViewAccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountEmail.subscribe(value => {
-      this.http.GetAccount(value).subscribe(data => {
-        this.currentAccount = data;
-      })
+      if(value){
+        this.http.GetAccount(value).subscribe(data => {
+          this.currentAccount = data;
+        })
+      }
     });
   }
 

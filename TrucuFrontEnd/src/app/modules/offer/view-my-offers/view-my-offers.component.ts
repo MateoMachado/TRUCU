@@ -27,7 +27,7 @@ export class ViewMyOffersComponent implements OnInit {
     this.offerFilter.accountEmail = email;
     this.offerFilter.pageSize = 10;
     this.offerFilter.pageNumber = 0;
-    
+    this.offerFilter.status = ['OPEN','SETTLING','CHANGED'];
     this.http.GetOffers(this.offerFilter).subscribe(data => {
       this.currentPage = data;
     });
@@ -37,20 +37,37 @@ export class ViewMyOffersComponent implements OnInit {
   cancelOffer(idOffer : number){
     this.http.CancelOffer(idOffer).subscribe(data => {
       this.toastr.success('Cancelado correctamente');
-      let index = -1;
-      this.currentPage.content.forEach((element,i)=>{
-        if(element.idOffer == idOffer){
-          index = i;
-        }
+      this.http.GetOffers(this.offerFilter).subscribe(data => {
+        this.currentPage = data;
       });
-      if(index > -1){
-        this.currentPage.content.splice(index,1);
-      }
     });
   }
 
   closeOffer(idOffer : number){
-    this.http.CloseOffer(idOffer).subscribe(data => {});
+    this.http.CloseOffer(idOffer).subscribe(data => {
+      this.toastr.success('Oferta finalizada correctamente');
+      this.http.GetOffers(this.offerFilter).subscribe(data => {
+        this.currentPage = data;
+      });
+    });
+  }
+
+  acceptCounterOffer(idOffer : number){
+    this.http.AcceptCounterOffer(idOffer).subscribe(data => {
+      this.toastr.success('Contra oferta aceptada correctamente','Exito');
+      this.http.GetOffers(this.offerFilter).subscribe(data => {
+        this.currentPage = data;
+      });
+    });
+  }
+
+  rejectCounterOffer(idOffer : number){
+    this.http.RejectCounterOffer(idOffer).subscribe(data => {
+      this.toastr.success('Contra oferta rechazada correctamente','Exito');
+      this.http.GetOffers(this.offerFilter).subscribe(data => {
+        this.currentPage = data;
+      });
+    });
   }
 
   nextPage(){
@@ -75,13 +92,4 @@ export class ViewMyOffersComponent implements OnInit {
     this.toggleshowAccountData();
     this.accountEmail.next(email);
   }
-
-  acceptCounterOffer(idOffer : number){
-    this.http.AcceptCounterOffer(idOffer).subscribe(data => {});
-  }
-
-  rejectCounterOffer(idOffer : number){
-    this.http.RejectCounterOffer(idOffer).subscribe(data => {});
-  }
-
 }

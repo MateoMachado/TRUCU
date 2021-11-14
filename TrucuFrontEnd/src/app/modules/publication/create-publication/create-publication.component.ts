@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Image } from 'src/app/core/models/Image';
@@ -17,7 +18,7 @@ export class CreatePublicationComponent implements OnInit {
   newPublication : Publication = new Publication();
   confirmPassword : string;
 
-  constructor(public http : HttpService, public toastr : ToastrService, public user : UserService) { }
+  constructor(public http : HttpService, public toastr : ToastrService, public user : UserService, private _router: Router) { }
 
   ngOnInit(): void {
   }
@@ -34,8 +35,17 @@ export class CreatePublicationComponent implements OnInit {
   }
 
   createPublication(){
+    if(!this.checkNotNull()){
+      this.toastr.warning('Debe rellenar todos los campos', 'Advertencia');
+      return;
+    }
+    if(this.newPublication.ucuCoinValue < 1){
+      this.toastr.warning('Debe colocar un valor en ucu coins mayor a 0', 'Advertencia');
+      return;
+    }
     if(this.files == null){
       this.toastr.warning('Debe agregar fotos a la publicación','Advertencia');
+      return;
     }
 
     let images = [];
@@ -67,9 +77,22 @@ export class CreatePublicationComponent implements OnInit {
         publicationWrapper.images = images;
         publicationWrapper.publication = this.newPublication;
         this.http.CreatePublication(publicationWrapper).subscribe(data => {
+          this.toastr.success('Publicacion creada correctamente', 'Exito');
           this.newPublication.idPublication = data;
+          this._router.navigate(['viewPublication',this.newPublication.idPublication]);
+        },error => {
+          console.log(error);
+          this.toastr.error(error.error.message,'Error');
         });
     });
+  }
+
+  checkNotNull(){
+    if(this.newPublication.title && this.newPublication.description && this.newPublication.ucuCoinValue){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }
