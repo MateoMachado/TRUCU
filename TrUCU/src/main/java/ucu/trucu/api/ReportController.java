@@ -65,6 +65,11 @@ public class ReportController {
     }
 
     @GetMapping("/reasons")
+    public ResponseEntity<List<Reason>> getReasons() {
+        return ResponseEntity.ok(reportHelper.getReasons());
+    }
+    
+    @GetMapping("/reportReasons")
     public ResponseEntity<Map<Reason, Integer>> getReportReasons(@RequestParam int idPublication) {
         return ResponseEntity.ok(reportHelper.getReportReasons(idPublication));
     }
