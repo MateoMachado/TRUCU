@@ -16,6 +16,7 @@ import ucu.trucu.model.dao.ReasonDAO;
 import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Publication;
+import ucu.trucu.model.dto.Publication.PublicationStatus;
 import ucu.trucu.model.dto.Reason;
 import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
@@ -28,22 +29,25 @@ import ucu.trucu.util.pagination.Page;
  */
 @Service
 public class ReportHelper {
-    
+
     private static final Logger LOGGER = LoggerFactory.create(ReportHelper.class);
-    
+
     @Autowired
     private ReportDAO reportDAO;
-    
+
     @Autowired
     private ImageDAO imageDAO;
-    
+
     @Autowired
     private ReasonDAO reasonDAO;
-    
+
+    @Autowired
+    private PublicationHelper publicationHelper;
+
     public int createReport(Report newReport) throws SQLException {
         return reportDAO.insert(newReport);
     }
-    
+
     public Page<PublicationWrapper> filterPublications(int pageSize, int pageNumber, Filter filter) {
         int totalPublications = reportDAO.count(filter);
         List<Publication> publications = reportDAO.filterPublications(pageSize, pageNumber, filter);
@@ -62,7 +66,7 @@ public class ReportHelper {
 
         return new Page<>(totalPublications, pageNumber, pageSize, wrappers);
     }
-    
+
     public Map<Integer, Integer> getReportReasons(int idPublication) {
         Map<Integer, Integer> reasonCount = new HashMap<>();
         List<Reason> reasons = reportDAO.getReportReasons(idPublication);
@@ -70,19 +74,23 @@ public class ReportHelper {
         reasons.forEach(t -> {
             reasonCount.put(t.getIdReason(), reasonCount.getOrDefault(t.getIdReason(), 0) + 1);
         });
-        
+
         return reasonCount;
     }
-    
+
     public List<Reason> getReasons() {
         return reasonDAO.getReasons();
     }
-    
-    public void acceptReport(int idPubication) throws SQLException {
-        reportDAO.acceptReport(idPubication);
+
+    public void acceptReport(int idPublication) throws SQLException {
+        LOGGER.info("Aceptando reporte a publicacion [idPublication=%s]...", idPublication);
+        reportDAO.acceptReport(idPublication);
+        publicationHelper.changePublicationStatus(idPublication, PublicationStatus.REPORTED);
+        publicationHelper.finishPublicationOffers(idPublication);
     }
-    
+
     public void cancelReport(int idPublication) throws SQLException {
+        LOGGER.info("Cancelando reporte a publicacion [idPublication=%s]...", idPublication);
         reportDAO.cancelReport(idPublication);
     }
 }
