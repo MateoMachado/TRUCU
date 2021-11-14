@@ -30,7 +30,6 @@ export class ViewMyOffersComponent implements OnInit {
     
     this.http.GetOffers(this.offerFilter).subscribe(data => {
       this.currentPage = data;
-      console.log(this.currentPage);
     });
    
   }

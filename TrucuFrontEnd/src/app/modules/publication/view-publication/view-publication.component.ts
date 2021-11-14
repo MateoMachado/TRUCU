@@ -7,6 +7,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { OfferFilter } from 'src/app/core/models/OfferFilter';
 import { OfferWrapper } from 'src/app/core/models/OfferWrapper';
 import { BehaviorSubject } from 'rxjs';
+import { Offer } from 'src/app/core/models/Offer';
 
 @Component({
   selector: 'app-view-publication',
@@ -17,8 +18,10 @@ export class ViewPublicationComponent implements OnInit {
   wrapper: PublicationWrapper;
   offersWrapper : OfferWrapper[];
   showOffer : boolean = false; 
+  showCounterOffer : boolean = false;
   showAccountData : boolean = false;
   accountEmail : BehaviorSubject<string> = new BehaviorSubject(null);
+  currentOffer : Offer;
   
   constructor(public httpService : HttpService, public route: ActivatedRoute, public user : UserService) { }
 
@@ -46,6 +49,10 @@ export class ViewPublicationComponent implements OnInit {
     this.showOffer = !this.showOffer;
   }
 
+  toggleShowCounterOffer(){
+    this.showCounterOffer = !this.showCounterOffer;
+  }
+
   toggleshowAccountData(){
     this.showAccountData = !this.showAccountData;
   }
@@ -71,7 +78,12 @@ export class ViewPublicationComponent implements OnInit {
   ViewAccountData(email : string){
     this.toggleshowAccountData();
     this.accountEmail.next(email);
-   
+  }
+
+  CounterOffer(email : string, offer : Offer){
+    this.toggleShowCounterOffer();
+    this.currentOffer = offer;
+    this.accountEmail.next(email);
   }
 
 }
