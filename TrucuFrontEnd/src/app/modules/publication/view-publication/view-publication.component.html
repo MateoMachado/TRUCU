@@ -36,17 +36,40 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
     </svg>
   </button>
-
-  <div class="flex" *ngFor="let offerWrapper of offersWrapper">
-    <div class="flex flex-col">
-      <label *ngFor="let publication of offerWrapper.offeredPublications" [routerLink]="['viewPublication',publication.idPublication]">{{publication.title}}</label>
+  <br/>
+  <h1 *ngIf="this.offersWrapper">Ofertas recibidas para esta publicacion: </h1>
+  <div *ngFor="let wrapper of offersWrapper;" class="flex flex-row border-t-2 border-gray-500">
+    <div class="flex flex-col flex-grow">
+        <label>Esta oferta incluye las siguientes publicaciones: </label>
+        <div class="flex flex-row" *ngFor="let offeredPublication of wrapper.offeredPublications">
+            <label class="cursor-pointer text-blue-500" [routerLink]="['viewPublication',offeredPublication.idPublication]">{{offeredPublication.title}}</label>
+        </div>
     </div>
-    <div class="flex flex-col">
-      <button class="bg-green-500" (click)="AcceptOffer(offerWrapper.offer.idOffer)">Aceptar</button>
-      <button class="bg-red-500" (click)="Reject(offerWrapper.offer.idOffer)">Rechazar</button>
-      <button class="bg-blue-500">ContraOfertar</button>
+    <div *ngIf="wrapper.offer.status == 'SETTLING'" class="flex flex-col justify-end items-center">
+      <button type="button" (click)="AcceptOffer(wrapper.offer.idOffer)"
+      class="m-2 transition duration-200 bg-gray-400 hover:bg-gray-500 focus:bg-gray-600 focus:shadow-sm focus:ring-4 focus:ring-gray-400 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+          <span class="inline-block m-2">Ver datos</span>
+      </button>
+      <button type="button" (click)="Reject(wrapper.offer.idOffer)"
+        class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+            <span class="inline-block m-2">Deshacer</span>
+      </button>
     </div>
-  </div>
+    <div *ngIf="wrapper.offer.status != 'SETTLING'" class="flex flex-col justify-end items-center" >
+        <button type="button" (click)="AcceptOffer(wrapper.offer.idOffer)"
+        class="m-2 transition duration-200 bg-green-500 hover:bg-green-600 focus:bg-green-700 focus:shadow-sm focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+            <span class="inline-block m-2">Aceptar</span>
+        </button>
+        <button type="button" (click)="Reject(wrapper.offer.idOffer)"
+        class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+            <span class="inline-block m-2">Rechazar</span>
+        </button>
+        <button type="button" 
+        class="m-2 transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+            <span class="inline-block m-2">Contraofertar</span>
+        </button>
+    </div>
+    
 </div>
 
 <app-create-offer [publication]="wrapper.publication" [showModal]="showOffer"></app-create-offer>
