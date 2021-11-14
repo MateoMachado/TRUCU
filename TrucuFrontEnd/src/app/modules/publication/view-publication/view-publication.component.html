@@ -4,7 +4,7 @@
       <label class="block uppercase tracking-wide text-gray-700 text-lg font-bold mb-2 flex-grow" for="grid-first-name">
         {{wrapper.publication.title}}
       </label>
-      <img class="flex cursor-pointer w-8 justify-end" src="./assets/images/report-icon.png" (click)="toggleShowReport()">
+      <img *ngIf="wrapper.publication.accountEmail != user.user.email" class="flex cursor-pointer w-8 justify-end" src="./assets/images/report-icon.png" (click)="toggleShowReport()">
     </div>
   </div>
   <div class="flex flex-wrap -mx-3 mb-6">
@@ -29,7 +29,7 @@
       </label>
     </div>
   </div>
-  <button type="button" (click)="toggleShowOfferCreation()"
+  <button type="button" (click)="toggleShowOfferCreation()" *ngIf="wrapper.publication.accountEmail != user.user.email"
     class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
     <span class="inline-block mr-2">Ofertar</span>
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -46,6 +46,11 @@
             <label class="cursor-pointer text-blue-500" [routerLink]="['viewPublication',offeredPublication.idPublication]">{{offeredPublication.title}}</label>
         </div>
     </div>
+    <div class="flex justify-end m-2">
+      <label class="text-gray-500" *ngIf="wrapper.offer.status == 'OPEN'">Abierta</label>
+      <label class="text-green-500" *ngIf="wrapper.offer.status == 'SETTLING'">Aceptada</label>
+      <label class="text-blue-500" *ngIf="wrapper.offer.status == 'CHANGED'">Contraoferta</label>
+  </div>
     <div *ngIf="wrapper.offer.status == 'SETTLING'" class="flex flex-col justify-end items-center">
       <button type="button" (click)="ViewAccountData(wrapper.offeredPublications[0].accountEmail)"
       class="m-2 transition duration-200 bg-gray-400 hover:bg-gray-500 focus:bg-gray-600 focus:shadow-sm focus:ring-4 focus:ring-gray-400 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
@@ -62,7 +67,7 @@
         class="m-2 transition duration-200 bg-green-500 hover:bg-green-600 focus:bg-green-700 focus:shadow-sm focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             <span class="inline-block m-2">Aceptar</span>
         </button>
-        <button type="button" (click)="Reject(wrapper.offer.idOffer)"
+        <button type="button" (click)="RejectOffer(wrapper.offer.idOffer)"
         class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             <span class="inline-block m-2">Rechazar</span>
         </button>
@@ -72,7 +77,7 @@
         </button>
     </div>
     <div *ngIf="wrapper.offer.status == 'CHANGED'" class="flex flex-col justify-end items-center" >
-      <button type="button" (click)="Reject(wrapper.offer.idOffer)"
+      <button type="button" (click)="RejectOffer(wrapper.offer.idOffer)"
         class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             <span class="inline-block m-2">Rechazar</span>
       </button>

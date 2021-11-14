@@ -8,6 +8,7 @@ import { OfferFilter } from 'src/app/core/models/OfferFilter';
 import { OfferWrapper } from 'src/app/core/models/OfferWrapper';
 import { BehaviorSubject } from 'rxjs';
 import { Offer } from 'src/app/core/models/Offer';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-publication',
@@ -24,7 +25,7 @@ export class ViewPublicationComponent implements OnInit {
   accountEmail : BehaviorSubject<string> = new BehaviorSubject(null);
   currentOffer : Offer;
   
-  constructor(public httpService : HttpService, public route: ActivatedRoute, public user : UserService) { }
+  constructor(public httpService : HttpService, public route: ActivatedRoute, public user : UserService, public toast : ToastrService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -64,19 +65,37 @@ export class ViewPublicationComponent implements OnInit {
 
   AcceptOffer(idOffer : number){
     this.httpService.AcceptOffer(idOffer).subscribe(data => {
-
+      this.toast.success('Oferta aceptada con exito');
+      var offerFilter = new OfferFilter();
+      offerFilter.idPublication = this.wrapper.publication.idPublication;
+      offerFilter.status = ['OPEN','SETTLING','CHANGED'];
+      this.httpService.GetOffers(offerFilter).subscribe(data => {
+        this.offersWrapper = data.content;
+      });
     });
   }
 
   RejectOffer(idOffer : number){
     this.httpService.RejectOffer(idOffer).subscribe(data => {
-
+      this.toast.success('Oferta rechazada', 'Exito');
+      var offerFilter = new OfferFilter();
+      offerFilter.idPublication = this.wrapper.publication.idPublication;
+      offerFilter.status = ['OPEN','SETTLING','CHANGED'];
+      this.httpService.GetOffers(offerFilter).subscribe(data => {
+        this.offersWrapper = data.content;
+      });
     });
   }
 
   RevertOffer(idOffer : number){
     this.httpService.RevertOffer(idOffer).subscribe(data => {
-
+      this.toast.success('Oferta revertida', 'Exito');
+      var offerFilter = new OfferFilter();
+      offerFilter.idPublication = this.wrapper.publication.idPublication;
+      offerFilter.status = ['OPEN','SETTLING','CHANGED'];
+      this.httpService.GetOffers(offerFilter).subscribe(data => {
+        this.offersWrapper = data.content;
+      });
     });
   }
 

@@ -100,7 +100,7 @@ export class HttpService {
   }
 
   Login(emailAndPassword : any){
-    return <Observable<Account>> this.Get('account/login',true, emailAndPassword);
+    return <Observable<any>> this.Get('account/login',true, emailAndPassword);
   }
 
   Register(user : any){
@@ -161,6 +161,10 @@ export class HttpService {
 
   CancelReport(idPublication : number){
     return <Observable<string>> this.http.post(this.baseUrl + 'report/cancelReport?idPublication='+idPublication, null);
+  }
+
+  CancelPublication(idPublication : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'publication/cancel?idPublication='+idPublication, null);
   }
 
   

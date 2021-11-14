@@ -59,12 +59,28 @@ export class ViewReportsComponent implements OnInit {
   acceptReport(idPublication : number){
     this.httpService.AcceptReport(idPublication).subscribe(data => {
       this.toastr.success('Publicacion reportada con exito');
+      var filter = new PublicationFilter();
+      filter.pageSize = 10;
+      filter.pageNumber = 0;
+
+      this.httpService.GetReportedPublications(filter).subscribe(data => {
+        this.publicationService.setPage(data);
+        this.publicationService.setFilter(filter);
+      });
     });
   }
 
   rejectReport(idPublication : number){
     this.httpService.CancelReport(idPublication).subscribe(data => {
       this.toastr.success('Reporte rechazado con exito');
+      var filter = new PublicationFilter();
+      filter.pageSize = 10;
+      filter.pageNumber = 0;
+
+      this.httpService.GetReportedPublications(filter).subscribe(data => {
+        this.publicationService.setPage(data);
+        this.publicationService.setFilter(filter);
+      });
     });
   }  
 

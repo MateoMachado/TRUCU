@@ -46,7 +46,7 @@ public class PublicationController {
             int idPublication = publicationHelper.create(newPublication);
             dbController.commit();
             LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
-            return ResponseEntity.ok(new Message("Publicacion creada correctamente"));
+            return ResponseEntity.ok(idPublication);
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear publicacion -> %s", ex.getMessage());
             dbController.rollback();
