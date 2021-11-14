@@ -115,10 +115,24 @@ public class PublicationController {
             publicationHelper.hidePublication(idPublication);
             dbController.commit();
             LOGGER.info("Publicacion [idPublication=%s] ocultada correctamente");
-            return ResponseEntity.ok(new Message("Publicacion oocultada correctamente"));
+            return ResponseEntity.ok(new Message("Publicacion ocultada correctamente"));
         } catch (SQLException ex) {
             dbController.rollback();
             LOGGER.error("Imposible ocultar publicacion [idPublication=%s] -> %s", idPublication, ex);
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
+        }
+    }
+
+    @GetMapping("/show")
+    public ResponseEntity showPublication(@RequestParam int idPublication) {
+        try {
+            publicationHelper.showPublication(idPublication);
+            dbController.commit();
+            LOGGER.info("Publicacion [idPublication=%s] descocultada correctamente");
+            return ResponseEntity.ok(new Message("Publicacion descocultada correctamente"));
+        } catch (SQLException ex) {
+            dbController.rollback();
+            LOGGER.error("Imposible descocultada publicacion [idPublication=%s] -> %s", idPublication, ex);
             return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
