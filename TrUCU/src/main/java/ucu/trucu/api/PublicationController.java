@@ -1,7 +1,6 @@
 package ucu.trucu.api;
 
 import java.sql.SQLException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ucu.trucu.helper.PublicationHelper;
-import ucu.trucu.model.dto.Image;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -109,5 +107,19 @@ public class PublicationController {
         Filter filter = publicationFilter.toFilter();
         LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
         return ResponseEntity.ok(publicationHelper.filter(pageSize, pageNumber, filter));
+    }
+
+    @GetMapping("/hide")
+    public ResponseEntity hidePublication(@RequestParam int idPublication) {
+        try {
+            publicationHelper.hidePublication(idPublication);
+            dbController.commit();
+            LOGGER.info("Publicacion [idPublication=%s] ocultada correctamente");
+            return ResponseEntity.ok(new Message("Publicacion oocultada correctamente"));
+        } catch (SQLException ex) {
+            dbController.rollback();
+            LOGGER.error("Imposible ocultar publicacion [idPublication=%s] -> %s", idPublication, ex);
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
+        }
     }
 }
