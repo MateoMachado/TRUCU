@@ -110,4 +110,8 @@ export class ViewPublicationComponent implements OnInit {
     this.accountEmail.next(email);
   }
 
+  hidePublication(){
+    
+  }
+
 }

@@ -16,6 +16,7 @@ export class HomeScreenComponent implements OnInit {
 
   currentPage : Page;
   currentFilter : PublicationFilter;
+  showFilter : boolean = false;
  
 
   constructor(public httpService : HttpService, public publicationService : PublicationService) { }
@@ -54,5 +55,27 @@ export class HomeScreenComponent implements OnInit {
       this.publicationService.setPage(data);
       this.publicationService.setFilter(this.currentFilter);
     });
+  }
+
+  onFilter(event : any){
+    console.log(event);
+    this.currentFilter.pageNumber = 0;
+    if(event.maxUcuCoins)
+      this.currentFilter.maxUcuCoins = event.maxUcuCoins;
+    if(event.minUcuCoins)
+      this.currentFilter.minUcuCoins = event.minUcuCoins;
+    if(event.afterDate)
+      this.currentFilter.afterDate = event.afterDate;
+    if(event.beforeDate)
+      this.currentFilter.beforeDate = event.beforeDate;
+    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(this.currentFilter);
+    });
+  }
+
+  onToggleFilter(event:any){
+    event.stopPropagation();
+    this.showFilter = !this.showFilter;
   }
 }

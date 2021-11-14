@@ -167,5 +167,9 @@ export class HttpService {
     return <Observable<string>> this.http.post(this.baseUrl + 'publication/cancel?idPublication='+idPublication, null);
   }
 
+  HidePublication(idPublication : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'publication/cancel?idPublication='+idPublication, null);
+  }
+
   
 }
