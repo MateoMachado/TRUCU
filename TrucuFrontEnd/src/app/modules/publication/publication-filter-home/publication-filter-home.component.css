@@ -1,0 +1,37 @@
+.input-form-design {
+    background-color: #ffffff;
+    box-shadow: 2px 2px 2px #00000029;
+    opacity: 1;
+    padding-left: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    width: 100%;
+    font-family: "Futura";
+    padding-right: 1rem;
+    font-size: 10px !important;
+}
+  
+  .label-form-design {
+    font-family: "Futura";
+    color:  rgba(59, 130, 246, var(--tw-bg-opacity));
+    font-size: 10px;
+  }
+  
+  .filter-header {
+    box-shadow: 0px 3px 3px #00000029;
+    background: rgba(59, 130, 246, var(--tw-bg-opacity));
+    color: white;
+    font-size: 15px;
+    font-family: "Futura";
+    border-radius: 20px 20px 0px 0px;
+    padding: 10px;
+  }
+  
+  .filter-pop-up {
+    box-shadow: 0px 3px 3px #00000029;
+  }
+
+  input:focus{
+    outline: none;
+}
+  

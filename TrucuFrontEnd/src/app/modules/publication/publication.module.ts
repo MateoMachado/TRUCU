@@ -9,13 +9,18 @@ import { OfferModule } from '../offer/offer.module';
 import { PublicationListComponent } from './publication-list/publication-list.component';
 import { AccountModule } from '../account/account.module';
 import { ReportModule } from '../report/report.module';
+import { PublicationFilterComponent } from './publication-filter/publication-filter.component';
+import { SharedModule } from 'src/app/core/components/shared.module';
+import { PublicationFilterHomeComponent } from './publication-filter-home/publication-filter-home.component';
 
 
 @NgModule({
   declarations: [
     CreatePublicationComponent,
     ViewPublicationComponent,
-    PublicationListComponent
+    PublicationListComponent,
+    PublicationFilterComponent,
+    PublicationFilterHomeComponent
   ],
   imports: [
     CommonModule,
@@ -24,12 +29,14 @@ import { ReportModule } from '../report/report.module';
     NgbModule,
     OfferModule,
     AccountModule,
-    ReportModule
+    ReportModule,
+    SharedModule
   ],
   exports : [
     CreatePublicationComponent,
     ViewPublicationComponent,
-    PublicationListComponent
+    PublicationListComponent,
+    PublicationFilterHomeComponent
   ]
 })
 export class PublicationModule { }
