@@ -5,6 +5,7 @@
         {{wrapper.publication.title}}
       </label>
       <img *ngIf="wrapper.publication.accountEmail != user.user.email" class="flex cursor-pointer w-8 justify-end" src="./assets/images/report-icon.png" (click)="toggleShowReport()">
+      <img *ngIf="wrapper.publication.accountEmail == user.user.email" class="flex cursor-pointer w-8 justify-end" src="./assets/images/hide-icon.png" (click)="hidePublication()">
     </div>
   </div>
   <div class="flex flex-wrap -mx-3 mb-6">
