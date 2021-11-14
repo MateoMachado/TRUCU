@@ -7,6 +7,7 @@ import { ViewPublicationComponent } from './view-publication/view-publication.co
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OfferModule } from '../offer/offer.module';
 import { PublicationListComponent } from './publication-list/publication-list.component';
+import { AccountModule } from '../account/account.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { PublicationListComponent } from './publication-list/publication-list.co
     PublicationRoutingModule,
     FormsModule,
     NgbModule,
-    OfferModule
+    OfferModule,
+    AccountModule
   ],
   exports : [
     CreatePublicationComponent,

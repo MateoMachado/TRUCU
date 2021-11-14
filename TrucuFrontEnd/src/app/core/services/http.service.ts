@@ -85,8 +85,8 @@ export class HttpService {
     return <Observable<Page>> this.Get('offer/filter',true, offerFilter);
   }
 
-  GetUserOffers(offerFilter : any){
-    return <Observable<Page>> this.Get('offer/getFromUser',true, offerFilter);
+  GetAccount(accountEmail : any){
+    return <Observable<Account>> this.Get('account/get?email='+accountEmail,true);
   }
 
   Login(emailAndPassword : any){
@@ -115,6 +115,10 @@ export class HttpService {
 
   CancelOffer(idOffer : number){
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/cancel?idOffer='+idOffer , null);
+  }
+
+  RevertOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/revert?idOffer='+idOffer , null);
   }
 
  
