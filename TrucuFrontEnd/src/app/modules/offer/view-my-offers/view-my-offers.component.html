@@ -17,9 +17,14 @@
                     <label class="cursor-pointer text-blue-500" [routerLink]="['viewPublication',offeredPublication.idPublication]">{{offeredPublication.title}}</label>
                 </div>
             </div>
+            <div class="flex justify-end m-2">
+                <label class="text-gray-500" *ngIf="wrapper.offer.status == 'OPEN'">Abierta</label>
+                <label class="text-green-500" *ngIf="wrapper.offer.status == 'SETTLING'">Aceptada</label>
+                <label class="text-blue-500" *ngIf="wrapper.offer.status == 'CHANGED'">Contraoferta</label>
+            </div>
             <div class="flex justify-end items-center" *ngIf="wrapper.offer.status != 'SETTLING' && wrapper.offer.status != 'CHANGED'">
-                <button type="button" (click)="cancelOffer(wrapper.offer.idOffer)"
-                class="h-1/2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                <button type="button"  (click)="cancelOffer(wrapper.offer.idOffer)"
+                    class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
                     <span class="inline-block m-2">Cancelar</span>
                 </button>
             </div>
@@ -54,7 +59,7 @@
         <button *ngIf="currentPage.pageNumber != 0" class="paginationTotal text-red-500" (click)="previousPage()">< Atras</button>
         <label class="paginationActual m-2">{{currentPage.pageNumber + 1}}</label>
         <label class="paginationTotal m-2"> de {{currentPage.totalPages}}</label>
-        <button *ngIf="currentPage.pageNumber < currentPage.totalPages" class="paginationTotal ml-2 text-red-500" (click)="nextPage()">Siguiente ></button>
+        <button *ngIf="currentPage.pageNumber + 1 < currentPage.totalPages" class="paginationTotal ml-2 text-red-500" (click)="nextPage()">Siguiente ></button>
 
     </div>
     

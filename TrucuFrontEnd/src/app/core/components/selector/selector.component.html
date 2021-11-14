@@ -8,7 +8,7 @@
       </span>
     </button>
   
-    <ul *ngIf="selectorOn" class="top-6 options-list-selector transition-all text-green-light ease-in duration-100 opacity-100 py-1 overflow-auto focus:outline-none sm:text-sm outline-none" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+    <ul *ngIf="selectorOn" style="margin-left: -1rem;"class="top-6 options-list-selector transition-all text-green-light ease-in duration-100 opacity-100 py-1 overflow-auto focus:outline-none sm:text-sm outline-none" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
       <li *ngFor="let op of currentOptions;let id = index;"(mouseenter)="enterOption(id)" (mouseleave)="enterOption(id)" (click)="selectOption($event,op)" class="cursor-pointer select-none relative py-2 px-3" id="listbox-option-0" role="option" [ngClass]="hoverI==id? 'text-white-design bg-green-light': 'text-green-light'">
         <span class="font-normal ml-3 block truncate">
           {{op.description}}

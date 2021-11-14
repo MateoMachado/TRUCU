@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Page } from 'src/app/core/models/Page';
 import { PublicationFilter } from 'src/app/core/models/PublicationFilter';
 import { HttpService } from 'src/app/core/services/http.service';
@@ -16,7 +17,7 @@ export class PublicationListComponent implements OnInit {
   currentFilter : PublicationFilter;
  
 
-  constructor(public httpService : HttpService, public publicationService : PublicationService, public user : UserService) { }
+  constructor(public httpService : HttpService, public publicationService : PublicationService, public user : UserService, public toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.publicationService.pageSubject.subscribe(data => {
@@ -30,6 +31,7 @@ export class PublicationListComponent implements OnInit {
     var filter = new PublicationFilter();
     filter.pageSize = 10;
     filter.pageNumber = 0;
+    filter.status = ['OPEN','SETTLING','HIDDEN']
     this.user.userSubject.subscribe(data => {
       filter.accountEmail = data.email; 
     });
@@ -45,6 +47,17 @@ export class PublicationListComponent implements OnInit {
     this.httpService.GetPublications(this.currentFilter).subscribe(data => {
       this.publicationService.setPage(data);
       this.publicationService.setFilter(this.currentFilter);
+    });
+  }
+
+  cancelPublication(idPublication : number){
+    this.httpService.CancelPublication(idPublication).subscribe(data =>{
+      this.toastr.success('Publicacion eliminada correctamente',"Exito");
+      this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+        this.publicationService.setPage(data);
+      });
+    }, error => {
+      this.toastr.error('Error inesperado', 'Error');
     });
   }
 

@@ -25,7 +25,7 @@ export class CreateOfferComponent implements OnInit {
     this.userService.userSubject.subscribe(data => {
       var filter = new PublicationFilter;
       filter.accountEmail = data.email;
-
+      filter.status = ['OPEN'];
       this.httpService.GetPublications(filter).subscribe(data => {
         data.content.forEach(data => {
           this.ownerPublications.push(data.publication);

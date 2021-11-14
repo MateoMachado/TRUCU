@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { Offer } from 'src/app/core/models/Offer';
 import { Page } from 'src/app/core/models/Page';
@@ -20,13 +21,14 @@ export class CreateCounterOfferComponent implements OnInit {
 
   ownerPublications: Publication[] = [];
 
-  constructor(public http: HttpService) { }
+  constructor(public http: HttpService, public toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.accountEmail.subscribe(value => {
       var filter = new PublicationFilter;
 
       filter.accountEmail = value;
+      filter.status = ['OPEN'];
 
       this.http.GetPublications(filter).subscribe(data => {
         data.content.forEach(data => {
@@ -54,6 +56,9 @@ export class CreateCounterOfferComponent implements OnInit {
     this.selectedPublications.forEach(data => {
       publications.push(data.idPublication);
     });
-    this.http.MakeCounterOffer(this.offer.idOffer,publications).subscribe();
+    this.http.MakeCounterOffer(this.offer.idOffer,publications).subscribe(data => {
+      this.toastr.success('Se creo la contra oferta', 'Exito');
+      this.toggleModal();
+    });
   }
 }

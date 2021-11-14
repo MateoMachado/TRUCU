@@ -1,13 +1,20 @@
 <div class="flex flex-col w-full mt-14">
     <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
-        <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
-            <img class="w-64" src="{{wrapper.images[0].imageBytes}}">
-            <div class="flex flex-grow flex-col m-8">
+        <h1>Mis publicaciones</h1>
+        <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer">
+            <img class="w-64" src="{{wrapper.images[0].imageBytes}}" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
+            <div class="flex flex-grow flex-col m-8" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
                 <label class="publicationTitle">{{wrapper.publication.title}}</label>
                 <div class="flex flex-row">
                     <img class="w-8 cursor-pointer mr-2" src="assets/images/ucucoin-icon.png">
                     <label class="price">{{wrapper.publication.ucuCoinValue}}</label>
                 </div>
+            </div>
+            <div class="flex flex-col">
+                <img src="../../../../assets/images/trash-icon.png" class="w-8 cursor-pointer" (click)="cancelPublication(wrapper.publication.idPublication)">
+                <label class="text-green-500 self-center mt-6" *ngIf="wrapper.publication.status == 'OPEN'">Abierta</label>
+                <label class="text-blue-500 self-center mt-6" *ngIf="wrapper.publication.status == 'SETTLING'">Aceptada</label>
+                <label class="text-gray-500 self-center mt-6" *ngIf="wrapper.publication.status == 'HIDDEN'">Oculto</label>
             </div>
         </div>
     </div>

@@ -32,6 +32,7 @@ export class HomeScreenComponent implements OnInit {
     var filter = new PublicationFilter();
     filter.pageSize = 10;
     filter.pageNumber = 0;
+    filter.status = ['OPEN','SETTLING'];
 
     this.httpService.GetPublications(filter).subscribe(data => {
       this.publicationService.setPage(data);
@@ -47,4 +48,11 @@ export class HomeScreenComponent implements OnInit {
     });
   }
 
+  previousPage(){
+    this.currentFilter.pageNumber--;
+    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(this.currentFilter);
+    });
+  }
 }

@@ -32,11 +32,15 @@ export class LoginComponent implements OnInit {
   login(){
     var account = {email : this.email, password : this.password};
     this.http.Login(account).subscribe(result => {
-      
-      this.userService.setUser(result);
+      if(result.message){
+        this.toastr.warning(result.message, 'Advertencia');
+      }else{
+        this.userService.setUser(result);
         this.toastr.success('Conectado correctamente', 'Exito');
+      }
     },
     error => {
+      console.log(error);
       this.toastr.error('Usuario incorrecto','Error');
     });
   }
@@ -47,6 +51,10 @@ export class LoginComponent implements OnInit {
 
   registerUser(){
     this.account.rolName = constants.USERROLE;
+    if(!this.checkNotNull()){
+      this.toastr.warning('Debe rellenar todos los campos', 'Alerta');
+      return;
+    }
     if(this.account.password != this.confirmPassword){
       this.toastr.warning('Las contraseñas no coinciden', 'Alerta');
       return;
@@ -58,6 +66,16 @@ export class LoginComponent implements OnInit {
     
     this.http.Register(this.account).subscribe(data => {
       this.toggleRegistration();
+      this.toastr.success('Registrado correctamente','Exito');
+      this.showModal = !this.showModal;
+    },
+    error => {
+      console.log(error);
+      if(error.status == 400){
+        this.toastr.error('Email invalido o ya existente','Error');
+      }else{
+        this.toastr.error('Ha ocurrido un error inesperado','Error');
+      }
     });
   }
 
