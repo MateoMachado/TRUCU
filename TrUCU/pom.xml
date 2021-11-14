@@ -12,7 +12,7 @@
     
     <groupId>ucu</groupId>
     <artifactId>trucu</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>trucu</name>
     <description>App Trucu</description>
     

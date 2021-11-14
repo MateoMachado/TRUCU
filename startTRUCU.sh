@@ -1,0 +1,1 @@
+java -jar TrUCU/target/trucu-1.0.0.jar

@@ -1,0 +1,2 @@
+INFO	[ucu.trucu.database.DBController]	Iniciando conexion con base de datos [jdbc:sqlserver://192.168.56.103:1433;databaseName=Trucu]
+ERROR	[ucu.trucu.database.DBController]	Conexion a base de datos fallida -> No se pudo realizar la conexión TCP/IP al host 192.168.56.103, puerto 1433. Error: "connect timed out. Verifique las propiedades de conexión, compruebe que hay una instancia de SQL Server ejecutándose en el host y aceptando las conexiones TCP/IP en el puerto y compruebe que no hay ningún firewall bloqueando las conexiones TCP en el puerto.".
