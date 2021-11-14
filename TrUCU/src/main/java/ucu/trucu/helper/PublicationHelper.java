@@ -59,10 +59,10 @@ public class PublicationHelper {
     public boolean delete(Integer idPublication) throws SQLException {
         LOGGER.info("Eliminando publicacion [idPublication=%s] y sus imagenes...", idPublication);
         imageDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication));
-        
-        LOGGER.info("Eliminando reportes hechos a la publicacion [idPublication=%s]",idPublication);
+
+        LOGGER.info("Eliminando reportes hechos a la publicacion [idPublication=%s]", idPublication);
         reportDAO.cancelPublicationReports(idPublication);
-        
+
         return publicationDAO.delete(where -> where.eq(PublicationDAO.ID_PUBLICATION, idPublication)) == 1;
     }
 
@@ -105,14 +105,18 @@ public class PublicationHelper {
         LOGGER.info("Cancelando publicacion [idPublication=%s]", idPublication);
         changePublicationStatus(idPublication, PublicationStatus.CANCELED);
 
+        this.finishPublicationOffers(idPublication);
+
+        LOGGER.info("Cancelando reportes a la publicacion [idPublication=%S]", idPublication);
+        reportDAO.cancelPublicationReports(idPublication);
+    }
+
+    public void finishPublicationOffers(int idPublication) throws SQLException {
         LOGGER.info("Rechazando ofertas a publicacion [idPublication=%s]", idPublication);
         offerDAO.rejectOffersToPublication(idPublication);
 
         LOGGER.info("Cancelando ofertas con la publicacion [idPublication=%s]", idPublication);
         offerDAO.cancelOffersWithPublication(idPublication);
-        
-        LOGGER.info("Cancelando reportes a la publicacion [idPublication=%S]", idPublication);
-        reportDAO.cancelPublicationReports(idPublication);
     }
 
     public void changePublicationStatus(int idPublication, PublicationStatus nextStatus) throws SQLException {
@@ -138,7 +142,7 @@ public class PublicationHelper {
                 filter.not(filter.in(PublicationDAO.STATUS, expectedStatus))
         ));
         if (!publications.isEmpty()) {
-            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicaciones [idPublication=%s] con estados %s",
+            throw new IllegalStateException(String.format("Imposible ejecutar operacion en publicaciones [idPublication=%s] con distinto a %s",
                     StringUtils.join(StringUtils.COMA, publications),
                     StringUtils.join(StringUtils.COMA, expectedStatus)));
         }
