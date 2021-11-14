@@ -6,6 +6,10 @@ const routes: Routes = [
     {
     path: '', component: MainComponent ,children: [
         {
+            path: '',
+            loadChildren: () => import('../home/home.module').then(m => m.HomeModule)
+        },  
+        {
             path: 'home',
             loadChildren: () => import('../home/home.module').then(m => m.HomeModule)
         },   
@@ -13,6 +17,20 @@ const routes: Routes = [
             path: 'createPublication',
             loadChildren: () => import('../publication/publication.module').then(m => m.PublicationModule)
         },
+        {
+            path: 'viewMyPublications',
+            loadChildren: () => import('../publication/publication.module').then(m => m.PublicationModule)
+        },
+        {
+            path: 'viewMyOffers',
+            loadChildren: () => import('../offer/offer.module').then(m => m.OfferModule)
+        },
+        {
+            path: 'viewReports',
+            loadChildren: () => import('../report/report.module').then(m => m.ReportModule)
+        },
+        
+        
     ]}];
 
 @NgModule({

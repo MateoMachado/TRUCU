@@ -1,0 +1,40 @@
+<div *ngIf="showModal"
+    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex pt-32">
+    <div class="relative w-auto my-6 mx-auto max-w-6xl">
+        <!--content-->
+        <div
+            class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+            <!--body-->
+            <div class="bg-gray-100 flex flex-col justify-center">
+                <div class="flex justify-end p-4">
+                    <img class="w-4 cursor-pointer" src="assets/images/close-icon.png" (click)="toggleModal()">
+                </div>
+                <div class="pr-10 pl-10 pb-10 xs:p-0 mx-auto md:w-full md:max-w-md">
+                    <div class="flex justify-center">
+                        <img class="w-32" src="assets/images/logo_UCU.png">
+                    </div>
+                    <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
+                        <label class="font-semibold text-sm text-gray-600 p-4 block">Seleccione cuales de sus publicaciones desea ofertar:</label>
+                        <div *ngFor="let ownerPublication of ownerPublications">
+                            <label class="inline-flex items-center p-2">
+                                <input type="checkbox" class="form-checkbox" (click)="checkPublication(ownerPublication)"/>
+                                <a class="ml-2" [routerLink]="['viewPublication',ownerPublication.idPublication]" target="_blank">{{ownerPublication.title}}</a>    
+                            </label>
+                        </div>
+                        <button type="button"
+                                class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                                <span class="inline-block mr-2" (click)="makeCounterOffer()">Ofertas</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" class="w-4 h-4 inline-block">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>

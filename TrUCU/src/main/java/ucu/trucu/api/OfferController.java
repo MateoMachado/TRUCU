@@ -148,7 +148,7 @@ public class OfferController {
     }
 
     @PostMapping("/counterOffer")
-    public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestParam List<Integer> publications) {
+    public ResponseEntity counterOffer(@RequestParam int idOffer, @RequestBody List<Integer> publications) {
         try {
             offerHelper.counterOffer(idOffer, publications);
             dbController.commit();

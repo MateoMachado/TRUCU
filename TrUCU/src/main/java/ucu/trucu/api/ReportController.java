@@ -71,7 +71,7 @@ public class ReportController {
     }
     
     @GetMapping("/reportReasons")
-    public ResponseEntity<Map<Reason, Integer>> getReportReasons(@RequestParam int idPublication) {
+    public ResponseEntity<Map<Integer, Integer>> getReportReasons(@RequestParam int idPublication) {
         return ResponseEntity.ok(reportHelper.getReportReasons(idPublication));
     }
 

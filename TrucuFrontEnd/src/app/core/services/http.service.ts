@@ -6,6 +6,9 @@ import { Publication } from '../models/Publication';
 import { PublicationFilter } from '../models/PublicationFilter';
 import { Page } from '../models/Page';
 import { Account } from '../models/Account';
+import { OfferWrapper } from '../models/OfferWrapper';
+import { Reason } from '../models/Reason';
+import { Report } from '../models/Report';
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +83,22 @@ export class HttpService {
     return <Observable<Page>> this.Get('publication/filter',true, publicationFilter);
   }
 
+  GetReportedPublications(publicationFilter : any){
+    return <Observable<Page>> this.Get('report/getReportedPublications',true, publicationFilter);
+  }
+
+  GetReportReasons(idPublication : any){
+    return <Observable<any>> this.Get('report/reportReasons?idPublication='+idPublication,true);
+  }
+
+  GetOffers(offerFilter : any){
+    return <Observable<Page>> this.Get('offer/filter',true, offerFilter);
+  }
+
+  GetAccount(accountEmail : any){
+    return <Observable<Account>> this.Get('account/get?email='+accountEmail,true);
+  }
+
   Login(emailAndPassword : any){
     return <Observable<Account>> this.Get('account/login',true, emailAndPassword);
   }
@@ -96,4 +115,53 @@ export class HttpService {
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/create?idPublication='+idPublication , idPublications);
   }
 
+  AcceptOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/accept?idOffer='+idOffer , null);
+  }
+
+  RejectOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/reject?idOffer='+idOffer , null);
+  }
+
+  CancelOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/cancel?idOffer='+idOffer , null);
+  }
+
+  RevertOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/revert?idOffer='+idOffer , null);
+  }
+
+  CloseOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/close?idOffer='+idOffer , null);
+  }
+
+  MakeCounterOffer(idOffer : number, idPublications : number[]){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer?idOffer='+idOffer , idPublications);
+  }
+
+  AcceptCounterOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer/accept?idOffer='+idOffer , null);
+  }
+
+  RejectCounterOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer/reject?idOffer='+idOffer , null);
+  }
+ 
+  GetReasons(){
+    return <Observable<Reason[]>> this.Get('report/reasons',true);
+  }
+
+  CreateReport(report : Report){
+    return <Observable<string>> this.http.post(this.baseUrl + 'report/create', report);
+  }
+
+  AcceptReport(idPublication : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'report/acceptReport?idPublication='+idPublication, null);
+  }
+
+  CancelReport(idPublication : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'report/cancelReport?idPublication='+idPublication, null);
+  }
+
+  
 }
