@@ -6,6 +6,7 @@ import { PublicationFilter } from 'src/app/core/models/PublicationFilter';
 import { UserService } from 'src/app/core/services/user.service';
 import { OfferFilter } from 'src/app/core/models/OfferFilter';
 import { OfferWrapper } from 'src/app/core/models/OfferWrapper';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-view-publication',
@@ -16,6 +17,8 @@ export class ViewPublicationComponent implements OnInit {
   wrapper: PublicationWrapper;
   offersWrapper : OfferWrapper[];
   showOffer : boolean = false; 
+  showAccountData : boolean = false;
+  accountEmail : BehaviorSubject<string> = new BehaviorSubject(null);
   
   constructor(public httpService : HttpService, public route: ActivatedRoute, public user : UserService) { }
 
@@ -43,6 +46,10 @@ export class ViewPublicationComponent implements OnInit {
     this.showOffer = !this.showOffer;
   }
 
+  toggleshowAccountData(){
+    this.showAccountData = !this.showAccountData;
+  }
+
   AcceptOffer(idOffer : number){
     this.httpService.AcceptOffer(idOffer).subscribe(data => {
 
@@ -53,6 +60,18 @@ export class ViewPublicationComponent implements OnInit {
     this.httpService.RejectOffer(idOffer).subscribe(data => {
 
     });
+  }
+
+  RevertOffer(idOffer : number){
+    this.httpService.RevertOffer(idOffer).subscribe(data => {
+
+    });
+  }
+
+  ViewAccountData(email : string){
+    this.toggleshowAccountData();
+    this.accountEmail.next(email);
+   
   }
 
 }
