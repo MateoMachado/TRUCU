@@ -25,7 +25,7 @@ public class ReportDAO extends AbstractDAO<Report> {
     public static final String REPORT = "Report";
     public static final String ID_REPORT = "idReport";
     public static final String STATUS = "status";
-    
+
     @Override
     public String getTable() {
         return REPORT;
@@ -55,55 +55,53 @@ public class ReportDAO extends AbstractDAO<Report> {
     public List<Reason> getReportReasons(int idPublication) {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(REASON, REASON + ".*")
-                        .joinOn(REPORT, String.format("%s.%s = %s.%s",
-                                REPORT, ID_REASON, REASON, ID_REASON))
-                        .joinOn(PUBLICATION, String.format("%s.%s = %s.%s",
-                                PUBLICATION, ID_PUBLICATION, REPORT, ID_PUBLICATION))
-                        .where(where -> where.eq(PUBLICATION + "." + ID_PUBLICATION,
-                        idPublication)),
+                        .joinOnId(REPORT, ID_REASON)
+                        .joinOn(PUBLICATION, ID_PUBLICATION)
+                        .where(where -> where.eq(PUBLICATION + "." + ID_PUBLICATION, idPublication)),
                 Reason.class
         );
     }
-    
+
+    @Override
     public int count(Filter filter) {
         return dbController.executeQuery(QueryBuilder
                 .selectFrom(REPORT, "COUNT(DISTINCT " + ID_PUBLICATION + ") AS 'count'")
                 .where(filter),
                 Count.class).get(0).getCount();
     }
-    
+
     public List<Publication> filterPublications(int pageSize, int pageNumber, Filter filter) {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(PUBLICATION)
                         .where(filter.in(ID_PUBLICATION,
-                                QueryBuilder.selectDistinctFrom(REPORT,ID_PUBLICATION)))
+                                QueryBuilder.selectDistinctFrom(REPORT, ID_PUBLICATION)))
                         .orderDesc(PUBLICATION_DATE)
                         .offset(pageSize * pageNumber)
                         .fetchNext(pageSize),
                 Publication.class
         );
     }
-    
+
     public void acceptReport(int idPublication) throws SQLException {
         dbController.executeUpdate(
                 QueryBuilder.update(REPORT)
-                .set(STATUS, Report.ReportStatus.ACCEPTED)
-                .where(where -> where.eq(ID_PUBLICATION, idPublication))
+                        .set(STATUS, Report.ReportStatus.ACCEPTED)
+                        .where(where -> where.eq(ID_PUBLICATION, idPublication))
         );
     }
-    
+
     public void cancelReport(int idPublication) throws SQLException {
         dbController.executeUpdate(
                 QueryBuilder.update(REPORT)
-                .set(STATUS, Report.ReportStatus.REJECTED)
-                .where(filter -> filter.eq(ID_PUBLICATION, idPublication))
+                        .set(STATUS, Report.ReportStatus.REJECTED)
+                        .where(filter -> filter.eq(ID_PUBLICATION, idPublication))
         );
     }
-    
+
     public void cancelPublicationReports(int idPublication) throws SQLException {
         dbController.executeUpdate(
                 QueryBuilder.deleteFrom(REPORT)
-                .where(filter -> filter.eq(ID_PUBLICATION, idPublication))
+                        .where(filter -> filter.eq(ID_PUBLICATION, idPublication))
         );
     }
 }

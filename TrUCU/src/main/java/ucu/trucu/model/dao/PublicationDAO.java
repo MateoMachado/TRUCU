@@ -1,11 +1,8 @@
 package ucu.trucu.model.dao;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
-import ucu.trucu.database.querybuilder.Count;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
