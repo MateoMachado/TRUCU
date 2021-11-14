@@ -17,6 +17,7 @@ import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.dao.ImageDAO;
 import ucu.trucu.model.dao.PublicationDAO;
+import ucu.trucu.model.dao.ReasonDAO;
 import ucu.trucu.model.dao.ReportDAO;
 import ucu.trucu.model.dto.Image;
 import ucu.trucu.model.dto.Publication;
@@ -40,6 +41,9 @@ public class ReportHelper {
     
     @Autowired
     private ImageDAO imageDAO;
+    
+    @Autowired
+    private ReasonDAO reasonDAO;
     
     public int createReport(Report newReport) throws SQLException {
         return reportDAO.insert(newReport);
@@ -73,6 +77,10 @@ public class ReportHelper {
         });
         
         return reasonCount;
+    }
+    
+    public List<Reason> getReasons() {
+        return reasonDAO.getReasons();
     }
     
     public void acceptReport(int idPubication) throws SQLException {
