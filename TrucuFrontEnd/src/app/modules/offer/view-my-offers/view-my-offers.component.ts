@@ -76,4 +76,12 @@ export class ViewMyOffersComponent implements OnInit {
     this.accountEmail.next(email);
   }
 
+  acceptCounterOffer(idOffer : number){
+    this.http.acceptCounterOffer(idOffer).subscribe(data => {});
+  }
+
+  rejectCounterOffer(idOffer : number){
+    this.http.rejectCounterOffer(idOffer).subscribe(data => {});
+  }
+
 }

@@ -128,7 +128,13 @@ export class HttpService {
   makeCounterOffer(idOffer : number, idPublications : number[]){
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer?idOffer='+idOffer , idPublications);
   }
+
+  acceptCounterOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer/accept?idOffer='+idOffer , null);
+  }
+
+  rejectCounterOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer/reject?idOffer='+idOffer , null);
+  }
  
-
-
 }
