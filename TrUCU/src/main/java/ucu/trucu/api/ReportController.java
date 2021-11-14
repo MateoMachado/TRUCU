@@ -79,9 +79,11 @@ public class ReportController {
     public ResponseEntity acceptReport(@RequestParam int idPublication) {
         try {
             reportHelper.acceptReport(idPublication);
+            dbController.commit();
             LOGGER.info("Reporte aceptado para la publicacion [idPublication=%s]", idPublication);
             return ResponseEntity.ok(new Message("Reporte aceptado correctamente"));
         } catch (SQLException ex) {
+            dbController.rollback();
             LOGGER.error("Error al aceptar el reporte de la publicacion [idPublication=%s] -> %s", idPublication, ex);
             return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
