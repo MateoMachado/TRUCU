@@ -15,6 +15,7 @@ import ucu.trucu.database.DBController;
 import ucu.trucu.helper.AccountHelper;
 import ucu.trucu.model.dto.Account;
 import ucu.trucu.model.dto.Rol;
+import ucu.trucu.util.api.Message;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 
@@ -41,11 +42,11 @@ public class AccountController {
             accountHelper.create(newAccount);
             dbController.commit();
             LOGGER.info("Cuenta [Email=%s] creada correctamente", newAccount.getEmail());
-            return ResponseEntity.ok("Cuenta creada correctamente");
+            return ResponseEntity.ok(new Message("Cuenta creada correctamente"));
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear cuenta [Email=%s] -> %s", newAccount.getEmail(), ex.getMessage());
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 
@@ -57,11 +58,11 @@ public class AccountController {
                 return ResponseEntity.ok(account);
             } else {
                 LOGGER.warn("Contraseña incorrecta de [email=%s]", email);
-                return ResponseEntity.ok().body("Contraseña incorrecta");
+                return ResponseEntity.ok().body(new Message("Contraseña incorrecta"));
             }
         } else {
             LOGGER.warn("Cuenta [email=%s] no existente", email);
-            return ResponseEntity.ok().body("Cuenta no existente");
+            return ResponseEntity.ok().body(new Message("Cuenta no existente"));
         }
     }
 
@@ -71,11 +72,11 @@ public class AccountController {
             accountHelper.update(email, newValues);
             dbController.commit();
             LOGGER.info("Valores actualizados en cuenta [Email=%s]", email);
-            return ResponseEntity.ok("Valores actualizados correctamente");
+            return ResponseEntity.ok(new Message("Valores actualizados correctamente"));
         } catch (SQLException ex) {
             LOGGER.error("Imposible actualizar valores para cuenta [Email=%s] -> %s", email, ex);
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 
@@ -85,15 +86,15 @@ public class AccountController {
             if (accountHelper.delete(email)) {
                 dbController.commit();
                 LOGGER.info("Cuenta [Email=%s] eliminada correctamente", email);
-                return ResponseEntity.ok("Cuenta eliminada correctamente");
+                return ResponseEntity.ok(new Message("Cuenta eliminada correctamente"));
             } else {
                 LOGGER.warn("Cuenta no existente [Email=%s]", email);
-                return ResponseEntity.ok("Cuenta no existente");
+                return ResponseEntity.ok(new Message("Cuenta no existente"));
             }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar cuenta [Email=%s] -> %s", email, ex);
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 

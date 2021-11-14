@@ -8,9 +8,7 @@ import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.database.querybuilder.QueryBuilder;
 import ucu.trucu.database.querybuilder.statement.InsertStatement;
 import ucu.trucu.database.querybuilder.statement.SelectStatement;
-import static ucu.trucu.model.dao.PublicationDAO.ACCOUNT_EMAIL;
 import static ucu.trucu.model.dao.PublicationDAO.ID_PUBLICATION;
-import static ucu.trucu.model.dao.PublicationDAO.PUBLICATION;
 import ucu.trucu.model.dto.Offer;
 import ucu.trucu.model.dto.Offer.OfferStatus;
 

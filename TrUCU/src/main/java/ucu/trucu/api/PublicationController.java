@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ucu.trucu.helper.PublicationHelper;
 import ucu.trucu.model.dto.Image;
-import ucu.trucu.model.dto.Report;
 import ucu.trucu.util.log.Logger;
 import ucu.trucu.util.log.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +20,7 @@ import ucu.trucu.database.DBController;
 import ucu.trucu.database.querybuilder.Filter;
 import ucu.trucu.model.api.PublicationWrapper;
 import ucu.trucu.model.filter.PublicationFilter;
+import ucu.trucu.util.api.Message;
 import ucu.trucu.util.pagination.Page;
 
 /**
@@ -46,11 +46,11 @@ public class PublicationController {
             int idPublication = publicationHelper.create(newPublication);
             dbController.commit();
             LOGGER.info("Publicacion [idPublication=%s] creada correctamente", idPublication);
-            return ResponseEntity.ok("Publicacion creada correctamente");
+            return ResponseEntity.ok(new Message("Publicacion creada correctamente"));
         } catch (SQLException ex) {
             LOGGER.error("Imposible crear publicacion -> %s", ex.getMessage());
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 
@@ -60,11 +60,11 @@ public class PublicationController {
             publicationHelper.update(idPublication, newValues);
             dbController.commit();
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
-            return ResponseEntity.ok("Valores de actualizados correctamente");
+            return ResponseEntity.ok(new Message("Valores de actualizados correctamente"));
         } catch (SQLException ex) {
             LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 
@@ -74,11 +74,11 @@ public class PublicationController {
             publicationHelper.cancelPublication(idPublication);
             dbController.commit();
             LOGGER.info("Valores actualizados en publicacion [idPublication=%s]", idPublication);
-            return ResponseEntity.ok("Publicacion cancelada correctamente");
+            return ResponseEntity.ok(new Message("Publicacion cancelada correctamente"));
         } catch (SQLException | IllegalStateException ex) {
             LOGGER.error("Imposible actualizar valores para publicacion [idPublication=%s] -> %s", idPublication, ex);
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 
@@ -88,15 +88,15 @@ public class PublicationController {
             if (publicationHelper.delete(idPublication)) {
                 dbController.commit();
                 LOGGER.info("Publicacion [idPublication=%s] eliminada correctamente", idPublication);
-                return ResponseEntity.ok("Publicacion eliminada correctamente");
+                return ResponseEntity.ok(new Message("Publicacion eliminada correctamente"));
             } else {
                 LOGGER.warn("Publicacion [idPublication=%s] no existente", idPublication);
-                return ResponseEntity.ok("Publicacion no exsitente");
+                return ResponseEntity.ok(new Message("Publicacion no exsitente"));
             }
         } catch (SQLException ex) {
             LOGGER.error("Imposible eliminar publicacion [idPublication=%s] -> %s", idPublication, ex);
             dbController.rollback();
-            return ResponseEntity.badRequest().body(ex.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new Message(ex.getLocalizedMessage()));
         }
     }
 
@@ -109,10 +109,5 @@ public class PublicationController {
         Filter filter = publicationFilter.toFilter();
         LOGGER.info("Obteniendo publicaciones filtradas por [%s]", filter);
         return ResponseEntity.ok(publicationHelper.filter(pageSize, pageNumber, filter));
-    }
-
-    @GetMapping("/images")
-    public List<Image> getPublicationImages(@RequestParam int idPublication) {
-        return publicationHelper.getPublicationImages(idPublication);
     }
 }
