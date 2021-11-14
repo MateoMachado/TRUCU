@@ -6,8 +6,8 @@ export class PublicationFilter{
     accountEmail : string;
     minUcuCoins : number;
     maxUcuCoins : number;
-    afterDate : Date;
-    beforeDate : Date;
+    afterDate : string;
+    beforeDate : string;
     description : string;
     idPublication : number;
 }

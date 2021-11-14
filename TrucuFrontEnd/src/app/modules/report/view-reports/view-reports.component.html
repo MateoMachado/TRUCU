@@ -1,16 +1,17 @@
 <div class="flex flex-col w-full mt-14">
     <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
+        <h1>Reportes</h1>
         <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer">
             <img class="w-64" src="{{wrapper.images[0].imageBytes}}"  [routerLink]="['viewPublication',wrapper.publication.idPublication]">
             <div class="flex flex-grow flex-col m-8"  [routerLink]="['viewPublication',wrapper.publication.idPublication]">
-                <label class="publicationTitle">{{wrapper.publication.title}}</label>
+                <h2 class="publicationTitle">{{wrapper.publication.title}}</h2>
                 <div class="flex flex-row">
                     <img class="w-8 cursor-pointer mr-2" src="assets/images/ucucoin-icon.png">
-                    <label class="price">{{wrapper.publication.ucuCoinValue}}</label>
+                    <h2 class="price">{{wrapper.publication.ucuCoinValue}}</h2>
                 </div>
                 <div *ngFor="let reportReason of reportsReasons.get(wrapper.publication.idPublication) | keyvalue">
                     <div *ngFor="let x of reasons">
-                        <label *ngIf="x.idReason == reportReason.key">La publicacion fue reportada por {{x.description}} {{reportReason.key}}  veces</label>
+                        <h3 *ngIf="x.idReason == reportReason.key">La publicacion fue reportada por {{x.description}} {{reportReason.key}}  veces</h3>
                     </div>
                     <!-- Reportada por {{reasons.get(reportReason.key).description}} {{reportReason.value}} veces -->
                 </div>

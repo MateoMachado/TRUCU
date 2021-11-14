@@ -1,11 +1,11 @@
 <div *ngIf="showModal" (click)="closeSelectors($event)"
-  class="absolute inset-0 z-50 outline-none focus:outline-none justify-center items-center flex filter-pop-up mr-32" style="width:300px;top:7rem">
+  class="absolute inset-0 z-50 outline-none focus:outline-none justify-center items-center flex filter-pop-up mr-32" style="width:300px;top:12rem">
     <!--content-->
     <div
       class="border-0 rounded-2xl shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
       <!-- header -->
       <div class="flex filter-header items-start justify-between align-middle border-solid border-blueGray-200">
-        <h2 class="text-sm">
+        <h2 class="text-sm" style="font-family: 'FuturaB';">
           Filtros de búsqueda
         </h2>
       </div>
@@ -14,8 +14,11 @@
             <div class="flex flex-col pb-inputs">
                 <label class="label-form-design">Precio</label>
                 <input class="items-center input-form-design pl-0-important pr-0-important" placeholder='Minimo' [(ngModel)]="publicationFilter.minUcuCoins">
+            </div>
+            <div class="flex flex-col pb-inputs">
                 <input class="items-center input-form-design pl-0-important pr-0-important" placeholder='Maximo' [(ngModel)]="publicationFilter.maxUcuCoins">
             </div>
+           
             
             <div class="flex flex-col pb-inputs">
                 <label class="label-form-design">Fecha desde</label>

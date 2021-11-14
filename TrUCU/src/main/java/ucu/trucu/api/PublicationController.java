@@ -109,7 +109,7 @@ public class PublicationController {
         return ResponseEntity.ok(publicationHelper.filter(pageSize, pageNumber, filter));
     }
 
-    @GetMapping("/hide")
+    @PostMapping("/hide")
     public ResponseEntity hidePublication(@RequestParam int idPublication) {
         try {
             publicationHelper.hidePublication(idPublication);
@@ -123,7 +123,7 @@ public class PublicationController {
         }
     }
 
-    @GetMapping("/show")
+    @PostMapping("/show")
     public ResponseEntity showPublication(@RequestParam int idPublication) {
         try {
             publicationHelper.showPublication(idPublication);

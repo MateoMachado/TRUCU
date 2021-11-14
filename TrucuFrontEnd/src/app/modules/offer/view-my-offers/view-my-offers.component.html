@@ -1,26 +1,26 @@
 <div class="flex flex-col w-full mt-14">
     <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
-        <label>Mis ofertas</label>
+        <h1 class="mb-6">Mis ofertas</h1>
         <div *ngFor="let wrapper of currentPage.content;" class="flex flex-row border-t-2 border-gray-500">
             <div class="flex flex-col flex-grow">
                 <div class="flex flex-row" *ngIf="wrapper.offer.status != 'CHANGED'">
-                    <label>Ofertaste a</label>
-                    <label class="ml-1 mr-1 cursor-pointer underline" [routerLink]="['viewPublication',wrapper.publication.idPublication]">{{wrapper.publication.title}}</label>
-                    <label>con tus siguientes publicaciones:</label>
+                    <h2>Ofertaste a</h2>
+                    <h2 class="ml-1 mr-1 cursor-pointer underline" [routerLink]="['viewPublication',wrapper.publication.idPublication]">{{wrapper.publication.title}}</h2>
+                    <h2>con tus siguientes publicaciones:</h2>
                 </div>
                 <div class="flex flex-row" *ngIf="wrapper.offer.status == 'CHANGED'">
-                    <label>Tu oferta realizada a </label>
-                    <label class="ml-1 mr-1 cursor-pointer underline" [routerLink]="['viewPublication',wrapper.publication.idPublication]">{{wrapper.publication.title}}</label>
-                    <label>fue contra ofertada con las siguientes publicaciones: </label>
+                    <h2>Tu oferta realizada a </h2>
+                    <h2 class="ml-1 mr-1 cursor-pointer underline" [routerLink]="['viewPublication',wrapper.publication.idPublication]">{{wrapper.publication.title}}</h2>
+                    <h2>fue contra ofertada con las siguientes publicaciones: </h2>
                 </div>
                 <div class="flex flex-row" *ngFor="let offeredPublication of wrapper.offeredPublications">
-                    <label class="cursor-pointer text-blue-500" [routerLink]="['viewPublication',offeredPublication.idPublication]">{{offeredPublication.title}}</label>
+                    <h3 class="cursor-pointer text-blue-500" [routerLink]="['viewPublication',offeredPublication.idPublication]">{{offeredPublication.title}}</h3>
                 </div>
             </div>
             <div class="flex justify-end m-2">
-                <label class="text-gray-500" *ngIf="wrapper.offer.status == 'OPEN'">Abierta</label>
-                <label class="text-green-500" *ngIf="wrapper.offer.status == 'SETTLING'">Aceptada</label>
-                <label class="text-blue-500" *ngIf="wrapper.offer.status == 'CHANGED'">Contraoferta</label>
+                <h3 class="text-gray-500" *ngIf="wrapper.offer.status == 'OPEN'">Abierta</h3>
+                <h3 class="text-green-500" *ngIf="wrapper.offer.status == 'SETTLING'">Aceptada</h3>
+                <h3 class="text-blue-500" *ngIf="wrapper.offer.status == 'CHANGED'">Contraoferta</h3>
             </div>
             <div class="flex justify-end items-center" *ngIf="wrapper.offer.status != 'SETTLING' && wrapper.offer.status != 'CHANGED'">
                 <button type="button"  (click)="cancelOffer(wrapper.offer.idOffer)"

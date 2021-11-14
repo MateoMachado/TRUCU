@@ -111,7 +111,9 @@ export class ViewPublicationComponent implements OnInit {
   }
 
   hidePublication(){
-    
+    this.httpService.HidePublication(this.wrapper.publication.idPublication).subscribe(data => {
+      this.toast.success('Se oculto la publicación correctamente, se eliminaron las ofertas relacionadas a ella','Exito');
+    })
   }
 
 }
