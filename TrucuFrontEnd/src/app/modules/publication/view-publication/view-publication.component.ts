@@ -18,6 +18,7 @@ export class ViewPublicationComponent implements OnInit {
   wrapper: PublicationWrapper;
   offersWrapper : OfferWrapper[];
   showOffer : boolean = false; 
+  showReport : boolean = false; 
   showCounterOffer : boolean = false;
   showAccountData : boolean = false;
   accountEmail : BehaviorSubject<string> = new BehaviorSubject(null);
@@ -47,6 +48,10 @@ export class ViewPublicationComponent implements OnInit {
 
   toggleShowOfferCreation(){
     this.showOffer = !this.showOffer;
+  }
+
+  toggleShowReport(){
+    this.showReport = !this.showReport;
   }
 
   toggleShowCounterOffer(){

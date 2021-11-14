@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OfferModule } from '../offer/offer.module';
 import { PublicationListComponent } from './publication-list/publication-list.component';
 import { AccountModule } from '../account/account.module';
+import { ReportModule } from '../report/report.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { AccountModule } from '../account/account.module';
     FormsModule,
     NgbModule,
     OfferModule,
-    AccountModule
+    AccountModule,
+    ReportModule
   ],
   exports : [
     CreatePublicationComponent,

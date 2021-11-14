@@ -1,9 +1,10 @@
 <div class="w-1/2 m-auto mt-32 bg-white p-3 rounded-md" style="margin-top:10rem !important;">
   <div class="flex flex-wrap -mx-3 mb-6 w-full">
-    <div class="w-full px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-lg font-bold mb-2" for="grid-first-name">
+    <div class="flex flex-row w-full px-3 mb-6 md:mb-0">
+      <label class="block uppercase tracking-wide text-gray-700 text-lg font-bold mb-2 flex-grow" for="grid-first-name">
         {{wrapper.publication.title}}
       </label>
+      <img class="flex cursor-pointer w-8 justify-end" src="./assets/images/report-icon.png">
     </div>
   </div>
   <div class="flex flex-wrap -mx-3 mb-6">
@@ -82,3 +83,4 @@
 <app-create-offer [publication]="wrapper.publication" [showModal]="showOffer"></app-create-offer>
 <app-view-account [accountEmail]="accountEmail" [showModal]="showAccountData" (toggle)="toggleshowAccountData()"></app-view-account>
 <app-create-counter-offer [accountEmail]="accountEmail" [offer]="currentOffer" [showModal]="showCounterOffer"></app-create-counter-offer>
+<app-make-report [publication]="wrapper.publication" [showModal]="showReport"></app-make-report>

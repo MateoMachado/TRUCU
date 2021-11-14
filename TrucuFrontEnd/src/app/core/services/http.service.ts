@@ -7,6 +7,7 @@ import { PublicationFilter } from '../models/PublicationFilter';
 import { Page } from '../models/Page';
 import { Account } from '../models/Account';
 import { OfferWrapper } from '../models/OfferWrapper';
+import { Reason } from '../models/Reason';
 
 @Injectable({
   providedIn: 'root'
@@ -137,4 +138,7 @@ export class HttpService {
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer/reject?idOffer='+idOffer , null);
   }
  
+  getReasons(){
+    return <Observable<Reason[]>> this.Get('report/reasons',true);
+  }
 }
