@@ -56,7 +56,7 @@ public class ReportDAO extends AbstractDAO<Report> {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(REASON, REASON + ".*")
                         .joinOnId(REPORT, ID_REASON)
-                        .joinOn(PUBLICATION, ID_PUBLICATION)
+                        .joinOnId(PUBLICATION, ID_PUBLICATION)
                         .where(where -> where.eq(PUBLICATION + "." + ID_PUBLICATION, idPublication)),
                 Reason.class
         );
