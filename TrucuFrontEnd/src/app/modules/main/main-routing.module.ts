@@ -25,6 +25,11 @@ const routes: Routes = [
             path: 'viewMyOffers',
             loadChildren: () => import('../offer/offer.module').then(m => m.OfferModule)
         },
+        {
+            path: 'viewReports',
+            loadChildren: () => import('../report/report.module').then(m => m.ReportModule)
+        },
+        
         
     ]}];
 

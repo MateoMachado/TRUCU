@@ -63,12 +63,12 @@ public class ReportHelper {
         return new Page<>(totalPublications, pageNumber, pageSize, wrappers);
     }
     
-    public Map<Reason, Integer> getReportReasons(int idPublication) {
-        Map<Reason, Integer> reasonCount = new HashMap<>();
+    public Map<Integer, Integer> getReportReasons(int idPublication) {
+        Map<Integer, Integer> reasonCount = new HashMap<>();
         List<Reason> reasons = reportDAO.getReportReasons(idPublication);
         // Cuento las ocurrencias de cada motivo
         reasons.forEach(t -> {
-            reasonCount.put(t, reasonCount.getOrDefault(t, 0) + 1);
+            reasonCount.put(t.getIdReason(), reasonCount.getOrDefault(t.getIdReason(), 0) + 1);
         });
         
         return reasonCount;

@@ -6,8 +6,17 @@
             class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             <!--body-->
             <div class="bg-gray-100 flex flex-col justify-center">
-                <app-selector [options]="reasons" [placeholder]="'Seleccione un motivo'" (selectorItemReturn)="onSelectReason($event)"></app-selector>
-                
+                <div class="flex justify-end p-4">
+                    <img class="w-4 cursor-pointer" src="assets/images/close-icon.png" (click)="toggleModal()">
+                </div>
+                <div class="flex flex-col p-4">
+                    <p>Seleccione el motivo por el cual reportar la publicacion</p>
+                    <app-selector [options]="reasons" [placeholder]="'Seleccione un motivo'" (selectorItemReturn)="onSelectReason($event)"></app-selector>
+                    <button type="button" (click)="report()"
+                    class="m-2 transition duration-200 bg-red-500 hover:bg-red-600 focus:bg-red-700 focus:shadow-sm focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                        <span class="inline-block m-2">Reportar</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -77,11 +77,11 @@ export class ViewMyOffersComponent implements OnInit {
   }
 
   acceptCounterOffer(idOffer : number){
-    this.http.acceptCounterOffer(idOffer).subscribe(data => {});
+    this.http.AcceptCounterOffer(idOffer).subscribe(data => {});
   }
 
   rejectCounterOffer(idOffer : number){
-    this.http.rejectCounterOffer(idOffer).subscribe(data => {});
+    this.http.RejectCounterOffer(idOffer).subscribe(data => {});
   }
 
 }

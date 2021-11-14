@@ -54,6 +54,6 @@ export class CreateCounterOfferComponent implements OnInit {
     this.selectedPublications.forEach(data => {
       publications.push(data.idPublication);
     });
-    this.http.makeCounterOffer(this.offer.idOffer,publications).subscribe();
+    this.http.MakeCounterOffer(this.offer.idOffer,publications).subscribe();
   }
 }
