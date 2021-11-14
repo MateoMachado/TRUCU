@@ -29,12 +29,13 @@ export class CreateCounterOfferComponent implements OnInit {
 
       filter.accountEmail = value;
       filter.status = ['OPEN'];
-
-      this.http.GetPublications(filter).subscribe(data => {
-        data.content.forEach(data => {
-          this.ownerPublications.push(data.publication);
-        })
-      });
+      if(value != null){
+        this.http.GetPublications(filter).subscribe(data => {
+          data.content.forEach(data => {
+            this.ownerPublications.push(data.publication);
+          })
+        });
+      }
     });
 
   }
