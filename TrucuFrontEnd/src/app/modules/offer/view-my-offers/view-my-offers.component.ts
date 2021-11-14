@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
+import { BehaviorSubject } from 'rxjs';
 import { OfferFilter } from 'src/app/core/models/OfferFilter';
 import { Page } from 'src/app/core/models/Page';
 import { HttpService } from 'src/app/core/services/http.service';
@@ -14,6 +15,9 @@ import { UserService } from 'src/app/core/services/user.service';
 export class ViewMyOffersComponent implements OnInit {
   currentPage : Page;
   offerFilter : OfferFilter;
+  showAccountData : boolean = false;
+  accountEmail : BehaviorSubject<string> = new BehaviorSubject(null);
+  
 
   constructor(public http : HttpService, public user : UserService, public toastr : ToastrService) { }
 
@@ -46,6 +50,10 @@ export class ViewMyOffersComponent implements OnInit {
     });
   }
 
+  closeOffer(idOffer : number){
+    this.http.CloseOffer(idOffer).subscribe(data => {});
+  }
+
   nextPage(){
     this.offerFilter.pageNumber++;
     this.http.GetOffers(this.offerFilter).subscribe(data => {
@@ -58,6 +66,15 @@ export class ViewMyOffersComponent implements OnInit {
     this.http.GetOffers(this.offerFilter).subscribe(data => {
       this.currentPage = data;
     });
+  }
+
+  toggleshowAccountData(){
+    this.showAccountData = !this.showAccountData;
+  }
+
+  ViewAccountData(email : string){
+    this.toggleshowAccountData();
+    this.accountEmail.next(email);
   }
 
 }
