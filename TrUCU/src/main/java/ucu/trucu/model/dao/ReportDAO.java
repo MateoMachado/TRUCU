@@ -74,7 +74,9 @@ public class ReportDAO extends AbstractDAO<Report> {
         return dbController.executeQuery(
                 QueryBuilder.selectFrom(PUBLICATION)
                         .where(filter.in(ID_PUBLICATION,
-                                QueryBuilder.selectDistinctFrom(REPORT, ID_PUBLICATION)))
+                                QueryBuilder.selectDistinctFrom(REPORT, ID_PUBLICATION)
+                                .where(filter2 -> filter2.eq(STATUS, Report.ReportStatus.OPEN))
+                        ))
                         .orderDesc(PUBLICATION_DATE)
                         .offset(pageSize * pageNumber)
                         .fetchNext(pageSize),
