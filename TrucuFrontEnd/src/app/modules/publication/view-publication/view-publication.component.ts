@@ -33,7 +33,6 @@ export class ViewPublicationComponent implements OnInit {
             this.httpService.GetOffers(offerFilter).subscribe(data => {
               this.offersWrapper = data.content;
             });
-
           }
         }
       });

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 import { OfferFilter } from 'src/app/core/models/OfferFilter';
 import { Page } from 'src/app/core/models/Page';
 import { HttpService } from 'src/app/core/services/http.service';
@@ -13,7 +15,7 @@ export class ViewMyOffersComponent implements OnInit {
   currentPage : Page;
   offerFilter : OfferFilter;
 
-  constructor(public http : HttpService, public user : UserService) { }
+  constructor(public http : HttpService, public user : UserService, public toastr : ToastrService) { }
 
   ngOnInit(): void {
     this.offerFilter = new OfferFilter();
@@ -22,18 +24,38 @@ export class ViewMyOffersComponent implements OnInit {
     this.offerFilter.pageSize = 10;
     this.offerFilter.pageNumber = 0;
     
-    this.http.GetUserOffers(this.offerFilter).subscribe(data => {
+    this.http.GetOffers(this.offerFilter).subscribe(data => {
       this.currentPage = data;
+      console.log(this.currentPage);
     });
+   
   }
 
   cancelOffer(idOffer : number){
-    this.http.CancelOffer(idOffer).subscribe(data => {});
+    this.http.CancelOffer(idOffer).subscribe(data => {
+      this.toastr.success('Cancelado correctamente');
+      let index = -1;
+      this.currentPage.content.forEach((element,i)=>{
+        if(element.idOffer == idOffer){
+          index = i;
+        }
+      });
+      if(index > -1){
+        this.currentPage.content.splice(index,1);
+      }
+    });
   }
 
   nextPage(){
     this.offerFilter.pageNumber++;
-    this.http.GetUserOffers(this.offerFilter).subscribe(data => {
+    this.http.GetOffers(this.offerFilter).subscribe(data => {
+      this.currentPage = data;
+    });
+  }
+
+  previousPage(){
+    this.offerFilter.pageNumber--;
+    this.http.GetOffers(this.offerFilter).subscribe(data => {
       this.currentPage = data;
     });
   }
