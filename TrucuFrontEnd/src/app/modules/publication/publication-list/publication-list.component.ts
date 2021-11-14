@@ -15,6 +15,7 @@ export class PublicationListComponent implements OnInit {
 
   currentPage : Page;
   currentFilter : PublicationFilter;
+  showFilter : boolean = false;
  
 
   constructor(public httpService : HttpService, public publicationService : PublicationService, public user : UserService, public toastr: ToastrService) { }
@@ -59,6 +60,20 @@ export class PublicationListComponent implements OnInit {
     }, error => {
       this.toastr.error('Error inesperado', 'Error');
     });
+  }
+
+  onFilter(event : any){
+    console.log(event);
+    this.currentFilter.status = event;
+    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+      this.publicationService.setPage(data);
+      this.publicationService.setFilter(this.currentFilter);
+    });
+  }
+
+  onToggleFilter(event:any){
+    event.stopPropagation();
+    this.showFilter = !this.showFilter;
   }
 
 }
