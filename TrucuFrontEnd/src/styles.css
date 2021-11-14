@@ -6,18 +6,23 @@
 @import '~ngx-toastr/toastr';
 
 
-@font-face {
-    font-family: futura;
-    src: local("futura"),
-      url(assets/fonts/AnyConv.com__Futura_Bold.ttf) format("truetype");
-}
+
   
 @font-face {
     font-family: lemon;
     src: local("lemon"),
         url(assets/fonts/LEMONMILK-Regular.ttf) format("truetype");
 }
-
+@font-face {
+    font-family: futura;
+    src: local("futura"),
+        url(assets/fonts/FuturaLightItalicfont.ttf) format("truetype");
+}
+@font-face {
+    font-family: futuraB;
+    src: local("futuraB"),
+        url(assets/fonts/AnyConv.com__Futura_Bold.ttf) format("truetype");
+}
 html,
 body {
   height: 100%;

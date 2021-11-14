@@ -14,11 +14,11 @@
                         <img class="w-32" src="assets/images/logo_UCU.png">
                     </div>
                     <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
-                        <label class="font-semibold text-sm text-gray-600 p-4 block">Seleccione cuales de sus publicaciones desea ofertar:</label>
+                        <label class="font-semibold text-sm text-gray-600 p-4 block">Seleccione las publicaciones que desea contraofertar:</label>
                         <div *ngFor="let ownerPublication of ownerPublications">
                             <label class="inline-flex items-center p-2">
                                 <input type="checkbox" class="form-checkbox" (click)="checkPublication(ownerPublication)"/>
-                                <a class="ml-2" [routerLink]="['viewPublication',ownerPublication.idPublication]" target="_blank">{{ownerPublication.title}}</a>    
+                                <a class="ml-2" href="http://localhost:4200/home/viewPublication/{{ownerPublication.idPublication}}" target="_blank">{{ownerPublication.title}}</a>    
                             </label>
                         </div>
                         <button type="button"

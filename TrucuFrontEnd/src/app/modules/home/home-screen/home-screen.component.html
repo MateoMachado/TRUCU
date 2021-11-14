@@ -1,20 +1,23 @@
 <div class="flex flex-col w-full mt-14">
     <div class="flex flex-col bg-white mr-16 ml-16 p-4 rounded mt-16">
-        <div class="flex">
-            <h1>Pantalla principal</h1>
+        <div class="flex flex-row">
+            <div class="flex mb-6">
+                <h1>Pantalla principal</h1>
+            </div>
+            <div class="flex flex-col pl-6 items-center relative justify-start">
+                <img src="../../../../assets/images/filter-circle-icon-green.svg" class="w-8 cursor-pointer" (click)="onToggleFilter($event)">
+                <h6 class="text-green-light font-gill">Filtrar</h6>
+                <app-publication-filter-home [showModal]="showFilter" (filteredElementsEvent)="onFilter($event)"></app-publication-filter-home>
+            </div>
         </div>
-        <div class="flex flex-col pl-6 items-center relative justify-start">
-            <img src="../../../../assets/images/filter-circle-icon-green.svg" class="w-8 cursor-pointer" (click)="onToggleFilter($event)">
-            <h6 class="text-green-light font-gill">Filtrar</h6>
-            <app-publication-filter-home [showModal]="showFilter" (filteredElementsEvent)="onFilter($event)"></app-publication-filter-home>
-        </div>
+        
         <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
             <img class="w-64" src="{{wrapper.images[0].imageBytes}}">
             <div class="flex flex-grow flex-col m-8">
-                <label class="publicationTitle">{{wrapper.publication.title}}</label>
+                <h2>{{wrapper.publication.title}}</h2>
                 <div class="flex flex-row">
                     <img class="w-8 cursor-pointer mr-2" src="assets/images/ucucoin-icon.png">
-                    <label class="price">{{wrapper.publication.ucuCoinValue}}</label>
+                    <h2 class="price">{{wrapper.publication.ucuCoinValue}}</h2>
                 </div>
             </div>
         </div>

@@ -168,8 +168,14 @@ export class HttpService {
   }
 
   HidePublication(idPublication : number){
-    return <Observable<string>> this.http.post(this.baseUrl + 'publication/cancel?idPublication='+idPublication, null);
+    return <Observable<string>> this.http.post(this.baseUrl + 'publication/hide?idPublication='+idPublication, null);
   }
+
+  ShowPublication(idPublication : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'publication/show?idPublication='+idPublication, null);
+  }
+
+
 
   
 }

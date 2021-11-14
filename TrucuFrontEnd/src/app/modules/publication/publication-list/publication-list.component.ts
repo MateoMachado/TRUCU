@@ -76,4 +76,14 @@ export class PublicationListComponent implements OnInit {
     this.showFilter = !this.showFilter;
   }
 
+  showPublication(idPublication : number){
+    this.httpService.ShowPublication(idPublication).subscribe(data => {
+      this.toastr.success('Se desoculto la publicacion correctamente', 'Exito');
+      this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+        this.publicationService.setPage(data);
+        this.publicationService.setFilter(this.currentFilter);
+      });
+    })
+  }
+
 }

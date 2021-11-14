@@ -13,17 +13,18 @@
         <div *ngFor="let wrapper of currentPage.content;" class="flex border-t-2 border-gray-500 cursor-pointer">
             <img class="w-64" src="{{wrapper.images[0].imageBytes}}" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
             <div class="flex flex-grow flex-col m-8" [routerLink]="['viewPublication',wrapper.publication.idPublication]">
-                <label class="publicationTitle">{{wrapper.publication.title}}</label>
+                <h2 >{{wrapper.publication.title}}</h2>
                 <div class="flex flex-row">
                     <img class="w-8 cursor-pointer mr-2" src="assets/images/ucucoin-icon.png">
-                    <label class="price">{{wrapper.publication.ucuCoinValue}}</label>
+                    <h2 >{{wrapper.publication.ucuCoinValue}}</h2>
                 </div>
             </div>
             <div class="flex flex-col">
-                <img src="../../../../assets/images/trash-icon.png" class="w-8 cursor-pointer" (click)="cancelPublication(wrapper.publication.idPublication)">
-                <label class="text-green-500 self-center mt-6" *ngIf="wrapper.publication.status == 'OPEN'">Abierta</label>
-                <label class="text-blue-500 self-center mt-6" *ngIf="wrapper.publication.status == 'SETTLING'">Aceptada</label>
-                <label class="text-gray-500 self-center mt-6" *ngIf="wrapper.publication.status == 'HIDDEN'">Oculto</label>
+                <img src="../../../../assets/images/trash-icon.png" class="w-8 cursor-pointer justify-end" (click)="cancelPublication(wrapper.publication.idPublication)">
+                <img src="../../../../assets/images/show-icon.png" *ngIf="wrapper.publication.status == 'HIDDEN'" class="w-8 cursor-pointer justify-end" (click)="showPublication(wrapper.publication.idPublication)">
+                <h3 class="text-green-500 self-center mt-6" *ngIf="wrapper.publication.status == 'OPEN'">Abierta</h3>
+                <h3 class="text-blue-500 self-center mt-6" *ngIf="wrapper.publication.status == 'SETTLING'">Aceptada</h3>
+                <h3 class="text-gray-500 self-center mt-6" *ngIf="wrapper.publication.status == 'HIDDEN'">Oculto</h3>
             </div>
         </div>
     </div>
