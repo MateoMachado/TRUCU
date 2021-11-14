@@ -54,7 +54,6 @@ export class CreateOfferComponent implements OnInit {
     this.httpService.CreateOffer(this.publication.idPublication, publications).subscribe(data => {
       this.toastr.success('Exito', 'Se creo la oferta correctamente');
       this.toggleModal();
-      console.log(data);
     });
   }
 

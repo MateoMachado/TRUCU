@@ -124,6 +124,10 @@ export class HttpService {
   CloseOffer(idOffer : number){
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/close?idOffer='+idOffer , null);
   }
+
+  makeCounterOffer(idOffer : number, idPublications : number[]){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/counterOffer?idOffer='+idOffer , idPublications);
+  }
  
 
 
