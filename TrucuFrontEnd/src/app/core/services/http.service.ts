@@ -121,6 +121,9 @@ export class HttpService {
     return <Observable<string>> this.http.post(this.baseUrl + 'offer/revert?idOffer='+idOffer , null);
   }
 
+  CloseOffer(idOffer : number){
+    return <Observable<string>> this.http.post(this.baseUrl + 'offer/close?idOffer='+idOffer , null);
+  }
  
 
 
