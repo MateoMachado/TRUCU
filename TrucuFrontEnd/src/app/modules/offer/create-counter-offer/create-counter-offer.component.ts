@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { Offer } from 'src/app/core/models/Offer';
@@ -21,7 +22,7 @@ export class CreateCounterOfferComponent implements OnInit {
 
   ownerPublications: Publication[] = [];
 
-  constructor(public http: HttpService, public toastr: ToastrService) { }
+  constructor(public http: HttpService, public toastr: ToastrService, private _router: Router) { }
 
   ngOnInit(): void {
     this.accountEmail.subscribe(value => {
@@ -61,5 +62,12 @@ export class CreateCounterOfferComponent implements OnInit {
       this.toastr.success('Se creo la contra oferta', 'Exito');
       this.toggleModal();
     });
+  }
+
+  redirect(idPublication : number){
+    let newRelativeUrl = this._router.createUrlTree(['viewPublication/'+idPublication]);
+    let baseUrl = window.location.href.replace(this._router.url, '');
+
+    window.open(baseUrl + newRelativeUrl, '_blank');
   }
 }

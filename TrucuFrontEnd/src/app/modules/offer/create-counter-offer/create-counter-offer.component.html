@@ -18,7 +18,7 @@
                         <div *ngFor="let ownerPublication of ownerPublications">
                             <label class="inline-flex items-center p-2">
                                 <input type="checkbox" class="form-checkbox" (click)="checkPublication(ownerPublication)"/>
-                                <a class="ml-2" href="http://localhost:4200/home/viewPublication/{{ownerPublication.idPublication}}" target="_blank">{{ownerPublication.title}}</a>    
+                                <h3 class="ml-2 cursor-pointer" (click)="redirect(ownerPublication.idPublication)" target="_blank">{{ownerPublication.title}}</h3>    
                             </label>
                         </div>
                         <button type="button"

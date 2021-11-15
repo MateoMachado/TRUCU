@@ -9,6 +9,7 @@ import { OfferWrapper } from 'src/app/core/models/OfferWrapper';
 import { BehaviorSubject } from 'rxjs';
 import { Offer } from 'src/app/core/models/Offer';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-publication',
@@ -25,7 +26,7 @@ export class ViewPublicationComponent implements OnInit {
   accountEmail : BehaviorSubject<string> = new BehaviorSubject(null);
   currentOffer : Offer;
   
-  constructor(public httpService : HttpService, public route: ActivatedRoute, public user : UserService, public toast : ToastrService) { }
+  constructor(public httpService : HttpService, public route: ActivatedRoute, public user : UserService, public toast : ToastrService, private _router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -114,6 +115,10 @@ export class ViewPublicationComponent implements OnInit {
     this.httpService.HidePublication(this.wrapper.publication.idPublication).subscribe(data => {
       this.toast.success('Se oculto la publicación correctamente, se eliminaron las ofertas relacionadas a ella','Exito');
     })
+  }
+
+  redirect(idPublication : number){
+    this._router.navigate(['viewPublication/'+idPublication]);
   }
 
 }
