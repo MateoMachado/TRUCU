@@ -63,12 +63,27 @@ export class PublicationListComponent implements OnInit {
   }
 
   onFilter(event : any){
-    console.log(event);
-    this.currentFilter.status = event;
-    this.httpService.GetPublications(this.currentFilter).subscribe(data => {
+    if(event == 'reset'){
+      var filter = new PublicationFilter();
+      filter.pageSize = 10;
+      filter.pageNumber = 0;
+      filter.status = ['OPEN','SETTLING','HIDDEN']
+      this.user.userSubject.subscribe(data => {
+        filter.accountEmail = data.email; 
+      });
+  
+      this.httpService.GetPublications(filter).subscribe(data => {
+        this.publicationService.setPage(data);
+        this.publicationService.setFilter(filter);
+      });
+    }else{
+      this.currentFilter.status = event;
+      this.httpService.GetPublications(this.currentFilter).subscribe(data => {
       this.publicationService.setPage(data);
       this.publicationService.setFilter(this.currentFilter);
     });
+    }
+    
   }
 
   onToggleFilter(event:any){

@@ -48,7 +48,7 @@
     <div class="flex flex-col flex-grow">
         <h3>Esta oferta incluye las siguientes publicaciones: </h3>
         <div class="flex flex-row" *ngFor="let offeredPublication of wrapper.offeredPublications">
-            <h3 class="cursor-pointer text-blue-500" [routerLink]="['viewPublication',offeredPublication.idPublication]">{{offeredPublication.title}}</h3>
+            <h3 class="cursor-pointer text-blue-500" (click)="redirect(offeredPublication.idPublication)">{{offeredPublication.title}}</h3>
         </div>
     </div>
     <div class="flex justify-end m-2">

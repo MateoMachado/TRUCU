@@ -1,2 +1,90 @@
-INFO	[ucu.trucu.database.DBController]	Iniciando conexion con base de datos [jdbc:sqlserver://192.168.56.103:1433;databaseName=Trucu]
-ERROR	[ucu.trucu.database.DBController]	Conexion a base de datos fallida -> No se pudo realizar la conexión TCP/IP al host 192.168.56.103, puerto 1433. Error: "connect timed out. Verifique las propiedades de conexión, compruebe que hay una instancia de SQL Server ejecutándose en el host y aceptando las conexiones TCP/IP en el puerto y compruebe que no hay ningún firewall bloqueando las conexiones TCP en el puerto.".
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 10 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('1044', '1043', '1033', '1032', '1030', '1029', '1028', '1027', '1025', '1024');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 11 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(idPublication = '18')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (idPublication = '18');
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Reason;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (idPublication = '18') ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 3 entidades [class ucu.trucu.model.dto.Reason] halladas en tabla Reason
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN')) AND (accountEmail = 'undefined')]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN')) AND (accountEmail = 'undefined');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN')) AND (accountEmail = 'undefined') ORDER BY publicationDate DESC OFFSET 0 ROWS;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 0 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ();
+ERROR	[ucu.trucu.database.QueryExecutor]	com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near ')'.
+ERROR	[ucu.trucu.database.DBController]	Imposible ejecutar query
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo ofertas filtradas por [(status IN ('OPEN', 'SETTLING', 'CHANGED')) AND (idOffer IN (SELECT DISTINCT idOffer FROM OfferedPublications INNER JOIN Publication ON OfferedPublications.idPublication = Publication.idPublication WHERE accountEmail = 'undefined'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Offer WHERE (status IN ('OPEN', 'SETTLING', 'CHANGED')) AND (idOffer IN (SELECT DISTINCT idOffer FROM OfferedPublications INNER JOIN Publication ON OfferedPublications.idPublication = Publication.idPublication WHERE accountEmail = 'undefined'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Offer
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Offer WHERE (status IN ('OPEN', 'SETTLING', 'CHANGED')) AND (idOffer IN (SELECT DISTINCT idOffer FROM OfferedPublications INNER JOIN Publication ON OfferedPublications.idPublication = Publication.idPublication WHERE accountEmail = 'undefined')) ORDER BY offerDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 0 entidades [class ucu.trucu.model.dto.Offer] halladas en tabla Offer
+INFO	[ucu.trucu.api.PublicationController]	Obteniendo publicaciones filtradas por [(status IN ('OPEN', 'SETTLING'))]
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT COUNT(*) AS 'count' FROM Publication WHERE (status IN ('OPEN', 'SETTLING'));
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 1 entidades [class ucu.trucu.database.querybuilder.Count] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Publication WHERE (status IN ('OPEN', 'SETTLING')) ORDER BY publicationDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 7 entidades [class ucu.trucu.model.dto.Publication] halladas en tabla Publication
+QUERY	[ucu.trucu.database.QueryExecutor]	>>> SELECT * FROM Image WHERE idPublication IN ('18', '20', '1024', '1028', '1029', '1030', '1042');
+INFO	[ucu.trucu.database.QueryExecutor]	<<< 9 entidades [class ucu.trucu.model.dto.Image] halladas en tabla Image
